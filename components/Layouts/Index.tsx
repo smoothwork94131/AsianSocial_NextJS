@@ -35,7 +35,7 @@ const Index:FC<Props>= ({children}) => {
                 </Footer>
             }
             header={
-                <Header height={{ base: 80, md: 80 }} p="md">
+                <Header height={{ base: 70, md: 70 }} p="md">
                     <MainHeader />
                 </Header>
             }
