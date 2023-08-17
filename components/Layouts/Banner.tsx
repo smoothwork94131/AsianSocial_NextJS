@@ -19,10 +19,11 @@ import { useEffect, useState } from "react";
 
 const Banner = () => {
     const isMobile = useMediaQuery(`(max-width: 800px)`);
-    const [screenWidth, setScreenWidth] = useState<number>(0);
+    const [screenWidth, setScreenWidth] = useState<number>(1400);
 
     useEffect(() => {
         window.addEventListener('resize', function() {
+            console.log(window.innerWidth);
             setScreenWidth(window.innerWidth);
         });
     }, []);
