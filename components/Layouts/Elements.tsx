@@ -13,6 +13,7 @@ const Elements = () => {
             align="center"
             direction="row"
             wrap="wrap"
+            ml={30}
         >
             {
                 ELEMENTS.map((item, key) =>

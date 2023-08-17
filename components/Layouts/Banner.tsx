@@ -47,7 +47,7 @@ const Banner = () => {
                 wrap="wrap"
             >
                 {
-                    screenWidth > 600 &&
+                    screenWidth > 742 &&
                     <Text
                         size='1.5rem'
                         weight='600'
@@ -56,7 +56,7 @@ const Banner = () => {
                     </Text>
                 }
                 {
-                    screenWidth > 1040 && <Elements />
+                    screenWidth > 1230 && <Elements />
                 }
                 <Select
                     data={[
@@ -68,10 +68,9 @@ const Banner = () => {
                     placeholder="Search"
                     searchable
                     sx={(theme) => ({
-                        width: screenWidth > 460 ? '350px' : `${screenWidth - 120}px`
+                        width: screenWidth > 742 ? '500px' : `${screenWidth - 120}px`,
                     })}
                 />
-
             </Flex>
 
 
@@ -83,11 +82,11 @@ const Banner = () => {
                 wrap="wrap"
             >
                 {
-                    screenWidth > 1040 &&
+                    screenWidth > 1230 &&
                     <Auth />
                 }
                 {
-                    screenWidth < 1040 &&
+                    screenWidth < 1230 &&
                     <Menu shadow="md" width={200}>
                         <Menu.Target>
                             <Avatar
