@@ -5,7 +5,7 @@ import {
     Box,
     Menu
 } from "@mantine/core"
-import { MENU } from '@/utils/app/consts';
+import { ELEMENTS, MENU } from '@/utils/app/consts';
 import Auth from '@/components/Layouts/Auth';
 import { FC } from 'react';
 
@@ -19,13 +19,11 @@ const MyMenu:FC<Props> = ({
     return (
         <Box>
             <Menu.Dropdown>
+                <Auth />
+
                 {
-                    isMobile&&<Auth />
-                }
-                {
-                    MENU.map((item, key) =>
-                        ((!item.show_desktop && !isMobile) || isMobile)&&
-                            <Menu.Item key={key}>{item.name}</Menu.Item>
+                    ELEMENTS.map((item, key) =>
+                        <Menu.Item key={key}>{item.name}</Menu.Item>
                     )
                 }
             </Menu.Dropdown>

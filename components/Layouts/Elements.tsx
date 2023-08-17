@@ -8,7 +8,7 @@ import {
 const Elements = () => {
     return (
         <Flex
-            gap='2rem'
+            gap='2.2rem'
             justify="center"
             align="center"
             direction="row"
@@ -21,7 +21,7 @@ const Elements = () => {
                         pb={5}
                         key={key}
                         sx={(theme) => ({
-                            color: theme.colors.gray[5],
+                            color: theme.colors.gray[6],
                             '&:hover': {
                                 color: theme.colors.gray[9],
                                 // borderBottom: `2px solid ${theme.colors.gray[9]}`

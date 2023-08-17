@@ -7,7 +7,7 @@ const MainHeader = () => {
     return (
         <Box>
             <Banner></Banner>
-            <Elements></Elements>
+            {/* <Elements></Elements> */}
         </Box>
     )
 }

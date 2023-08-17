@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { MENU } from "@/utils/app/consts";
 import { useMediaQuery } from '@mantine/hooks';
 
 import {
@@ -16,17 +15,22 @@ import { IconDots } from "@tabler/icons-react";
 import MyMenu from "@/components/Layouts/Menu";
 import Auth from "@/components/Layouts/Auth";
 import { useEffect, useState } from "react";
+import Elements from "@/components/Layouts/Elements";
 
 const Banner = () => {
     const isMobile = useMediaQuery(`(max-width: 800px)`);
     const [screenWidth, setScreenWidth] = useState<number>(1400);
 
     useEffect(() => {
-        window.addEventListener('resize', function() {
-            console.log(window.innerWidth);
-            setScreenWidth(window.innerWidth);
+        window.addEventListener('resize', function () {
+            setWindow();
         });
+        setWindow();
     }, []);
+
+    const setWindow = () => {
+        setScreenWidth(window.innerWidth);
+    }
     return (
         <Flex
             gap="md"
@@ -35,28 +39,42 @@ const Banner = () => {
             direction="row"
             wrap="wrap"
         >
-            {
-                screenWidth > 470&&
-                <Text
-                    size='1.5rem'
-                    weight='600'
-                >
-                    AsianSocial
-                </Text>
-            }
-            <Select
-                data={[
-                    { value: 'React', label: 'React' },
-                    { value: 'Angular', label: 'Angular' },
-                    { value: 'Svelte', label: 'Svelte' },
-                    { value: 'Vue', label: 'Vue' },
-                ]}
-                placeholder="Search"
-                searchable
-                // nothingFound="No"
-                width='80%'
-            />
-            
+            <Flex
+                gap="md"
+                justify="flex-start"
+                align="center"
+                direction="row"
+                wrap="wrap"
+            >
+                {
+                    screenWidth > 600 &&
+                    <Text
+                        size='1.5rem'
+                        weight='600'
+                    >
+                        AsianSocial
+                    </Text>
+                }
+                {
+                    screenWidth > 1040 && <Elements />
+                }
+                <Select
+                    data={[
+                        { value: 'React', label: 'React' },
+                        { value: 'Angular', label: 'Angular' },
+                        { value: 'Svelte', label: 'Svelte' },
+                        { value: 'Vue', label: 'Vue' },
+                    ]}
+                    placeholder="Search"
+                    searchable
+                    sx={(theme) => ({
+                        width: screenWidth > 460 ? '350px' : `${screenWidth - 120}px`
+                    })}
+                />
+
+            </Flex>
+
+
             <Flex
                 gap="md"
                 justify="space-between"
@@ -65,40 +83,25 @@ const Banner = () => {
                 wrap="wrap"
             >
                 {
-                    MENU.map((item, key) =>
-                        item.show_desktop && !isMobile && <Text
-                            key={key}
-                            sx={(theme) => ({
-                                color: theme.colors.gray[7],
-                                '&:hover': {
-                                    color: theme.colors.gray[9],
-                                },
-                                cursor: 'pointer'
-                            })}
-                            size='lg'
-                            weight='500'
-                        >
-                            {item.name}
-                        </Text>
-                    )
-                }
-                {
-                    !isMobile&&
+                    screenWidth > 1040 &&
                     <Auth />
                 }
-                <Menu shadow="md" width={200}>
-                    <Menu.Target>
-                        <Avatar
-                            color="gray" radius="xl"
-                            style={{ cursor: 'pointer' }}
-                        >
-                            <IconDots />
-                        </Avatar>
-                    </Menu.Target>
-                    <MyMenu 
-                        isMobile={isMobile}
-                    />
-                </Menu>
+                {
+                    screenWidth < 1040 &&
+                    <Menu shadow="md" width={200}>
+                        <Menu.Target>
+                            <Avatar
+                                color="gray" radius="xl"
+                                style={{ cursor: 'pointer' }}
+                            >
+                                <IconDots />
+                            </Avatar>
+                        </Menu.Target>
+                        <MyMenu
+                            isMobile={isMobile}
+                        />
+                    </Menu>
+                }
             </Flex>
         </Flex>
     )
