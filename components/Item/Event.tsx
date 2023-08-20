@@ -8,14 +8,14 @@ interface Props {
     isMobile: boolean,
     data: Item,
     category: Category,
-    isLoader: boolean
+    isLoad: boolean
 }
 const Events:FC<Props> = ({
     images,
     isMobile,
     data,
     category,
-    isLoader
+    isLoad
 }) => {
     return (
         <Box

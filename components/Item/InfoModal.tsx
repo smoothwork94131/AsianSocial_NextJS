@@ -17,7 +17,7 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
 
     const [images, setImages] = useState<string[]>([]);
     const [category, setCategory] = useState<Category>(CategoryState);
-    const [isLoad, setIsLoad] = useState<boolean>()
+    const [isLoad, setIsLoad] = useState<boolean>(false)
     useEffect(() => {
         if (data.id != "") {
             getImages();
@@ -80,7 +80,7 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
             >
                 <FontAwesomeIcon icon={faClose} color='white' />
             </Box>
-            <Events images={images} isMobile={isMobile} data={data} category={category} isLoader={isLoader}/>
+            <Events images={images} isMobile={isMobile} data={data} category={category} isLoad={isLoad}/>
         </Modal>
     );
 }
