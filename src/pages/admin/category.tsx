@@ -32,10 +32,10 @@ const Category = () => {
     }, [])
 
     useEffect(() =>{
-        getCategories();
     }, [elements])
 
     useEffect(() =>{
+        
         getCategories();
     }, [selectedElementId]);
     
@@ -191,6 +191,7 @@ const Category = () => {
                         value={form.values.element_id}
                         onChange={(value) =>{form.setFieldValue('element_id', value??'')}}
                     />
+                    
                     <TextInput
                         label="Category Name"
                         required

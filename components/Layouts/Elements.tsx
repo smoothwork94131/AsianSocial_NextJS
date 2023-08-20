@@ -61,7 +61,7 @@ const Elements = () => {
                                     cursor: 'pointer',
                                     marginLeft: 20,
                                     padding: 0,
-                                    fontSize: '1.4rem',
+                                    fontSize: '1.2rem',
                                     fontWeight: 'bold'
                                 })}
                             >

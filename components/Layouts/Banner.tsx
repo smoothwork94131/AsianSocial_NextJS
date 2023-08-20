@@ -59,6 +59,8 @@ const Banner = () => {
                     <Text
                         size='1.5rem'
                         weight='600'
+                        onClick={() => { router.push('/')}}
+                        style={{cursor: 'pointer'}}
                     >
                         AsianSocial
                     </Text>

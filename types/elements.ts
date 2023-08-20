@@ -22,8 +22,10 @@ export const CategoryState =  {
     id:''
 }
 
-export interface Item {
+export interface Item 
+{
     id: string,
+    name: string,
     sites_url: string,
     event_name: string,
     email: string,
@@ -31,11 +33,12 @@ export interface Item {
     address: string,
     details: string,
     reviews:string,
-    geo_lati: number,
-    geo_lon: number,
+    geo_lati: string,
+    geo_lon: string,
     category_id: string,
     image: string,
-    page_type_id: string
+    page_type_id: string,
+    element_id: string
 }
 
 export const  ItemState: Item = {
@@ -47,12 +50,15 @@ export const  ItemState: Item = {
     address: '',
     details: '',
     reviews:'',
-    geo_lati: 0,
-    geo_lon: 0,
+    geo_lati: "0",
+    geo_lon: "0",
     category_id: '',
     image: '',
-    page_type_id: ''
+    page_type_id: '',
+    name: '',
+    element_id:''
 }
+
 
 export interface PageType{
     id: string,
