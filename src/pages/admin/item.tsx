@@ -116,6 +116,16 @@ const Item = () => {
     }
 
     const editItem = async () => {
+
+        if(images.length != 3) {
+            notifications.show({
+                title: `Invalide`,
+                message: 'You must add 3 images.',
+                color: 'red'
+            });
+            return;
+        }
+        
         setIsLoad(true);
         close();
         if (selectedCategoryId == '' || selectedElementId == '' || selectedPageTypeId == '') {

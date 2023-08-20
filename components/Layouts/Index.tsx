@@ -22,18 +22,18 @@ const Index:FC<Props>= ({children}) => {
     
     const theme = useMantineTheme();
     const router = useRouter();
-    const { pathname } = router;
 
     const [opened, setOpened] = useState(false);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
-    console.log('--------------');
-    console.log(pathname);
-
+    
     useEffect(() => {
+        const { pathname } = router;
         if(pathname.indexOf('/admin') > -1) {
             setIsAdmin(true);
+        } else{
+            setIsAdmin(false);
         }
-    }, [])
+    }, [router.query])
 
     return (
         <AppShell

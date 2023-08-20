@@ -7,9 +7,7 @@ import {
     Flex,
     Text,
     Select,
-    Button,
     Avatar,
-    Box
 } from "@mantine/core"
 import { IconDots } from "@tabler/icons-react";
 import MyMenu from "@/components/Layouts/Menu";

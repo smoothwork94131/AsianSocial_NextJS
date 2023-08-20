@@ -1,20 +1,30 @@
 import { Box, Image, Text } from "@mantine/core";
-import { FC } from "react";
+import { FC, useState } from 'react';
 import { useMediaQuery } from '@mantine/hooks';
-import { Item } from "@/types/elements";
+import { Item, ItemState } from "@/types/elements";
+import InfoModal from "@/components/Item/InfoModal";
 
 interface Props {
-    data: Item
+    data: Item,
 }
+
 const Block:FC<Props> = ({data}) => {
     const isMobile = useMediaQuery(`(max-width: 760px)`);
+    const [ open, setOpen ] = useState<boolean>(false);
+    const [ selectedItem, setSelectedItem ] = useState<Item>(ItemState);
+
+    const handleSelectItem = (item:Item) => {
+        setOpen(true);
+        setSelectedItem(item);
+    }
 
     return (
         <Box
             p={10}
+            
         >
             <Image 
-                src={ data.image } alt='event_img' 
+                src={ data.image } alt='image' 
                 sx={(theme) =>({
                     '&:hover' :{
                         opacity: '0.7',
@@ -22,6 +32,7 @@ const Block:FC<Props> = ({data}) => {
                     cursor: 'pointer',
                     border: `1px solid ${theme.colors.gray[4]}`,
                 })}
+                onClick={() => {handleSelectItem(data)}}
             />
             {
                 !isMobile&&
@@ -32,7 +43,7 @@ const Block:FC<Props> = ({data}) => {
                         color: theme.colors.gray[9]
                     })}>
                         {
-                            data.event_name
+                            data.name
                         }
                     </Text>
                     <Text 
@@ -41,11 +52,12 @@ const Block:FC<Props> = ({data}) => {
                         color: theme.colors.gray[7]
                     })}>
                         {
-                            data.contract_url
+                            data.sites_url
                         }
                     </Text>
                 </Box>
             }
+            <InfoModal open={() => { setOpen(p_o => (!p_o)) }} opened={open} data={selectedItem} isMobile={isMobile}/>
         </Box>
     )
 }

@@ -38,6 +38,7 @@ const Categories: FC<Props> = ({
                                     color: theme.colors.gray[9],
                                     '&:hover': { background: theme.colors.gray[3]}
                                 })}
+                                onClick={() => {selectCategory(item)}}
                             >
                                 {item.name}
                             </Button>

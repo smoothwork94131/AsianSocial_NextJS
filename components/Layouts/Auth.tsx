@@ -23,7 +23,6 @@ const Auth = () => {
                 Log in
             </Text>
             <Button
-                variant="outline"
             >
                 Sign up
             </Button>

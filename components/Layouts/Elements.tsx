@@ -1,5 +1,4 @@
 import { ElementType } from "@/types/elements";
-import { ELEMENTS } from "@/utils/app/consts";
 import {
     Box,
     Button,
@@ -10,13 +9,14 @@ import {
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import Link from "next/link";
 import { useEffect, useState, useContext } from "react";
-
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 import 'react-horizontal-scrolling-menu/dist/styles.css';
+import { useRouter } from 'next/router';
 
 const Elements = () => {
 
     const [elements, setElements] = useState<ElementType[]>([])
+    const router = useRouter();
 
     useEffect(() => {
         getElements();
@@ -51,6 +51,7 @@ const Elements = () => {
                         <Box key={key} ml={5} sx={(theme) => ({
                         })}>
                             <Button
+                                onClick={() => { router.push(`/${item.name}`)}}
                                 sx={(theme) => ({
                                     background: 'transparent',
                                     color: theme.colors.gray[6],

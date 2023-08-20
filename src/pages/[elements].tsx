@@ -2,13 +2,14 @@ import { Category, CategoryState, ElementState, ElementType, Item, ItemState } f
 import {
     Box,
     Button,
+    Loader,
     Text,
 } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from '@mantine/hooks';
 import Categories from '@/components/Element/Categories';
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import Block from '@/components/Home/Block';
 
 const Elements = () => {
@@ -20,9 +21,8 @@ const Elements = () => {
 
     const [categories, setCatetories] = useState<Category[]>([]);
     const [element, setElement] = useState<ElementType>(ElementState);
-    
-    const [isLoadElement, setIsLoadElement] = useState<boolean>(false);
-    const [isLoadItems, setIsLoadItems] = useState<boolean>(false);
+
+    const [isLoad, setIsLoad] = useState<boolean>(false);
     const [items, setItems] = useState<Item[]>([]);
 
     const [selectedCategory, setSelectedCategory] = useState<Category>(CategoryState);
@@ -30,39 +30,35 @@ const Elements = () => {
     useEffect(() => {
         getElementData();
     }, [])
-    
+
     const getElementData = async () => {
-        setIsLoadElement(true);
         const res = await fetch("/api/element/get_element_data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name: (element_name as string).replaceAll("_", " ") })
+            body: JSON.stringify({ name: element_name?.toString()?.replaceAll("_", " ") })
         });
         if (res.status == 200) {
             const data = await res.json();
             setElement(data.element_data);
-            const _cate = [];
-            for(let k = 0 ; k< 30 ; k++){
-                _cate.push({name: 'Sustainable Architecture', element_id: '', id: k.toString()});
+            setCatetories(data.categories);
+            if (data.categories.length > 0) {
+                setSelectedCategory(data.categories[0]);
             }
-            setCatetories(_cate);
-            setSelectedCategory(_cate[0])
         } else {
-            
+
         }
-        setIsLoadElement(false);
     }
 
-    useEffect(() =>{
-        if(selectedCategory.id != ""){
+    useEffect(() => {
+        if (selectedCategory.id != "") {
             getItems();
         }
     }, [selectedCategory])
 
-    const getItems = async() => {
-        setIsLoadItems(true);
+    const getItems = async () => {
+        setIsLoad(true);
         const res = await fetch('/api/element/get_items', {
             method: 'POST',
             headers: {
@@ -70,12 +66,17 @@ const Elements = () => {
             },
             body: JSON.stringify({ category_id: selectedCategory.id })
         })
-        if(res.status == 200){
-            
+        if (res.status == 200) {
+            const data = await res.json();
+            setItems(data);
         }
-        setIsLoadItems(false);
-    }   
+        setIsLoad(false);
+    }
 
+    const  handleSelectCategory = (category: Category) => {
+        setSelectedCategory(category);
+    }
+    
     return (
         <Box>
             <Box
@@ -88,7 +89,7 @@ const Elements = () => {
                     color: theme.colors.gray[8]
                 })}>
                     {
-                        (element_name as string)?.replaceAll("_", " ")
+                        element_name?.toString()?.replaceAll("_", " ")
                     }
                 </Text>
                 <Text
@@ -105,22 +106,29 @@ const Elements = () => {
                 </Text>
             </Box>
             <Box>
-                <Categories categories={categories} 
-                    selectedCategory={selectedCategory} 
-                    selectCategory={() => {}} />
+                <Categories categories={categories}
+                    selectedCategory={selectedCategory}
+                    selectCategory={handleSelectCategory} />
             </Box>
-            <ResponsiveMasonry
-                columnsCountBreakPoints={{350: 2, 500: 3, 750: 3, 900: 4, 1550: 5, 1800: 6}}
-                style={{marginTop: '20px'}}
-            >
-                <Masonry>
-                    {
-                        items.map((item: Item, key: number) => 
-                            <Block key={key} data={ item }/>
-                        )
-                    }
-                </Masonry>
-            </ResponsiveMasonry>
+            {
+                isLoad ?
+                    <Box sx={(theme) => ({ textAlign: 'center' })}>
+                        <Loader variant='dots' />
+                    </Box> :
+                    <ResponsiveMasonry
+                        columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 3, 900: 4, 1550: 5, 1800: 6 }}
+                        style={{ marginTop: '20px' }}
+                    >
+                        <Masonry>
+                            {
+                                items.map((item: Item, key: number) =>
+                                    <Block key={key} data={item} />
+                                )
+                            }
+                        </Masonry>
+                    </ResponsiveMasonry>
+            }
+            
         </Box>
     )
 }

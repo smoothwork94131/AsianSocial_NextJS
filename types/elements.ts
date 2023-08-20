@@ -38,7 +38,8 @@ export interface Item
     category_id: string,
     image: string,
     page_type_id: string,
-    element_id: string
+    element_id: string,
+    category_name?: string
 }
 
 export const  ItemState: Item = {

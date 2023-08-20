@@ -1,6 +1,6 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -29,5 +29,9 @@ body {
 ::-webkit-scrollbar {
   width: 10px;
   display: none;
+}
+a {
+  border: none;
+  text-decoration: none;
 }
 
