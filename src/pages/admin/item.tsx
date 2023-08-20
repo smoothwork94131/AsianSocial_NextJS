@@ -9,6 +9,7 @@ import { notifications } from '@mantine/notifications';
 import GoogleMapReact from 'google-map-react';
 import { Dropzone } from '@mantine/dropzone';
 import { setFlagsFromString } from "v8";
+import { useMediaQuery } from '@mantine/hooks';
 
 const Item = () => {
     const [elements, setElements] = useState<ElementType[]>([]);
@@ -26,6 +27,8 @@ const Item = () => {
     const [pageTypes, setPageTypes] = useState<PageType[]>([]);
     const [selectedPageTypeId, setSelectedPageTypeId] = useState<string>('');
     const [images, setImages] = useState<string[]>([]);
+
+    const isMobile = useMediaQuery(`(max-width: 700px)`);
 
     const form = useForm({
         initialValues: {
@@ -112,7 +115,31 @@ const Item = () => {
     }
 
     const deleteItem = async () => {
+        close();
+        setIsLoad(true);
 
+        const res = await fetch('/api/admin/delete_item', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({item_id: selectedItemId})
+        })
+        if(res.status == 200) {
+            getItems();
+            notifications.show({
+                title: 'Delete',
+                message: 'Success',
+                color: 'default'
+            })
+        } else {
+            notifications.show({
+                title: 'Delete ',
+                message: 'error',
+                color: 'red'
+            })
+        }
+        setIsLoad(false);
     }
 
     const editItem = async () => {
@@ -386,6 +413,8 @@ const Item = () => {
         <Box>
             <Flex
                 gap="md"
+                direction={isMobile?'column':'row'}
+
             >
                 <Select
                     label="Elements"

@@ -6,6 +6,7 @@ import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { useDisclosure } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import { useMediaQuery } from '@mantine/hooks';
 
 const Category = () => {
 
@@ -19,6 +20,7 @@ const Category = () => {
     const [selectedElementId, setSelectedElementId] = useState<string>('');
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
     const [search ,setSearch] = useState<string>('');
+    const isMobile = useMediaQuery(`(max-width: 700px)`);
 
     const form = useForm({
         initialValues: {
@@ -114,7 +116,32 @@ const Category = () => {
     }
 
     const deleteCategory = async() => {
+        close();
+        setIsLoad(true);
+
+        const res = await fetch('/api/admin/delete_category', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({category_id: selectedCategoryId})
+        })
         
+        if(res.status == 200) {
+            getCategories();
+            notifications.show({
+                title: 'Delete',
+                message: 'Success',
+                color: 'default'
+            })
+        } else {
+            notifications.show({
+                title: 'Delete ',
+                message: 'error',
+                color: 'red'
+            })
+        }
+        setIsLoad(false);
     }
 
     const parsedElements = () => {
@@ -139,6 +166,7 @@ const Category = () => {
         <Box>
             <Flex
                 gap="md"
+                direction={isMobile?'column':'row'}
             >
                 <Select
                     label="Elements"

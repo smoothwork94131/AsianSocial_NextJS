@@ -7,8 +7,15 @@ import {
 import { IconChevronRight } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from 'next/router';
+import { FC } from 'react';
 
-const AdminNavbar = () => {
+interface Props {
+    closeNavbar: () => void
+}
+
+const AdminNavbar:FC<Props> = ({
+    closeNavbar
+}) => {
     const router = useRouter();
     const {pathname} = router;
 
@@ -19,17 +26,23 @@ const AdminNavbar = () => {
             </Text>
             {
                 ADMIN_MENU.map((item, key) => 
-                    <Link
+                    // <Link
+                    //     key={key}
+                    //     href={`/admin/${item.url}`}
+                        
+                    // >
+                    <NavLink 
+                        label={item.name} variant="filled" 
+                        active={pathname.indexOf(item.url) > -1 ? true:false}
+                        rightSection={<IconChevronRight  size="0.8rem" stroke={1.5} />}
                         key={key}
-                        href={`/admin/${item.url}`}
-                    >
-                        <NavLink 
-                            label={item.name} variant="filled" 
-                            active={pathname.indexOf(item.url) > -1 ? true:false}
-                            rightSection={<IconChevronRight  size="0.8rem" stroke={1.5} />}
-                        > 
-                        </NavLink>
-                    </Link>
+                        onClick={() => {
+                            closeNavbar();
+                            router.push(`/admin/${item.url}`);
+                        }}
+                    > 
+                    </NavLink>
+                    // </Link>
                 )
             }
         </Box>
