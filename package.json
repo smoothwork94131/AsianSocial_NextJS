@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@mantine/core": "^6.0.19",
+    "@mantine/form": "^6.0.19",
+    "@mantine/notifications": "^6.0.19",
     "@supabase/auth-helpers-nextjs": "^0.7.4",
     "@tabler/icons-react": "^2.30.0",
     "@types/node": "20.5.0",
@@ -18,16 +20,19 @@
     "autoprefixer": "10.4.15",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.16",
+    "google-map-react": "^2.2.1",
     "next": "13.4.16",
     "postcss": "8.4.28",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-horizontal-scrolling-menu": "^4.1.0",
     "react-responsive-masonry": "^2.1.7",
     "react-timeago": "^7.1.0",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "@types/google-map-react": "^2.1.7",
     "@types/react-responsive-masonry": "^2.1.0"
   }
 }

@@ -1,43 +1,23 @@
-import { ElementType } from "@/types/elements";
-import { ELEMENTS } from "@/utils/app/consts";
-import {
-    Box,
-    Button,
-    Flex,
-    Text,
-    UnstyledButton
-} from "@mantine/core"
-import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
-import Link from "next/link";
-import { useEffect, useState, useContext } from "react";
-
+import { Box, Button } from "@mantine/core";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 import 'react-horizontal-scrolling-menu/dist/styles.css';
+import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
+import { Category } from "@/types/elements";
+import { FC, useContext, useState, useEffect } from 'react';
 
-const Elements = () => {
+interface Props {
+    categories: Category[],
+    selectedCategory: Category,
+    selectCategory: (category: Category) => void;
+}
 
-    const [elements, setElements] = useState<ElementType[]>([])
-
-    useEffect(() => {
-        getElements();
-    }, [])
-    
-    const getElements = async () => {
-        const res = await fetch('/api/home/get_elements');
-        if (res.status == 200) {
-            const data = await res.json();
-            setElements(data);
-        }
-    }
-
+const Categories: FC<Props> = ({
+    categories,
+    selectedCategory,
+    selectCategory
+}) => {
     return (
-        <Box
-            sx={(theme) => ({
-                width: '350px',
-                overflowY: 'hidden',
-                
-            })}
-        >
+        <Box>
             <ScrollMenu
                 LeftArrow={
                     <LeftArrow />
@@ -47,22 +27,16 @@ const Elements = () => {
                 }
             >
                 {
-                    elements.map((item, key) =>
+                    categories.map((item, key) =>
                         <Box key={key} ml={5} sx={(theme) => ({
                         })}>
                             <Button
+                                key={key}
+                                radius={10}
                                 sx={(theme) => ({
-                                    background: 'transparent',
-                                    color: theme.colors.gray[6],
-                                    '&:hover': {
-                                        color: theme.colors.gray[8],
-                                        background:'transparent'
-                                    },
-                                    cursor: 'pointer',
-                                    marginLeft: 20,
-                                    padding: 0,
-                                    fontSize: '1.4rem',
-                                    fontWeight: 'bold'
+                                    background: selectedCategory.id ==item.id ?theme.colors.green[3]:theme.colors.gray[2],
+                                    color: theme.colors.gray[9],
+                                    '&:hover': { background: theme.colors.gray[3]}
                                 })}
                             >
                                 {item.name}
@@ -92,15 +66,14 @@ const LeftArrow = () => {
         }
     }, [isFirstItemVisible, visibleElements]);
     return (
-        <Box
+        !disabled&&<Box
             sx={(theme) => ({
                 background: 'linear-gradient(to left, rgba(255,255,255,0.2), rgba(255,255,255,1))',
-                position: 'relative',
-                left: 20,
+                position: 'absolute',
+                left: 10,
                 zIndex: 100,
                 padding: '5px 10px 0px 10px',
-                cursor: 'pointer',
-                visibility: disabled?'hidden':'visible'
+                cursor: 'pointer'
             })}
             onClick={() => scrollPrev()}
         >
@@ -130,15 +103,14 @@ const RightArrow = () => {
     }, [isLastItemVisible, visibleElements]);
 
     return (
-        <Box
+        !disabled&&<Box
             sx={(theme) => ({
                 background: 'linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,1))',
-                position: 'relative',
-                right: 20,
+                position: 'absolute',
+                right: 10,
                 zIndex: 100,
                 padding: '5px 10px 0px 10px',
-                cursor: 'pointer',
-                visibility: disabled?'hidden':'visible'
+                cursor: 'pointer'
             })}
             onClick={() => scrollNext()}
         >
@@ -148,5 +120,4 @@ const RightArrow = () => {
         </Box>
     )
 }
-
-export default Elements;
+export default Categories;

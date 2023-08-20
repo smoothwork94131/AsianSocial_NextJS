@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
     AppShell,
     Navbar,
@@ -11,15 +11,30 @@ import {
     useMantineTheme,
 } from '@mantine/core';
 import MainHeader from './Header';
-
+import { useRouter } from 'next/router';
+import AdminNavbar from '@/components/Admin/AdminNavbar';
 
 interface Props {
     children: JSX.Element,
 }
 
 const Index:FC<Props>= ({children}) => {
+    
     const theme = useMantineTheme();
+    const router = useRouter();
+    const { pathname } = router;
+
     const [opened, setOpened] = useState(false);
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
+    console.log('--------------');
+    console.log(pathname);
+
+    useEffect(() => {
+        if(pathname.indexOf('/admin') > -1) {
+            setIsAdmin(true);
+        }
+    }, [])
+
     return (
         <AppShell
             styles={{
@@ -33,6 +48,11 @@ const Index:FC<Props>= ({children}) => {
                 <Footer height={60} p="md">
                     Application footer
                 </Footer>
+            }
+            navbar={
+                isAdmin?<Navbar pt="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
+                    <AdminNavbar />
+                </Navbar>:<></>
             }
             header={
                 <Header height={{ base: 70, md: 70 }} p="md">

@@ -5,9 +5,10 @@ import {
     Box,
     Menu
 } from "@mantine/core"
-import { ELEMENTS, MENU } from '@/utils/app/consts';
+// import { ELEMENTS, MENU } from '@/utils/app/consts';
 import Auth from '@/components/Layouts/Auth';
-import { FC } from 'react';
+import { FC, useState, useEffect } from 'react';
+import { ElementType } from '@/types/elements';
 
 interface Props {
     isMobile: boolean
@@ -16,13 +17,27 @@ interface Props {
 const MyMenu:FC<Props> = ({
     isMobile
 }) => {
-    return (
+    
+    const [ elements, setElements] = useState<ElementType[]>([]);
+    useEffect(() => {
+        getElements();
+    }, [])
+
+    const getElements = async() => {
+        const res = await fetch('/api/home/get_elements');
+        if(res.status == 200){
+            const data = await res.json();
+            setElements(data);
+        }
+    }
+
+    return (    
         <Box>
             <Menu.Dropdown>
                 <Auth />
 
                 {
-                    ELEMENTS.map((item, key) =>
+                    elements.map((item, key) =>
                         <Menu.Item key={key}>{item.name}</Menu.Item>
                     )
                 }

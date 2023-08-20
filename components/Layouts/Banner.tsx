@@ -16,16 +16,24 @@ import MyMenu from "@/components/Layouts/Menu";
 import Auth from "@/components/Layouts/Auth";
 import { useEffect, useState } from "react";
 import Elements from "@/components/Layouts/Elements";
+import { useRouter } from 'next/router';
 
 const Banner = () => {
     const isMobile = useMediaQuery(`(max-width: 800px)`);
     const [screenWidth, setScreenWidth] = useState<number>(1400);
 
+    const router = useRouter();
+    let is_homepage = false;
+    
+    if(Object.keys(router.query).length == 0) {
+        is_homepage = true;
+    }
     useEffect(() => {
         window.addEventListener('resize', function () {
             setWindow();
         });
         setWindow();
+        
     }, []);
 
     const setWindow = () => {
@@ -38,7 +46,7 @@ const Banner = () => {
             align="center"
             direction="row"
             wrap="wrap"
-        >
+    >
             <Flex
                 gap="md"
                 justify="flex-start"
@@ -56,7 +64,7 @@ const Banner = () => {
                     </Text>
                 }
                 {
-                    screenWidth > 1230 && <Elements />
+                    screenWidth > 1230 && is_homepage && <Elements />
                 }
                 <Select
                     data={[
@@ -72,8 +80,6 @@ const Banner = () => {
                     })}
                 />
             </Flex>
-
-
             <Flex
                 gap="md"
                 justify="space-between"

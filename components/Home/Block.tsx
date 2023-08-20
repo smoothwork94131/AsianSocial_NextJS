@@ -1,11 +1,12 @@
 import { Box, Image, Text } from "@mantine/core";
 import { FC } from "react";
 import { useMediaQuery } from '@mantine/hooks';
+import { Item } from "@/types/elements";
 
 interface Props {
-    img_name: string
+    data: Item
 }
-const Block:FC<Props> = ({img_name}) => {
+const Block:FC<Props> = ({data}) => {
     const isMobile = useMediaQuery(`(max-width: 760px)`);
 
     return (
@@ -13,7 +14,7 @@ const Block:FC<Props> = ({img_name}) => {
             p={10}
         >
             <Image 
-                src={`./${img_name}`} alt='event_img' 
+                src={ data.image } alt='event_img' 
                 sx={(theme) =>({
                     '&:hover' :{
                         opacity: '0.7',
@@ -30,18 +31,21 @@ const Block:FC<Props> = ({img_name}) => {
                     sx={(theme) =>({
                         color: theme.colors.gray[9]
                     })}>
-                        Playroom Storage Ideas
+                        {
+                            data.event_name
+                        }
                     </Text>
                     <Text 
                     weight={500}
                     sx={(theme) =>({
                         color: theme.colors.gray[7]
                     })}>
-                        esty.com
+                        {
+                            data.contract_url
+                        }
                     </Text>
                 </Box>
             }
-            
         </Box>
     )
 }
