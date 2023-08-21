@@ -38,8 +38,8 @@ const Item = () => {
             sites_url: '',
             address: '',
             details: '',
-            geo_lon: '',
-            geo_lati: '',
+            geo_lon: '10',
+            geo_lati: '10',
             image: '',
         },
     });
@@ -281,18 +281,18 @@ const Item = () => {
     const addModal = async () => {
         open();
         setType('add');
-        form.setFieldValue('image', '');
-        form.setFieldValue('geo_lati', '');
-        form.setFieldValue('geo_lon', '');
-        form.setFieldValue('sites_url', '');
-        form.setFieldValue('name', '');
-        form.setFieldValue('details', '');
-        form.setFieldValue('address', '');
-        form.setFieldValue('phone_number', '');
-        form.setFieldValue('image', '');
-        form.setFieldValue('email', '');
+        // form.setFieldValue('image', '');
+        // form.setFieldValue('geo_lati', '');
+        // form.setFieldValue('geo_lon', '');
+        // form.setFieldValue('sites_url', '');
+        // form.setFieldValue('name', '');
+        // form.setFieldValue('details', '');
+        // form.setFieldValue('address', '');
+        // form.setFieldValue('phone_number', '');
+        // form.setFieldValue('image', '');
+        // form.setFieldValue('email', '');
 
-        setImages([])
+        // setImages([])
     }
 
     const editModal = async (item: Item) => {
@@ -428,7 +428,7 @@ const Item = () => {
                     label="Categories"
                     data={parsedCategories()}
                     searchable
-                    onChange={(value) => { setSelectedElementId(value ?? '') }}
+                    onChange={(value) => { setSelectedCategoryId(value ?? '') }}
                     value={selectedCategoryId}
                     nothingFound='No Categories'
                 />
@@ -492,6 +492,7 @@ const Item = () => {
                                     searchable
                                     value={selectedCategoryId}
                                     nothingFound="No matched categories"
+                                    onChange={(value) => { setSelectedCategoryId(value ?? '') }}
                                 />
                             </Grid.Col>
                             <Grid.Col lg={4} md={3} sm={1}>

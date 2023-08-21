@@ -31,7 +31,6 @@ const Banner = () => {
             setWindow();
         });
         setWindow();
-        
     }, []);
 
     const setWindow = () => {
@@ -68,10 +67,10 @@ const Banner = () => {
                 }
                 <Select
                     data={[
-                        { value: 'React', label: 'React' },
-                        { value: 'Angular', label: 'Angular' },
-                        { value: 'Svelte', label: 'Svelte' },
-                        { value: 'Vue', label: 'Vue' },
+                        // { value: 'React', label: 'React' },
+                        // { value: 'Angular', label: 'Angular' },
+                        // { value: 'Svelte', label: 'Svelte' },
+                        // { value: 'Vue', label: 'Vue' },
                     ]}
                     placeholder="Search"
                     searchable

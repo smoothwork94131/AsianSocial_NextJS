@@ -35,7 +35,6 @@ const Block:FC<Props> = ({data}) => {
                 onClick={() => {handleSelectItem(data)}}
             />
             {
-                !isMobile&&
                 <Box mt={10}>
                     <Text 
                     weight={700}
@@ -52,7 +51,7 @@ const Block:FC<Props> = ({data}) => {
                         color: theme.colors.gray[7]
                     })}>
                         {
-                            data.sites_url
+                            data.details.length > 20?data.details.slice(0, 20)+'...': data.details
                         }
                     </Text>
                 </Box>

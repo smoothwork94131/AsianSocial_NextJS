@@ -17,11 +17,13 @@ const Home = () => {
     }, [])
 
     const getItems = async () => {
+        setIsLoad(true);
         const res = await fetch('/api/home/get_items');
         if (res.status == 200) {
             const data = await res.json();
             setItems(data);
         }
+        setIsLoad(false);
     }
 
     return (

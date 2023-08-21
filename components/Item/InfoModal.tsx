@@ -5,6 +5,7 @@ import { Category, CategoryState, Item } from '@/types/elements';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 import Events from './Event';
+import Service from './Service';
 
 interface Props {
     opened: boolean,
@@ -60,6 +61,22 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
             setCategory(data);
         }
     }
+
+    const rederItemPage = () => {
+        if(data.element_id == 'e56a96c2-9377-4638-9039-3abed4568b1f'){
+            return (
+                <Events images={images} isMobile={isMobile} data={data} category={category} isLoad={isLoad}/>
+            )
+        } else if(data.element_id == '2de204ae-9564-4400-b1ff-557bdb86e21d'){
+            return (
+                <Service images={images} isMobile={isMobile} data={data} category={category} isLoad={isLoad}/>
+            )
+        } else {
+            return (
+                <Events images={images} isMobile={isMobile} data={data} category={category} isLoad={isLoad}/>
+            )
+        }
+    }
     
     return (
         <Modal opened={opened} onClose={open} fullScreen withCloseButton={false}>
@@ -80,7 +97,10 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
             >
                 <FontAwesomeIcon icon={faClose} color='white' />
             </Box>
-            <Events images={images} isMobile={isMobile} data={data} category={category} isLoad={isLoad}/>
+            {/* <Events images={images} isMobile={isMobile} data={data} category={category} isLoad={isLoad}/> */}
+            {
+                rederItemPage()
+            }
         </Modal>
     );
 }

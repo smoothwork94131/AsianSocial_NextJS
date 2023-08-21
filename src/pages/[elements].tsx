@@ -28,8 +28,13 @@ const Elements = () => {
     const [selectedCategory, setSelectedCategory] = useState<Category>(CategoryState);
 
     useEffect(() => {
+        setItems([]);
+        setCatetories([]);
+        setElement(ElementState);
+        
         getElementData();
-    }, [])
+
+    }, [element_name])
 
     const getElementData = async () => {
         const res = await fetch("/api/element/get_element_data", {

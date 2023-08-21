@@ -9,7 +9,8 @@ import {
 import Auth from '@/components/Layouts/Auth';
 import { FC, useState, useEffect } from 'react';
 import { ElementType } from '@/types/elements';
-
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 interface Props {
     isMobile: boolean
 }
@@ -17,7 +18,8 @@ interface Props {
 const MyMenu:FC<Props> = ({
     isMobile
 }) => {
-    
+
+    const router = useRouter();
     const [ elements, setElements] = useState<ElementType[]>([]);
     useEffect(() => {
         getElements();
@@ -35,10 +37,9 @@ const MyMenu:FC<Props> = ({
         <Box>
             <Menu.Dropdown>
                 <Auth />
-
                 {
                     elements.map((item, key) =>
-                        <Menu.Item key={key}>{item.name}</Menu.Item>
+                        <Menu.Item key={key} onClick={() => { router.push(`/${item.name}`)}}>{item.name}</Menu.Item>
                     )
                 }
             </Menu.Dropdown>

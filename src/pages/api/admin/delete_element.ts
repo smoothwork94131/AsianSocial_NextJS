@@ -9,7 +9,7 @@ export default async function handler(
 
     const element_id = req.body.id;
     const { error } = await supabaseAdmin.from('asian_elements').delete().eq('id', element_id);
-    if(error) {
+    if(!error) {
         res.status(200).json({msg:'success'});
     } else {
         res.status(201).json({msg:'error'});

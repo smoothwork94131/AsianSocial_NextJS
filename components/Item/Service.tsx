@@ -1,4 +1,4 @@
-import { Modal, Button, Group, Box, Grid, Image, Flex, Text } from '@mantine/core';
+import { Modal, Button, Group, Box, Grid, Image, Flex, Text,Rating } from '@mantine/core';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { FC } from 'react';
 import { Category, Item } from '@/types/elements';
@@ -11,7 +11,7 @@ interface Props {
     isLoad: boolean
 }
 
-const Events:FC<Props> = ({
+const Service:FC<Props> = ({
     images,
     isMobile,
     data,
@@ -60,6 +60,13 @@ const Events:FC<Props> = ({
                         <Text size='1.2rem' weight='bold'>
                             {data.name}
                         </Text>
+                        <Flex>
+                            <Text size='1rem' color='gray'>4.9</Text>
+                            
+                            <Rating value={4.5} fractions={2} readOnly />
+                            <Text size='1rem' color='gray'>(78)</Text>
+
+                        </Flex>
                         <Text pt={15} pb={15} align='center' weight='bold' size={'1.4rem'}>
                             {
                                 category.name
@@ -122,5 +129,5 @@ const Events:FC<Props> = ({
     )
 }
 
-export default Events;
+export default Service;
 
