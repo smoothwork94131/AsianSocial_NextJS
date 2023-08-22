@@ -1,7 +1,7 @@
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button, Group, Box, Grid, Image, Flex } from '@mantine/core';
 import { FC, useEffect, useState } from 'react';
-import { Category, CategoryState, ElementState, ElementType, Item } from '@/types/elements';
+import { Category, CategoryState, ElementState, ElementType, Item, PageType, PageTypeState } from '@/types/elements';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 import Events from './Event';
@@ -21,7 +21,7 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
     const [categories, setCategories] = useState<Category[]>([]);
     const [isLoad, setIsLoad] = useState<boolean>(false);
     const [element, setElement] = useState<ElementType>(ElementState);
-
+    const [pageType, setPageType] = useState<PageType>(PageTypeState);
     const router = useRouter();
 
     useEffect(() => {
@@ -29,6 +29,7 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
             getImages();
             getCategory();
             getElement();
+            getPageType();
         }
     }, [data])
 
@@ -46,6 +47,23 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
         if (res.status == 200) {
             const data = await res.json();
             setElement(data);
+        }
+    }
+    
+    const getPageType = async() => {
+        const res = await fetch('/api/item/get_page_types', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                type_id: data.page_type_id
+            })
+        })
+
+        if (res.status == 200) {
+            const data = await res.json();
+            setPageType(data);
         }
     }
 
@@ -90,11 +108,18 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
     }
 
     const rederItemPage = () => {
-        if(data.element_id == 'e56a96c2-9377-4638-9039-3abed4568b1f'){
+        
+        if(pageType.id == ""){
+            return (
+                <div></div>
+            )
+        }
+
+        if(pageType.name == 'event'){
             return (
                 <Events images={images} isMobile={isMobile} data={data} categories={categories} isLoad={isLoad} selectCategory={selectCategory}/>
             )
-        } else if(data.element_id == '2de204ae-9564-4400-b1ff-557bdb86e21d'){
+        } else if(pageType.name == 'service'){
             return (
                 <Service images={images} isMobile={isMobile} data={data} categories={categories} isLoad={isLoad} selectCategory={selectCategory}/>
             )

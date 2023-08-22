@@ -207,10 +207,11 @@ const Category = () => {
                     }
                 </tbody>
             </Table>
-            <Modal opened={opened} onClose={close} title="Category" size='lg'>
+            <Modal opened={opened} onClose={close} title="Category" size='lg' p={20}>
                 <Flex
                     direction='column'
                     gap='md'
+                    p={20}
                 >
                     <Select
                         label="Elements"

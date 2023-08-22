@@ -65,3 +65,8 @@ export interface PageType{
     id: string,
     name: string
 }
+
+export const PageTypeState = {
+    id: '',
+    name: ''
+}

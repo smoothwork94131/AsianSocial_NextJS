@@ -480,9 +480,9 @@ const Item = () => {
                     }
                 </tbody>
             </Table>
-            <Modal opened={opened} onClose={close} title="Category" fullScreen>
+            <Modal opened={opened} onClose={close} title="Category" fullScreen >
                 {isLoad ? <div style={{ textAlign: 'center' }}><Loader variant="dots" /></div> :
-                    <Box>
+                    <Box p={20}>
                         <Grid>
                             <Grid.Col lg={4} md={3} sm={1}>
                                 <Select

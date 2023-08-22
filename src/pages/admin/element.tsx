@@ -144,10 +144,11 @@ const Element = () => {
 
                 </tbody>
             </Table>
-            <Modal opened={opened} onClose={close} title="Element" size='lg'>
+            <Modal opened={opened} onClose={close} title="Element" size='lg' p={20}>
                 <Flex
                     direction='column'
                     gap='md'
+                    p={20}
                 >
                     <TextInput
                         label="Element Name"
