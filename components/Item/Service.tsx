@@ -13,7 +13,8 @@ interface Props {
     data: Item,
     categories: Category[],
     isLoad: boolean,
-    selectCategory: (category: Category) => void
+    selectCategory: (category: Category) => void,
+    element_name: string
 }
 
 const Service: FC<Props> = ({
@@ -22,6 +23,7 @@ const Service: FC<Props> = ({
     data,
     categories,
     isLoad,
+    element_name,
     selectCategory
 }) => {
 
@@ -105,33 +107,32 @@ const Service: FC<Props> = ({
                                 {data.email}
                             </Text>
                         </Box>
-                        {/* <Box
-                        >
-                            <Text size='1.1rem' weight={500}>
-                                Map
-                            </Text>
+                        {
+                            (element_name == "Businesses" || element_name == "Restaurants") &&
                             <Box
-                                sx={(theme) => ({ height: '300px', width: '100%' })}
-                            > */}
-                        {/* <GoogleMapReact
-                                    bootstrapURLKeys={{ key: "AIzaSyB6hZIv8mG7cOvX-AGUbB-vLeR5qZ1-QXI" }}
-                                    defaultCenter={{lat: 44.900209366013954,
-                                        lng: -102.56077483176705}}
-                                    defaultZoom={11}
-                                    yesIWantToUseGoogleMapApiInternals
+                            >
+                                <Text size='1.1rem' weight={500}>
+                                    Map
+                                </Text>
+                                <Box
+                                    sx={(theme) => ({ height: '300px', width: '100%' })}
                                 >
+                                    <GoogleMapReact
+                                        bootstrapURLKeys={{ key: "AIzaSyB6hZIv8mG7cOvX-AGUbB-vLeR5qZ1-QXI" }}
+                                        defaultCenter={{
+                                            lat: 44.900209366013954,
+                                            lng: -102.56077483176705
+                                        }}
+                                        defaultZoom={11}
+                                        yesIWantToUseGoogleMapApiInternals
+                                    >
 
-                                </GoogleMapReact> */}
-                        {/* <iframe
-                                    width="100%"
-                                    height="300"
-                                    loading="lazy"
-                                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB6hZIv8mG7cOvX-AGUbB-vLeR5qZ1-QXI
-                                        &q=Space+Needle,Seattle+WA">
-                                </iframe>
+                                    </GoogleMapReact>
 
+
+                                </Box>
                             </Box>
-                        </Box> */}
+                        }
                         <Box>
                             <Text size='1rem' weight={400} sx={(theme) => ({
                             color: "black"
@@ -158,7 +159,7 @@ const Service: FC<Props> = ({
                             <Masonry gutter='10px'>
                                 {
                                     images.map((image, key) =>
-                                        <Box key={key}><Image src={image} alt='' radius={5} /></Box>
+                                        <Box key={key}><Image src={image} alt='' radius={5} style={{height: '300px'}}/></Box>
                                     )
                                 }
                             </Masonry>

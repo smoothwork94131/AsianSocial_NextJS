@@ -13,7 +13,8 @@ interface Props {
     data: Item,
     categories: Category[],
     isLoad: boolean,
-    selectCategory: (category: Category) => void
+    selectCategory: (category: Category) => void,
+    element_name: string
 }
 
 const Service: FC<Props> = ({
@@ -22,10 +23,10 @@ const Service: FC<Props> = ({
     data,
     categories,
     isLoad,
-    selectCategory
+    selectCategory,
+    element_name
 }) => {
 
-   
     return (
         <Box
             sx={(theme) => ({
@@ -59,8 +60,8 @@ const Service: FC<Props> = ({
                             <Flex
                                 gap='lg'
                             >
-                                <FontAwesomeIcon icon={faReply} color='gray' style={{fontSize: '15px'}}/>
-                                <FontAwesomeIcon icon={faFlag} color='gray' style={{fontSize: '15px'}}/>
+                                <FontAwesomeIcon icon={faReply} color='gray' style={{ fontSize: '15px' }} />
+                                <FontAwesomeIcon icon={faFlag} color='gray' style={{ fontSize: '15px' }} />
 
                             </Flex>
                         </Flex>
@@ -70,72 +71,73 @@ const Service: FC<Props> = ({
                         })}>
                             {data.name}
                         </Text>
-                        
-                        <Categories categories={categories} 
+
+                        <Categories categories={categories}
                             selectedCategory={
                                 categories.filter(category => category.id == data.category_id)[0]
-                            }    
+                            }
                             selectCategory={selectCategory}
                         />
                         <Box>
                             <Text size='1rem' weight={400} sx={(theme) => ({
-                            color: "black",
-                            textDecoration: 'underline'
-                        })}>
+                                color: "black",
+                                textDecoration: 'underline'
+                            })}>
                                 {data.sites_url}
                             </Text>
                             <Text size='1rem' weight={400} sx={(theme) => ({
-                            color: "black"
-                        })}>
+                                color: "black"
+                            })}>
                                 {data.address}
                             </Text>
                             <Text size='1rem' weight={400} sx={(theme) => ({
-                            color: "black"
-                        })}>
+                                color: "black"
+                            })}>
                                 {data.phone_number}
                             </Text>
                             <Text size='1rem' weight={400} sx={(theme) => ({
-                            color: "black"
-                        })}>
+                                color: "black"
+                            })}>
                                 {data.email}
                             </Text>
                         </Box>
-                        {/* <Box
-                        >
-                            <Text size='1.1rem' weight={500}>
-                                Map
-                            </Text>
+
+                        {
+                            (element_name == "Businesses" || element_name == "Restaurants") &&
                             <Box
-                                sx={(theme) => ({ height: '300px', width: '100%' })}
-                            > */}
-                        {/* <GoogleMapReact
-                                    bootstrapURLKeys={{ key: "AIzaSyB6hZIv8mG7cOvX-AGUbB-vLeR5qZ1-QXI" }}
-                                    defaultCenter={{lat: 44.900209366013954,
-                                        lng: -102.56077483176705}}
-                                    defaultZoom={11}
-                                    yesIWantToUseGoogleMapApiInternals
+                            >
+                                <Text size='1.1rem' weight={500}>
+                                    Map
+                                </Text>
+                                <Box
+                                    sx={(theme) => ({ height: '300px', width: '100%' })}
                                 >
+                                    <GoogleMapReact
+                                        bootstrapURLKeys={{ key: "AIzaSyB6hZIv8mG7cOvX-AGUbB-vLeR5qZ1-QXI" }}
+                                        defaultCenter={{
+                                            lat: 44.900209366013954,
+                                            lng: -102.56077483176705
+                                        }}
+                                        defaultZoom={11}
+                                        yesIWantToUseGoogleMapApiInternals
+                                    >
 
-                                </GoogleMapReact> */}
-                        {/* <iframe
-                                    width="100%"
-                                    height="300"
-                                    loading="lazy"
-                                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB6hZIv8mG7cOvX-AGUbB-vLeR5qZ1-QXI
-                                        &q=Space+Needle,Seattle+WA">
-                                </iframe>
+                                    </GoogleMapReact>
 
+
+                                </Box>
                             </Box>
-                        </Box> */}
+                        }
+
                         <Box>
                             <Text size='1rem' weight={400} sx={(theme) => ({
-                            color: "black"
-                        })}>
+                                color: "black"
+                            })}>
                                 Details:
                             </Text>
                             <Text size='1rem' weight={400} sx={(theme) => ({
-                            color: "black"
-                        })}>
+                                color: "black"
+                            })}>
                                 {data.details}
                             </Text>
                         </Box>
@@ -146,7 +148,7 @@ const Service: FC<Props> = ({
             <Box p={20}
             >
                 {
-                    isLoad ? <Box><Loader variant='dots' alignmentBaseline='central'/></Box> :
+                    isLoad ? <Box><Loader variant='dots' alignmentBaseline='central' /></Box> :
                         <ResponsiveMasonry
                             columnsCountBreakPoints={{ 350: 3, 500: 3, 750: 3, 900: 4 }}
                         >

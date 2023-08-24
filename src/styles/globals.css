@@ -28,7 +28,7 @@ body {
 
 ::-webkit-scrollbar {
   width: 10px;
-  display: none;
+  /* display: none; */
 }
 a {
   border: none;

@@ -89,11 +89,11 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
     const selectCategory = (category: Category) => {
         window.location.href=`/${element.name}/${category.name}`;
     }
-
+    
     const getCategory = async () => {
         const res = await fetch('/api/item/get_categories', {
             method: 'POST',
-            headers: {
+            headers: { 
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -116,25 +116,25 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
 
         if(pageType.name == 'event'){
             return (
-                <Events images={images} isMobile={isMobile} data={data} categories={categories} isLoad={isLoad} selectCategory={selectCategory}/>
+                <Events images={images} isMobile={isMobile} data={data} categories={categories} isLoad={isLoad} selectCategory={selectCategory} element_name={element.name}/>
             )
         } else if(pageType.name == 'service'){
             return (
-                <Service images={images} isMobile={isMobile} data={data} categories={categories} isLoad={isLoad} selectCategory={selectCategory}/>
+                <Service images={images} isMobile={isMobile} data={data} categories={categories} isLoad={isLoad} selectCategory={selectCategory} element_name={element.name}/>
             )
         } else {
             return (
-                <Events images={images} isMobile={isMobile} data={data} categories={categories} isLoad={isLoad} selectCategory={selectCategory}/>
+                <Events images={images} isMobile={isMobile} data={data} categories={categories} isLoad={isLoad} selectCategory={selectCategory} element_name={element.name}/>
             )
         }
     }
     
     return (
-        <Modal opened={opened} onClose={open} fullScreen withCloseButton={false}  p={0}>
+        <Modal opened={opened} onClose={open} fullScreen withCloseButton={false} p={0}>
             <Box
                 sx={(theme) => ({
                     position: 'absolute',
-                    top: '20px',
+                    top: '90px',
                     left: '10px',
                     width: '50px',
                     height: '50px',
@@ -151,9 +151,11 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
                 <FontAwesomeIcon icon={faClose} color='white' style={{fontSize: '25px', marginTop: '13px'}}/>
             </Box>
             {/* <Events images={images} isMobile={isMobile} data={data} category={category} isLoad={isLoad}/> */}
+            <Box >
             {
                 rederItemPage()
             }
+            </Box>
         </Modal>
     );
 }

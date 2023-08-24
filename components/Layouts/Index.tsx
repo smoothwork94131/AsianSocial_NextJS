@@ -44,11 +44,11 @@ const Index: FC<Props> = ({ children }) => {
             }}
             navbarOffsetBreakpoint="sm"
             asideOffsetBreakpoint="sm"
-            footer={
-                <Footer height={60} p="md">
-                    Application footer
-                </Footer>
-            }
+            // footer={
+            //     <Footer height={60} p="md">
+            //         Application footer
+            //     </Footer>
+            // }
 
             navbar={
                 isAdmin ? <Navbar pt="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
@@ -56,7 +56,7 @@ const Index: FC<Props> = ({ children }) => {
                 </Navbar> : <></>
             }
             header={
-                <Header height={{ base: 70, md: 70 }} p="md" >
+                <Header height={{ base: 70, md: 70 }} p="md" style={{zIndex: !isAdmin?1000000000000000000:10}}>
                     {
                         isAdmin&&
                         <MediaQuery largerThan="sm" styles={{ display: 'none' }}>

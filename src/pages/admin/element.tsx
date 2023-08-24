@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Loader, Modal, TextInput, Textarea } from "@mantine/core";
+import { Box, Button, Flex, Grid, Loader, Modal, TextInput, Textarea, Select } from "@mantine/core";
 import { useEffect, useState } from 'react';
 import { Table } from '@mantine/core';
 import { ElementType } from "@/types/elements";
@@ -19,6 +19,7 @@ const Element = () => {
         initialValues: {
             name: '',
             summary: '',
+            order: '1'
         },
     });
 
@@ -108,7 +109,25 @@ const Element = () => {
         setType('add');
         open();
     }
-    
+
+    const getOrderGroup = () => {
+        const order = [];
+        for(let k = 0; k < data.length; k++){
+            order.push({
+                value: (k+1).toString(),
+                label: (k+1).toString()
+            });
+        }
+        if(order.length == 0){
+            return [{
+                value: "1",
+                label: "1"
+            }];
+        } else {
+            return order
+        }
+    }
+
     return (
         <Box
             p={20}
@@ -126,7 +145,8 @@ const Element = () => {
                     <tr>
                         <th style={{ width: '10%' }}>No</th>
                         <th style={{ width: '20%' }}>Element name</th>
-                        <th style={{ width: '70%' }}>Summary</th>
+                        <th style={{ width: '65%' }}>Summary</th>
+                        <th style={{ width: '5%' }}>order</th>
                     </tr>
                 </thead>
 
@@ -138,10 +158,10 @@ const Element = () => {
                                 <td>{key + 1}</td>
                                 <td>{item.name}</td>
                                 <td>{item.summary}</td>
+                                <td>{item.order}</td>
                             </tr>
                         )
                     }
-
                 </tbody>
             </Table>
             <Modal opened={opened} onClose={close} title="Element" size='lg' p={20}>
@@ -160,6 +180,15 @@ const Element = () => {
                         label="Summary"
                         value={form.values.summary}
                         onChange={(event) => {form.setFieldValue('summary', event.currentTarget.value)}}
+                    />
+                    <Select
+                        label="Elements"
+                        data={
+                            getOrderGroup()
+                        }
+                        searchable
+                        value={form.values.order}
+                        onChange={(value) =>{form.setFieldValue('order', value??'')}}
                     />
                     <Box
                         sx={(theme) => ({

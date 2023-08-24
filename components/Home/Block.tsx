@@ -33,6 +33,7 @@ const Block:FC<Props> = ({data}) => {
                     border: `1px solid ${theme.colors.gray[4]}`,
                 })}
                 onClick={() => {handleSelectItem(data)}}
+                radius={7}
             />
             {
                 <Box mt={10}>

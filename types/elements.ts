@@ -2,12 +2,14 @@ export interface ElementType{
     name: string,
     summary: string,
     id: string
+    order: string
 }
 
 export const ElementState: ElementType = {
     name: '',
     summary: '',
-    id: ''
+    id: '',
+    order: '0'
 }
 
 export interface Category {
