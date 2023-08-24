@@ -108,7 +108,6 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
     }
 
     const rederItemPage = () => {
-        
         if(pageType.id == ""){
             return (
                 <div></div>

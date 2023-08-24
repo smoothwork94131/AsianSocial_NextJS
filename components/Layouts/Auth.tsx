@@ -1,32 +1,46 @@
-import { Box, Text, Button, Flex } from "@mantine/core"
+import { Box, Text, Button, Flex, Modal, Image, TextInput } from "@mantine/core"
+import { useDisclosure } from '@mantine/hooks';
+import { useState, FC } from 'react';
 
-const Auth = () => {
+interface Props {
+   setType: (type: string) => void
+}
+
+const Auth:FC<Props> = ({
+    setType
+}) => {
     return (
-        <Flex
-            gap="md"
-            justify="center"
-            align="center"
-            direction="row"
-            wrap="wrap"
-        >
-            <Text
-                sx={(theme) => ({
-                    color: theme.colors.gray[7],
-                    '&:hover': {
-                        color: theme.colors.gray[9],
-                    },
-                    cursor: 'pointer'
-                })}
-                size='lg'
-                weight='500'
+        <Box>
+            <Flex
+                gap="md"
+                justify="center"
+                align="center"
+                direction="row"
+                wrap="wrap"
             >
-                Log in
-            </Text>
-            <Button
-            >
-                Sign up
-            </Button>
-        </Flex>
+                <Text
+                    sx={(theme) => ({
+                        color: theme.colors.gray[7],
+                        '&:hover': {
+                            color: theme.colors.gray[9],
+                        },
+                        cursor: 'pointer'
+                    })}
+                    size='lg'
+                    weight='500'
+                    onClick={() => { setType('login') }}
+                >
+                    Log in
+                </Text>
+                <Button
+                    onClick={() => { setType('signup') }}
+                >
+                    Sign up
+                </Button>
+            </Flex>
+      
+        </Box>
+
     )
 }
 

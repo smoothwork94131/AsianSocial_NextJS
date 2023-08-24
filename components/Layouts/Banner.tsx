@@ -16,10 +16,13 @@ import Auth from "@/components/Layouts/Auth";
 import { useEffect, useState } from "react";
 import Elements from "@/components/Layouts/Elements";
 import { useRouter } from 'next/router';
+import AuthModal from './AuthModal';
 
 const Banner = () => {
     const isMobile = useMediaQuery(`(max-width: 800px)`);
     const [screenWidth, setScreenWidth] = useState<number>(1400);
+    const [authType, setAuthType] = useState<string>('');
+    const [open, setOpen] = useState<boolean>(false);
 
     const router = useRouter();
     let is_homepage = false;
@@ -34,9 +37,23 @@ const Banner = () => {
         setWindow();
     }, []);
 
+    useEffect(() => {
+        if(authType != ''){
+            setOpen(true);
+        }
+    }, [authType])
+
     const setWindow = () => {
         setScreenWidth(window.innerWidth);
     }
+
+    const Login = () => {
+
+    }
+
+    const signUp = () => {
+    }
+
     return (
         <Flex
             gap="md"
@@ -90,7 +107,9 @@ const Banner = () => {
             >
                 {
                     screenWidth > 1360 &&
-                    <Auth />
+                    <Auth 
+                        setType = {(type) => { setAuthType(type) }}
+                    />
                 }
                 {
                     screenWidth < 1360 &&
@@ -109,6 +128,7 @@ const Banner = () => {
                     </Menu>
                 }
             </Flex>
+            <AuthModal opened={open} open={() => { setOpen(false)}} type={authType} setType={(type: string) => {setAuthType(type)}}/>
         </Flex>
     )
 }

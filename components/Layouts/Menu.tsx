@@ -11,6 +11,7 @@ import { FC, useState, useEffect } from 'react';
 import { ElementType } from '@/types/elements';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import AuthModal from './AuthModal';
 
 interface Props {
     isMobile: boolean
@@ -22,6 +23,9 @@ const MyMenu:FC<Props> = ({
 
     const router = useRouter();
     const [ elements, setElements] = useState<ElementType[]>([]);
+    const [authType, setAuthType] = useState<string>('');
+    const [open, setOpen] = useState<boolean>(false);
+
     useEffect(() => {
         getElements();
     }, [])
@@ -33,19 +37,24 @@ const MyMenu:FC<Props> = ({
             setElements(data);
         }
     }
+    useEffect(() => {
+        if(authType != ''){
+            setOpen(true);
+        }
+    }, [authType])
 
     return (    
         <Box>
             <Menu.Dropdown>
-                <Auth />
+                <Auth setType={(type: string) => { setAuthType(type)}}/>
                 {
                     elements.map((item, key) =>
                         <Menu.Item key={key} onClick={() => { router.push(`/${item.name}/0`)}}>{item.name}</Menu.Item>
                     )
                 }
             </Menu.Dropdown>
+            <AuthModal opened={open} open={() => { setOpen(false)}} type={authType} setType={(type: string) => {setAuthType(type)}}/>
         </Box>
-        
     )
 }
 

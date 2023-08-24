@@ -39,3 +39,7 @@ a {
 .mantine-Modal-body{
   padding: 0px;
 }
+
+.auth-buttons .mantine-Button-inner{
+  justify-content: start;
+}
