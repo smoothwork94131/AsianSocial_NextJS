@@ -43,3 +43,12 @@ a {
 .auth-buttons .mantine-Button-inner{
   justify-content: start;
 }
+
+.mantine-Image-root{
+  border-radius: 10px;
+}
+
+.fb-auth-icon{
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' fill='%23fff'%3E%3Cpath d='M24.58 0H1.43C.64 0 0 .64 0 1.43v23.14C0 25.36.64 26 1.43 26H13.9V15.94h-3.4v-3.92h3.38V9.12a4.7 4.7 0 0 1 5.05-5.19c1.43 0 2.67.11 3.03.16v3.51h-2.08a1.6 1.6 0 0 0-1.95 1.91v2.5h3.89l-.51 3.92h-3.37V26h6.62c.79 0 1.43-.64 1.43-1.43V1.43C26.01.64 25.37 0 24.58 0z'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+}

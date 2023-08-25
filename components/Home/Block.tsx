@@ -17,11 +17,11 @@ const Block:FC<Props> = ({data}) => {
         setOpen(true);
         setSelectedItem(item);
     }
-
+    
     return (
         <Box
             p={10}
-            
+        
         >
             <Image 
                 src={ data.image } alt='image' 

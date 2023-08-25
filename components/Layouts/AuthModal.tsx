@@ -75,7 +75,6 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
                         <Flex
                             justify='start'
                             align='center'
-
                         >
                             <IconBrandGoogle />
                             <Text ml={30} >
@@ -108,8 +107,7 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
                             type == "login"?'Create a account':'Log in'
                         }
                     </Text>
-                </Box>
-                
+                </Box>                
             </Flex>
         </Modal>
     )
