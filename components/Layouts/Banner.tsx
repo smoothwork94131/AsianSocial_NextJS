@@ -17,12 +17,18 @@ import { useEffect, useState } from "react";
 import Elements from "@/components/Layouts/Elements";
 import { useRouter } from 'next/router';
 import AuthModal from './AuthModal';
+import { Item, ItemState } from '@/types/elements';
+import InfoModal from '../Item/InfoModal';
 
 const Banner = () => {
     const isMobile = useMediaQuery(`(max-width: 800px)`);
     const [screenWidth, setScreenWidth] = useState<number>(1400);
     const [authType, setAuthType] = useState<string>('');
     const [open, setOpen] = useState<boolean>(false);
+    const [search, setSearch] = useState<string>('');
+    const [searchList, setSearchList] = useState<Item[]>([])
+    const [selectedItem, setSelectedItem] = useState<Item>(ItemState);
+    const [infoOpen, setInfoOpen] = useState<boolean>(false);
 
     const router = useRouter();
     let is_homepage = false;
@@ -43,6 +49,38 @@ const Banner = () => {
         }
     }, [authType])
 
+    useEffect(() => {
+        if(search != ""){
+            getSearchResult();
+        }
+    }, [search])
+    
+    const getSearchResult = async() => {
+        const res = await fetch('/api/home/get_search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ search })
+        });
+        if(res.status == 200){
+            const data = await res.json();
+            setSearchList(data);
+        } else {
+            setSearchList([]);
+        }
+    }
+    
+    const convertToSelectList = (data: Item[]) => {
+        const converted:any = [];
+        data.map((item: Item) => {
+            converted.push({
+                value: item.id,
+                label: item.name
+            })
+        })
+        return converted;
+    }
     const setWindow = () => {
         setScreenWidth(window.innerWidth);
     }
@@ -52,6 +90,7 @@ const Banner = () => {
     }
 
     const signUp = () => {
+
     }
 
     return (
@@ -85,17 +124,22 @@ const Banner = () => {
                     screenWidth > 1360 && is_homepage && <Elements />
                 }
                 <Select
-                    data={[
-                        // { value: 'React', label: 'React' },
-                        // { value: 'Angular', label: 'Angular' },
-                        // { value: 'Svelte', label: 'Svelte' },
-                        // { value: 'Vue', label: 'Vue' },
-                    ]}
+                    data={convertToSelectList(searchList)}
+                    onChange={(value) => {  
+                        setInfoOpen(false);
+                        const selected = searchList.filter((item) => item.id == value);
+                        if(selected.length > 0){
+                            setSelectedItem(selected[0]);
+                            setInfoOpen(true);
+
+                        }
+                    }}
                     placeholder="Search"
                     searchable
                     sx={(theme) => ({
                         width: screenWidth > 742 ? '500px' : `${screenWidth - 130}px`,
                     })}
+                    onKeyUp={(event) => { setSearch(event.currentTarget.value)}}
                 />
             </Flex>
             <Flex
@@ -129,6 +173,7 @@ const Banner = () => {
                 }
             </Flex>
             <AuthModal opened={open} open={() => { setOpen(false)}} type={authType} setType={(type: string) => {setAuthType(type)}}/>
+            <InfoModal open={() => { setInfoOpen(p_o => (!p_o)) }} opened={infoOpen} data={selectedItem} isMobile={isMobile}/>
         </Flex>
     )
 }

@@ -4,7 +4,7 @@ export const ADMIN_MENU =[
       url: 'dashboard', name:'Dashboard', icon: IconCloud
   },
   {
-      url: 'element', name:'Elements', icon: IconMessage
+      url: 'Tag', name:'Elements', icon: IconMessage
   },
   {
       url: 'category', name:'Categories', icon: IconList

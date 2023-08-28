@@ -16,7 +16,13 @@ const Categories: FC<Props> = ({
     selectedCategory,
     selectCategory
 }) => {
-    
+    console.log('--------------------');
+    console.log(selectedCategory);
+    if(!selectedCategory){
+        return(
+            <div></div>
+        )
+    }
     return (
         <Box>
             <ScrollMenu
@@ -35,7 +41,7 @@ const Categories: FC<Props> = ({
                                 key={key}
                                 radius={10}
                                 sx={(theme) => ({
-                                    background: selectedCategory.id ==item.id ?theme.colors.gray[3]:theme.colors.gray[1],
+                                    background: selectedCategory.id ==item.id?theme.colors.gray[3]:theme.colors.gray[1],
                                     color: "black",
                                     fontWeight: 600,
                                     '&:hover': { background: theme.colors.gray[3]}
