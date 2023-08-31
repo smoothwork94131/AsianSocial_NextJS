@@ -12,10 +12,12 @@ interface Props {
     opened: boolean,
     open: () => void
     data: Item,
-    isMobile: boolean
+    isMobile: boolean,
+    getSaves?: () => void | undefined
+    saved?: string | undefined
 }
 
-const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
+const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, saved }) => {
 
     const [images, setImages] = useState<string[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
@@ -33,7 +35,7 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
         }
     }, [data])
 
-    const getElement = async() => {
+    const getElement = async () => {
         const res = await fetch('/api/item/get_element', {
             method: 'POST',
             headers: {
@@ -49,8 +51,8 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
             setElement(data);
         }
     }
-    
-    const getPageType = async() => {
+
+    const getPageType = async () => {
         const res = await fetch('/api/item/get_page_types', {
             method: 'POST',
             headers: {
@@ -87,13 +89,13 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
     }
 
     const selectCategory = (category: Category) => {
-        window.location.href=`/${element.name}/${category.name}`;
+        window.location.href = `/${element.name}/${category.name}`;
     }
-    
+
     const getCategory = async () => {
         const res = await fetch('/api/item/get_categories', {
             method: 'POST',
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -108,55 +110,89 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile }) => {
     }
 
     const rederItemPage = () => {
-        if(pageType.id == ""){
+        if (pageType.id == "") {
             return (
                 <div></div>
             )
         }
 
-        if(pageType.name == 'event'){
+        if (pageType.name == 'event') {
             return (
-                <Events images={images} isMobile={isMobile} data={data} categories={categories} isLoad={isLoad} selectCategory={selectCategory} element_name={element.name}/>
+                <Events images={images}
+                    isMobile={isMobile}
+                    data={data}
+                    categories={categories}
+                    isLoad={isLoad}
+                    selectCategory={selectCategory}
+                    element_name={element.name}
+                    getSaves={getSaves}
+                    saved={saved}
+                    open={open}
+                />
             )
-        } else if(pageType.name == 'service'){
+        } else if (pageType.name == 'service') {
             return (
-                <Service images={images} isMobile={isMobile} data={data} categories={categories} isLoad={isLoad} selectCategory={selectCategory} element_name={element.name}/>
+                <Service
+                    images={images}
+                    isMobile={isMobile}
+                    data={data}
+                    categories={categories}
+                    isLoad={isLoad}
+                    selectCategory={selectCategory}
+                    element_name={element.name}
+                    getSaves={getSaves}
+                    saved={saved}
+                    open={open}
+
+                />
             )
         } else {
             return (
-                <Events images={images} isMobile={isMobile} data={data} categories={categories} isLoad={isLoad} selectCategory={selectCategory} element_name={element.name}/>
+                <Events
+                    images={images}
+                    isMobile={isMobile}
+                    data={data}
+                    categories={categories}
+                    isLoad={isLoad}
+                    selectCategory={selectCategory}
+                    element_name={element.name}
+                    getSaves={getSaves}
+                    open={open}
+                    saved={saved}
+                />
             )
         }
     }
-    
+
     return (
-        <Modal opened={opened} onClose={open} fullScreen withCloseButton={false} p={0}>
-            <Box
-                sx={(theme) => ({
-                    position: 'absolute',
-                    top: '90px',
-                    left: '10px',
-                    width: '50px',
-                    height: '50px',
-                    background: theme.colors.gray[6],
-                    lineHeight: '50px',
-                    borderRadius: '50px',
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    zIndex: 1000000,
-                    opacity: 0.5
-                })}
-                onClick={() => { open() }}
-            >
-                <FontAwesomeIcon icon={faClose} color='white' style={{fontSize: '25px', marginTop: '13px'}}/>
-            </Box>
-            {/* <Events images={images} isMobile={isMobile} data={data} category={category} isLoad={isLoad}/> */}
-            <Box >
-            {
-                rederItemPage()
-            }
-            </Box>
-        </Modal>
+            <Modal opened={opened} onClose={open} fullScreen withCloseButton={false} p={0}>
+                <Box
+                    sx={(theme) => ({
+                        position: 'absolute',
+                        top: '90px',
+                        left: '10px',
+                        width: '50px',
+                        height: '50px',
+                        background: theme.colors.gray[6],
+                        lineHeight: '50px',
+                        borderRadius: '50px',
+                        textAlign: 'center',
+                        cursor: 'pointer',
+                        zIndex: 10000,
+                        opacity: 0.5
+                    })}
+                    onClick={() => { open() }}
+                >
+                    <FontAwesomeIcon icon={faClose} color='white' style={{ fontSize: '25px', marginTop: '13px' }} />
+                </Box>
+                {/* <Events images={images} isMobile={isMobile} data={data} category={category} isLoad={isLoad}/> */}
+                <Box pt={50}>
+                    {
+                        rederItemPage()
+                    }
+                </Box>
+            </Modal>
+
     );
 }
 

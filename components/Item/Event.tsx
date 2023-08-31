@@ -1,11 +1,15 @@
 import { Modal, Button, Group, Box, Grid, Image, Flex, Text, Rating, Loader } from '@mantine/core';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Category, Item } from '@/types/elements';
 import GoogleMapReact from 'google-map-react';
 import Categories from '../Element/Categories';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faReply, faFlag } from '@fortawesome/free-solid-svg-icons'
+import { notifications } from '@mantine/notifications';
+import AuthModal from '../Layouts/AuthModal';
+import { useRouter } from 'next/router';
+import { useUser } from "@supabase/auth-helpers-react";
 
 interface Props {
     images: string[],
@@ -14,8 +18,12 @@ interface Props {
     categories: Category[],
     isLoad: boolean,
     selectCategory: (category: Category) => void,
-    element_name: string
+    element_name: string,
+    getSaves?: () =>void | undefined,
+    open: () =>void
+    saved?:string | undefined
 }
+
 
 const Service: FC<Props> = ({
     images,
@@ -24,9 +32,76 @@ const Service: FC<Props> = ({
     categories,
     isLoad,
     selectCategory,
-    element_name
+    element_name,
+    getSaves,
+    saved,
+    open
 }) => {
+    const user = useUser();
+    const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
+    const [authType, setAuthType] = useState<string>('login');
+    const router = useRouter();
+    const saveItem = async () => {
+        if (user) {
+            const res = await fetch('/api/item/save_item', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ user_id: user?.id, item_id: data.id }),
+            })
+            if (res.status == 200) {
+                const data = await res.json();
+                notifications.show({
+                    title: 'Success',
+                    message: data.msg,
+                    color: 'default'
+                })
+            } else {
+                const data = await res.json();
+                notifications.show({
+                    title: '',
+                    message: data.msg,
+                    color: 'red'
+                })
+            }
+        } else {
+            setOpenAuthModal(true);
+        }
+    }
 
+    const deleteItem = async () => {
+        if (user) {
+            const res = await fetch('/api/item/delete_item', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ user_id: user?.id, item_id: data.id }),
+            })
+            const data_ = await res.json();
+            if (res.status == 200) {
+                notifications.show({
+                    title: 'Delete',
+                    message: data_.msg,
+                    color: 'default'
+                })
+                if(getSaves){
+                    getSaves(); 
+                    open();
+                }
+            } else {
+                notifications.show({
+                    title: 'Delete',
+                    message: data_.msg,
+                    color: 'red'
+                })
+            }
+
+        } else {
+            setOpenAuthModal(true);
+        }
+    }
     return (
         <Box
             sx={(theme) => ({
@@ -54,9 +129,15 @@ const Service: FC<Props> = ({
                             align='center'
                             justify='space-between'
                         >
-                            <Button>
-                                Save
-                            </Button>
+                            {
+                                saved ?
+                                    <Button onClick={() => { deleteItem() }} color='red'>
+                                        Delete
+                                    </Button> :
+                                    <Button onClick={() => { saveItem() }}>
+                                        Save
+                                    </Button>
+                            }
                             <Flex
                                 gap='lg'
                             >
@@ -163,6 +244,7 @@ const Service: FC<Props> = ({
                 }
 
             </Box>
+            <AuthModal type='login' open={() => { setOpenAuthModal(false) }} opened={openAuthModal} setType={(type) => { setAuthType(type) }} />
 
         </Box>
     )

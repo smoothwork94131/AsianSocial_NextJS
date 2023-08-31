@@ -6,9 +6,11 @@ import InfoModal from "@/components/Item/InfoModal";
 
 interface Props {
     data: Item,
+    getSaves?:() =>void;
+    saved?:string | undefined
 }
 
-const Block:FC<Props> = ({data}) => {
+const Block:FC<Props> = ({data, getSaves, saved}) => {
     const isMobile = useMediaQuery(`(max-width: 760px)`);
     const [ open, setOpen ] = useState<boolean>(false);
     const [ selectedItem, setSelectedItem ] = useState<Item>(ItemState);
@@ -17,7 +19,7 @@ const Block:FC<Props> = ({data}) => {
         setOpen(true);
         setSelectedItem(item);
     }
-    
+
     return (
         <Box
             p={10}
@@ -65,7 +67,7 @@ const Block:FC<Props> = ({data}) => {
                     </Text>
                 </Box>
             }
-            <InfoModal open={() => { setOpen(p_o => (!p_o)) }} opened={open} data={selectedItem} isMobile={isMobile}/>
+            <InfoModal open={() => { setOpen(p_o => (!p_o)) }} opened={open} data={selectedItem} isMobile={isMobile} getSaves={getSaves} saved={saved}/>
         </Box>
     )
 }

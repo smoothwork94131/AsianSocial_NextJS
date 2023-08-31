@@ -56,7 +56,7 @@ const Index: FC<Props> = ({ children }) => {
                 </Navbar> : <></>
             }
             header={
-                <Header height={{ base: 70, md: 70 }} p="md" style={{zIndex: !isAdmin?1000000000000000000:10}}>
+                <Header height={{ base: 70, md: 70 }} p="md" style={{zIndex: !isAdmin?100000:10}}>
                     {
                         isAdmin&&
                         <MediaQuery largerThan="sm" styles={{ display: 'none' }}>

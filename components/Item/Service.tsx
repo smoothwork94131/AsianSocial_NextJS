@@ -1,11 +1,15 @@
 import { Modal, Button, Group, Box, Grid, Image, Flex, Text, Rating, Loader } from '@mantine/core';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Category, Item } from '@/types/elements';
 import GoogleMapReact from 'google-map-react';
 import Categories from '../Element/Categories';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faReply, faFlag } from '@fortawesome/free-solid-svg-icons'
+import { useUser } from "@supabase/auth-helpers-react";
+import { notifications } from '@mantine/notifications';
+import AuthModal from '../Layouts/AuthModal';
+import { useRouter } from 'next/router';
 
 interface Props {
     images: string[],
@@ -14,7 +18,10 @@ interface Props {
     categories: Category[],
     isLoad: boolean,
     selectCategory: (category: Category) => void,
-    element_name: string
+    element_name: string,
+    getSaves?: () => void | undefined,
+    saved?: string | undefined
+    open: () =>void
 }
 
 const Service: FC<Props> = ({
@@ -24,16 +31,86 @@ const Service: FC<Props> = ({
     categories,
     isLoad,
     element_name,
-    selectCategory
+    selectCategory,
+    getSaves,
+    saved,
+    open
 }) => {
 
-   
+    const user = useUser();
+    const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
+    const [authType, setAuthType] = useState<string>('login');
+    const router = useRouter();
+    const saveItem = async () => {
+        if (user) {
+            const res = await fetch('/api/item/save_item', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ user_id: user?.id, item_id: data.id }),
+            })
+            if (res.status == 200) {
+                const data = await res.json();
+                notifications.show({
+                    title: 'Success',
+                    message: data.msg,
+                    color: 'default'
+                })
+            } else {
+                const data = await res.json();
+                notifications.show({
+                    title: '',
+                    message: data.msg,
+                    color: 'red'
+                })
+            }
+        } else {
+            setOpenAuthModal(true);
+        }
+    }
+
+    const deleteItem = async () => {
+       
+        if (user) {
+            const res = await fetch('/api/item/delete_item', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ user_id: user?.id, item_id: data.id }),
+            })
+            const data_ = await res.json();
+            if (res.status == 200) {
+                notifications.show({
+                    title: 'Delete',
+                    message: data_.msg,
+                    color: 'default'
+                })
+                if(getSaves){
+                    getSaves(); 
+                    open();
+                }
+            } else {
+                notifications.show({
+                    title: 'Delete',
+                    message: data_.msg,
+                    color: 'red'
+                })
+            }
+
+        } else {
+            setOpenAuthModal(true);
+        }
+    }
+
     return (
         <Box
             sx={(theme) => ({
                 padding: isMobile ? 0 : 20
             })}
         >
+            
             <Grid gutter={0}>
                 <Grid.Col lg={8} sm={12} md={8}>
                     <Box sx={(theme) => ({
@@ -55,14 +132,22 @@ const Service: FC<Props> = ({
                             align='center'
                             justify='space-between'
                         >
-                            <Button>
-                                Save
-                            </Button>
+                            {
+                                saved ?
+                                    <Button onClick={() => { deleteItem() }} color='red'>
+                                        Delete
+                                    </Button> :
+                                    <Button onClick={() => { saveItem() }}>
+                                        Save
+                                    </Button>
+                            }
+                            
+                            
                             <Flex
                                 gap='lg'
                             >
-                                <FontAwesomeIcon icon={faReply} color='gray' style={{fontSize: '15px'}}/>
-                                <FontAwesomeIcon icon={faFlag} color='gray' style={{fontSize: '15px'}}/>
+                                <FontAwesomeIcon icon={faReply} color='gray' style={{ fontSize: '15px' }} />
+                                <FontAwesomeIcon icon={faFlag} color='gray' style={{ fontSize: '15px' }} />
 
                             </Flex>
                         </Flex>
@@ -78,32 +163,32 @@ const Service: FC<Props> = ({
                             <Text size='1rem' color='gray'>(78)</Text>
 
                         </Flex>
-                        <Categories categories={categories} 
+                        <Categories categories={categories}
                             selectedCategory={
                                 categories.filter(category => category.id == data.category_id)[0]
-                            }    
+                            }
                             selectCategory={selectCategory}
                         />
                         <Box>
                             <Text size='1rem' weight={400} sx={(theme) => ({
-                            color: "black",
-                            textDecoration: 'underline'
-                        })}>
+                                color: "black",
+                                textDecoration: 'underline'
+                            })}>
                                 {data.sites_url}
                             </Text>
                             <Text size='1rem' weight={400} sx={(theme) => ({
-                            color: "black"
-                        })}>
+                                color: "black"
+                            })}>
                                 {data.address}
                             </Text>
                             <Text size='1rem' weight={400} sx={(theme) => ({
-                            color: "black"
-                        })}>
+                                color: "black"
+                            })}>
                                 {data.phone_number}
                             </Text>
                             <Text size='1rem' weight={400} sx={(theme) => ({
-                            color: "black"
-                        })}>
+                                color: "black"
+                            })}>
                                 {data.email}
                             </Text>
                         </Box>
@@ -135,13 +220,13 @@ const Service: FC<Props> = ({
                         }
                         <Box>
                             <Text size='1rem' weight={400} sx={(theme) => ({
-                            color: "black"
-                        })}>
+                                color: "black"
+                            })}>
                                 Details:
                             </Text>
                             <Text size='1rem' weight={400} sx={(theme) => ({
-                            color: "black"
-                        })}>
+                                color: "black"
+                            })}>
                                 {data.details}
                             </Text>
                         </Box>
@@ -152,14 +237,14 @@ const Service: FC<Props> = ({
             <Box p={20}
             >
                 {
-                    isLoad ? <Box><Loader variant='dots' alignmentBaseline='central'/></Box> :
+                    isLoad ? <Box><Loader variant='dots' alignmentBaseline='central' /></Box> :
                         <ResponsiveMasonry
                             columnsCountBreakPoints={{ 350: 3, 500: 3, 750: 3, 900: 4 }}
                         >
                             <Masonry gutter='10px'>
                                 {
                                     images.map((image, key) =>
-                                        <Box key={key}><Image src={image} alt='' radius={5} style={{height: '300px'}}/></Box>
+                                        <Box key={key}><Image src={image} alt='' radius={5} style={{ height: '300px' }} /></Box>
                                     )
                                 }
                             </Masonry>
@@ -167,7 +252,7 @@ const Service: FC<Props> = ({
                 }
 
             </Box>
-
+            <AuthModal type='login' open={() => { setOpenAuthModal(false) }} opened={openAuthModal} setType={(type) => { setAuthType(type) }} />
         </Box>
     )
 }

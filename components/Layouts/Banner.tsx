@@ -43,11 +43,11 @@ const Banner = () => {
         setWindow();
     }, []);
 
-    useEffect(() => {
-        if(authType != ''){
-            setOpen(true);
-        }
-    }, [authType])
+    // useEffect(() => {
+    //     if(authType != ''){
+    //         setOpen(true);
+    //     }
+    // }, [authType])
 
     useEffect(() => {
         if(search != ""){
@@ -85,14 +85,7 @@ const Banner = () => {
         setScreenWidth(window.innerWidth);
     }
 
-    const Login = () => {
-
-    }
-
-    const signUp = () => {
-
-    }
-
+    
     return (
         <Flex
             gap="md"
@@ -110,14 +103,6 @@ const Banner = () => {
             >
                 {
                     screenWidth > 742 &&
-                    // <Text
-                    //     size='1.5rem'
-                    //     weight='600'
-                    //     onClick={() => { router.push('/')}}
-                    //     style={{cursor: 'pointer'}}
-                    // >
-                    //     AsianSocial
-                    // </Text>
                     <Image src='/logo.png' alt='logo' width={130} mt={5} onClick={() => { router.push('/')}}/>
                 }
                 {
@@ -131,7 +116,6 @@ const Banner = () => {
                         if(selected.length > 0){
                             setSelectedItem(selected[0]);
                             setInfoOpen(true);
-
                         }
                     }}
                     placeholder="Search"
@@ -152,11 +136,10 @@ const Banner = () => {
                 {
                     screenWidth > 1360 &&
                     <Auth 
-                        setType = {(type) => { setAuthType(type) }}
+                        setType = {(type) => { setAuthType(type); setOpen(true) }}
                     />
                 }
                 {
-                    screenWidth < 1360 &&
                     <Menu shadow="md" width={200}>
                         <Menu.Target>
                             <Avatar
@@ -172,7 +155,7 @@ const Banner = () => {
                     </Menu>
                 }
             </Flex>
-            <AuthModal opened={open} open={() => { setOpen(false)}} type={authType} setType={(type: string) => {setAuthType(type)}}/>
+            <AuthModal opened={open} open={() => { setOpen(false)} } type={authType} setType={(type: string) => {setAuthType(type)}} />
             <InfoModal open={() => { setInfoOpen(p_o => (!p_o)) }} opened={infoOpen} data={selectedItem} isMobile={isMobile}/>
         </Flex>
     )

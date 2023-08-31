@@ -6,6 +6,10 @@ import { MantineProvider, ColorSchemeProvider, MantineThemeOverride } from '@man
 import { useCreateReducer } from '@/hooks/useCreateReducer';
 import { initialState, HomeInitialState } from '@/state/index.state';
 import { Notifications } from '@mantine/notifications';
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { SessionProvider } from "next-auth/react";
+import { supabaseClient } from "@/utils/app/supabase-client";
+import HomeContext from '@/state/index.context';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isClient, setIsClient] = useState(false)
@@ -21,7 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
       colorScheme,
     },
   } = contextValue;
-
+  
   const myTheme: MantineThemeOverride = {
     colorScheme: colorScheme,
     spacing: {
@@ -31,14 +35,24 @@ export default function App({ Component, pageProps }: AppProps) {
   
   return (
     isClient &&
-    <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={() => { }}>
-      <MantineProvider theme={myTheme} withGlobalStyles withNormalizeCSS>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-        <Notifications />
-      </MantineProvider>
-    </ColorSchemeProvider>
+    <HomeContext.Provider
+      value={{
+        ...contextValue,
+      }}>
+    <SessionContextProvider supabaseClient={supabaseClient}>
+      <SessionProvider session={pageProps.session}>
+        <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={() => { }}>
+          <MantineProvider theme={myTheme} withGlobalStyles withNormalizeCSS>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+            <Notifications />
+          </MantineProvider>
+        </ColorSchemeProvider>
+      </SessionProvider>
+    </SessionContextProvider>
+    </HomeContext.Provider>
+
 
   )
 }
