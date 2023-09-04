@@ -15,6 +15,7 @@ const Auth: FC<Props> = ({
 }) => {
     const user = useUser();
     const router = useRouter();
+    
     const {
         state: { avatar_url },
         dispatch: homeDispatch,
@@ -48,6 +49,7 @@ const Auth: FC<Props> = ({
         }
         fetch_user();
     }, [user])
+    
     return (
         <Box
             sx={(theme) => ({

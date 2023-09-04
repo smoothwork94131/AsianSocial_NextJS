@@ -9,6 +9,7 @@ import {
     Select,
     Avatar,
     Image,
+    Box,
 } from "@mantine/core"
 import { IconDots } from "@tabler/icons-react";
 import MyMenu from "@/components/Layouts/Menu";
@@ -87,7 +88,8 @@ const Banner = () => {
 
     
     return (
-        <Flex
+        <Box>
+            <Flex
             gap="md"
             justify="space-between"
             align="center"
@@ -155,9 +157,12 @@ const Banner = () => {
                     </Menu>
                 }
             </Flex>
-            <AuthModal opened={open} open={() => { setOpen(false)} } type={authType} setType={(type: string) => {setAuthType(type)}} />
-            <InfoModal open={() => { setInfoOpen(p_o => (!p_o)) }} opened={infoOpen} data={selectedItem} isMobile={isMobile}/>
+            
         </Flex>
+        <AuthModal opened={open} open={() => { setOpen(false)} } type={authType} setType={(type: string) => {setAuthType(type)}} />
+            <InfoModal open={() => { setInfoOpen(p_o => (!p_o)) }} opened={infoOpen} data={selectedItem} isMobile={isMobile}/>
+        </Box>
+        
     )
 }
 

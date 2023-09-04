@@ -13,7 +13,7 @@ interface Props {
 }
 
 const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
-
+    
     const [isLoad, setIsLoad] = useState<boolean>(false);
     const form = useForm({
         initialValues: { email: '', password: '', name: '' },
@@ -54,7 +54,7 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
                         }
                     }
                 });
-
+                
                 if (error) {
                     notifications.show({
                         title: type,

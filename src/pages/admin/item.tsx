@@ -248,6 +248,7 @@ const Item = () => {
             value: string,
             label: string
         }[] = [];
+        
         elements.map((item) => {
             parsed_elements.push({
                 value: item.id,

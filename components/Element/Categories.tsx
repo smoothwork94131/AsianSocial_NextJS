@@ -16,8 +16,7 @@ const Categories: FC<Props> = ({
     selectedCategory,
     selectCategory
 }) => {
-    console.log('--------------------');
-    console.log(selectedCategory);
+    
     if(!selectedCategory){
         return(
             <div></div>

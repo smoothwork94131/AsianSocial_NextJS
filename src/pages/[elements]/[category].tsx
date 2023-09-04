@@ -11,6 +11,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import Categories from '@/components/Element/Categories';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import Block from '@/components/Home/Block';
+import InfoModal from '@/components/Item/InfoModal';
 
 const Elements = () => {
 
@@ -26,6 +27,8 @@ const Elements = () => {
     const [items, setItems] = useState<Item[]>([]);
 
     const [selectedCategory, setSelectedCategory] = useState<Category>(CategoryState);
+    const [selectedItem, setSelectedItem] = useState<Item>(ItemState);
+    const [ open, setOpen ] = useState<boolean>(false);
 
     useEffect(() => {
         setItems([]);
@@ -135,12 +138,13 @@ const Elements = () => {
                         <Masonry>
                             {
                                 items.map((item: Item, key: number) =>
-                                    <Block key={key} data={item} />
+                                    <Block key={key} data={item} setSelectedItem={(item: Item) => {setSelectedItem(item); setOpen(true)}}/>
                                 )
                             }
                         </Masonry>
                     </ResponsiveMasonry>
             }
+            <InfoModal open={() => { setOpen(p_o => (!p_o)) }} opened={open} data={selectedItem} isMobile={isMobile} />
             
         </Box>
     )

@@ -1,4 +1,4 @@
-import { Item } from '@/types/elements';
+import { Collection, Item } from '@/types/elements';
 import { supabaseAdmin } from '@/utils/server/supabase-admin';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
@@ -9,16 +9,22 @@ export default async function handler(
 ) {
 
     const user_id = req.body.user_id;
-    const { error, data } = await supabaseAdmin.from('asian_saves').select("*")
-    .eq('user_id', user_id);
-    
-    console.log(data);
+    const ids: string[] = [];
 
+    const { error, data } = await supabaseAdmin.from('asian_collections').select("*").eq('user_id', user_id);
+    
     if(data) { 
+        data.map((item:Collection) => {
+            for(let k=0; k<item.active_item_ids.length; k++){
+                if(!ids.includes(item.active_item_ids[k])){
+                    ids.push(item.active_item_ids[k]);
+                }
+            }
+        })
         let result: (Item | undefined)[] = [];
         result = await Promise.all(
-            data.map(async(item) => {
-                const item_data = await supabaseAdmin.from('asian_items').select("*").eq('id', item.item_id);
+            ids.map(async(item_id) => {
+                const item_data = await supabaseAdmin.from('asian_items').select("*").eq('id', item_id);
                 if(!item_data.error){
                     return item_data.data[0]
                 }

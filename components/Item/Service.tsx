@@ -21,7 +21,9 @@ interface Props {
     element_name: string,
     getSaves?: () => void | undefined,
     saved?: string | undefined
-    open: () =>void
+    open: () =>void,
+    saveItemModal: () =>void,
+    isSaved: boolean
 }
 
 const Service: FC<Props> = ({
@@ -34,44 +36,17 @@ const Service: FC<Props> = ({
     selectCategory,
     getSaves,
     saved,
-    open
+    open,
+    saveItemModal,
+    isSaved
 }) => {
 
     const user = useUser();
     const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
     const [authType, setAuthType] = useState<string>('login');
     const router = useRouter();
-    const saveItem = async () => {
-        if (user) {
-            const res = await fetch('/api/item/save_item', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ user_id: user?.id, item_id: data.id }),
-            })
-            if (res.status == 200) {
-                const data = await res.json();
-                notifications.show({
-                    title: 'Success',
-                    message: data.msg,
-                    color: 'default'
-                })
-            } else {
-                const data = await res.json();
-                notifications.show({
-                    title: '',
-                    message: data.msg,
-                    color: 'red'
-                })
-            }
-        } else {
-            setOpenAuthModal(true);
-        }
-    }
-
+    
     const deleteItem = async () => {
-       
         if (user) {
             const res = await fetch('/api/item/delete_item', {
                 method: "POST",
@@ -98,7 +73,6 @@ const Service: FC<Props> = ({
                     color: 'red'
                 })
             }
-
         } else {
             setOpenAuthModal(true);
         }
@@ -132,17 +106,11 @@ const Service: FC<Props> = ({
                             align='center'
                             justify='space-between'
                         >
-                            {
-                                saved ?
-                                    <Button onClick={() => { deleteItem() }} color='red'>
-                                        Delete
-                                    </Button> :
-                                    <Button onClick={() => { saveItem() }}>
-                                        Save
-                                    </Button>
-                            }
-                            
-                            
+                            <Button onClick={() => { saveItemModal() }}>
+                                {
+                                    isSaved ? 'Edit':'Save'
+                                }
+                            </Button>
                             <Flex
                                 gap='lg'
                             >
@@ -253,6 +221,7 @@ const Service: FC<Props> = ({
 
             </Box>
             <AuthModal type='login' open={() => { setOpenAuthModal(false) }} opened={openAuthModal} setType={(type) => { setAuthType(type) }} />
+
         </Box>
     )
 }

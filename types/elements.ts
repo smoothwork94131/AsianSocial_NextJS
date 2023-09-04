@@ -72,3 +72,22 @@ export const PageTypeState = {
     id: '',
     name: ''
 }
+
+export interface Collection {
+    id: string,
+    created_at?:string,
+    item_id: string,
+    name: string,
+    user_id: string,
+    image_url: string,
+    active_item_ids: string[]
+}
+
+export const CollectionState: Collection = {
+    id: '',
+    item_id: '',
+    name: '',
+    user_id: '',
+    image_url: '',
+    active_item_ids: []
+}
