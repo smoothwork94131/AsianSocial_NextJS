@@ -126,9 +126,9 @@ const Service: FC<Props> = ({
                             {data.name}
                         </Text>
                         <Flex>
-                            <Text size='1rem' color='gray'>4.9</Text>
-                            <Rating value={4.5} fractions={2} readOnly />
-                            <Text size='1rem' color='gray'>(78)</Text>
+                            {/* <Text size='1rem' color='gray'>Number()</Text> */}
+                            <Rating value={Number(data.rating)} fractions={2} readOnly />
+                            <Text size='1rem' color='gray'>({Number(data.rating)})</Text>
 
                         </Flex>
                         <Categories categories={categories}

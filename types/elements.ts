@@ -41,7 +41,8 @@ export interface Item
     image: string,
     page_type_id: string,
     element_id: string,
-    category_name?: string
+    category_name?: string,
+    rating: string
 }
 
 export const  ItemState: Item = {
@@ -59,7 +60,8 @@ export const  ItemState: Item = {
     image: '',
     page_type_id: '',
     name: '',
-    element_id:''
+    element_id:'',
+    rating:'0'
 }
 
 

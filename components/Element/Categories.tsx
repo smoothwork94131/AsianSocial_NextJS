@@ -77,7 +77,7 @@ const LeftArrow = () => {
         !disabled&&<Box
             sx={(theme) => ({
                 background: 'linear-gradient(to left, rgba(255,255,255,0.2), rgba(255,255,255,1))',
-                position: 'absolute',
+                position: 'relative',
                 left: 10,
                 zIndex: 100,
                 padding: '5px 10px 0px 10px',
@@ -114,7 +114,7 @@ const RightArrow = () => {
         !disabled&&<Box
             sx={(theme) => ({
                 background: 'linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,1))',
-                position: 'absolute',
+                position: 'relative',
                 right: 10,
                 zIndex: 100,
                 padding: '5px 10px 0px 10px',
