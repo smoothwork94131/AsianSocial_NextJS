@@ -52,7 +52,5 @@ export default function App({ Component, pageProps }: AppProps) {
       </SessionProvider>
     </SessionContextProvider>
     </HomeContext.Provider>
-
-
   )
 }
