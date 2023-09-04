@@ -37,7 +37,7 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_typ
     const user = useUser();
 
     useEffect(() => {
-      
+
         if (data.id != "") {
             getImages();
             getCategory();
@@ -48,7 +48,7 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_typ
     }, [data])
 
     useEffect(() => {
-        
+
         if (user) {
             getCollections();
         }
@@ -69,9 +69,9 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_typ
                 const data_ = await res.json();
                 setCollections(data_);
                 setIsSaved(false);
-                
+
                 data_.map((collection: Collection) => {
-                    if(collection.active_item_ids.includes(data.id)) {
+                    if (collection.active_item_ids.includes(data.id)) {
                         setIsSaved(true);
                     }
                 })
@@ -80,9 +80,9 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_typ
             }
         }
     }
-    
+
     const deleteCollection = async () => {
-        if(user){
+        if (user) {
             setIsLoad(true);
             const res = await fetch('/api/item/delete_collection', {
                 method: 'POST',
@@ -94,13 +94,13 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_typ
                     item_id: data.id
                 })
             })
-            if(res.status == 200){
+            if (res.status == 200) {
                 notifications.show({
                     message: 'Success',
                     color: 'default'
                 })
                 getCollections();
-                if(getSaves){
+                if (getSaves) {
                     getSaves();
                 }
                 setOpenSaveModal(false);
@@ -111,10 +111,10 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_typ
                 })
             }
             setIsLoad(false);
-        }  else {
+        } else {
             setOpenAuthModal(true);
         }
-        
+
     }
 
     const createCollection = async (collection_name: string) => {
@@ -153,10 +153,10 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_typ
         })
         return exist;
     }
-    
+
     const changeCollectionActive = async (collection: Collection) => {
         setIsLoad(true);
-        const res = await fetch('/api/item/change_collection_active',{
+        const res = await fetch('/api/item/change_collection_active', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -168,10 +168,10 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_typ
                 image_url: collection.image_url
             })
         });
-        if(res.status == 200){
+        if (res.status == 200) {
             setOpenSaveModal(false);
             getCollections();
-        } else{
+        } else {
             alert("Server Error!");
         }
         setIsLoad(false);
@@ -269,16 +269,17 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_typ
 
         if (pageType.name == 'event') {
             return (
-                <Events images={images}
+                <Events 
+                    images={images}
                     isMobile={isMobile}
                     data={data}
                     categories={categories}
                     isLoad={isLoad}
                     selectCategory={selectCategory}
                     element_name={element.name}
-                    getSaves={getSaves}
                     open={open}
                     saveItemModal={saveItemModal}
+                    isSaved={isSaved}
                 />
             )
         } else if (pageType.name == 'service') {
@@ -294,7 +295,7 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_typ
                     open={open}
                     saveItemModal={saveItemModal}
                     isSaved={isSaved}
-                    
+
                 />
             )
         } else {
@@ -307,9 +308,9 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_typ
                     isLoad={isLoad}
                     selectCategory={selectCategory}
                     element_name={element.name}
-                    getSaves={getSaves}
                     open={open}
                     saveItemModal={saveItemModal}
+                    isSaved={isSaved}
                 />
             )
         }

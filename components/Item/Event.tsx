@@ -6,10 +6,10 @@ import GoogleMapReact from 'google-map-react';
 import Categories from '../Element/Categories';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faReply, faFlag } from '@fortawesome/free-solid-svg-icons'
+import { useUser } from "@supabase/auth-helpers-react";
 import { notifications } from '@mantine/notifications';
 import AuthModal from '../Layouts/AuthModal';
 import { useRouter } from 'next/router';
-import { useUser } from "@supabase/auth-helpers-react";
 
 interface Props {
     images: string[],
@@ -19,11 +19,12 @@ interface Props {
     isLoad: boolean,
     selectCategory: (category: Category) => void,
     element_name: string,
-    getSaves?: () =>void | undefined,
-    open: () =>void
-    saved?:string | undefined
+    getSaves?: () => void | undefined,
+    saved?: string | undefined
+    open: () =>void,
+    saveItemModal: () =>void,
+    isSaved: boolean
 }
-
 
 const Service: FC<Props> = ({
     images,
@@ -31,45 +32,20 @@ const Service: FC<Props> = ({
     data,
     categories,
     isLoad,
-    selectCategory,
     element_name,
+    selectCategory,
     getSaves,
     saved,
-    open
+    open,
+    saveItemModal,
+    isSaved
 }) => {
+
     const user = useUser();
     const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
     const [authType, setAuthType] = useState<string>('login');
     const router = useRouter();
-    const saveItem = async () => {
-        if (user) {
-            const res = await fetch('/api/item/save_item', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ user_id: user?.id, item_id: data.id }),
-            })
-            if (res.status == 200) {
-                const data = await res.json();
-                notifications.show({
-                    title: 'Success',
-                    message: data.msg,
-                    color: 'default'
-                })
-            } else {
-                const data = await res.json();
-                notifications.show({
-                    title: '',
-                    message: data.msg,
-                    color: 'red'
-                })
-            }
-        } else {
-            setOpenAuthModal(true);
-        }
-    }
-
+    
     const deleteItem = async () => {
         if (user) {
             const res = await fetch('/api/item/delete_item', {
@@ -97,17 +73,18 @@ const Service: FC<Props> = ({
                     color: 'red'
                 })
             }
-
         } else {
             setOpenAuthModal(true);
         }
     }
+
     return (
         <Box
             sx={(theme) => ({
                 padding: isMobile ? 0 : 20
             })}
         >
+            
             <Grid gutter={0}>
                 <Grid.Col lg={8} sm={12} md={8}>
                     <Box sx={(theme) => ({
@@ -129,15 +106,11 @@ const Service: FC<Props> = ({
                             align='center'
                             justify='space-between'
                         >
-                            {
-                                saved ?
-                                    <Button onClick={() => { deleteItem() }} color='red'>
-                                        Delete
-                                    </Button> :
-                                    <Button onClick={() => { saveItem() }}>
-                                        Save
-                                    </Button>
-                            }
+                            <Button onClick={() => { saveItemModal() }}>
+                                {
+                                    isSaved ? 'Edit':'Save'
+                                }
+                            </Button>
                             <Flex
                                 gap='lg'
                             >
@@ -152,7 +125,12 @@ const Service: FC<Props> = ({
                         })}>
                             {data.name}
                         </Text>
+                        {/* <Flex>
+                            <Text size='1rem' color='gray'>4.9</Text>
+                            <Rating value={4.5} fractions={2} readOnly />
+                            <Text size='1rem' color='gray'>(78)</Text>
 
+                        </Flex> */}
                         <Categories categories={categories}
                             selectedCategory={
                                 categories.filter(category => category.id == data.category_id)[0]
@@ -182,7 +160,6 @@ const Service: FC<Props> = ({
                                 {data.email}
                             </Text>
                         </Box>
-
                         {
                             (element_name == "Businesses" || element_name == "Restaurants") &&
                             <Box
@@ -209,7 +186,6 @@ const Service: FC<Props> = ({
                                 </Box>
                             </Box>
                         }
-
                         <Box>
                             <Text size='1rem' weight={400} sx={(theme) => ({
                                 color: "black"
@@ -236,7 +212,7 @@ const Service: FC<Props> = ({
                             <Masonry gutter='10px'>
                                 {
                                     images.map((image, key) =>
-                                        <Box key={key}><Image src={image} alt='' radius={5} /></Box>
+                                        <Box key={key}><Image src={image} alt='' radius={5} style={{ height: '300px' }} /></Box>
                                     )
                                 }
                             </Masonry>
