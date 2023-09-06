@@ -94,7 +94,7 @@ const Banner = () => {
     }
 
     const getTypes = async () => {
-        const res = await fetch('/user/profile/get_types', {
+        const res = await fetch('/api/user/profile/get_types', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -60,7 +60,7 @@ const Profile = () => {
             getTypes();
         }
     }, [selectedItem])
-
+    
     const getTypes = async () => {
         const res = await fetch('/user/profile/get_types', {
             method: "POST",
@@ -213,7 +213,7 @@ const Profile = () => {
             },
             body: JSON.stringify({ user_id: user?.id, image }),
         })
-        
+
         if (res.status == 200) {
             homeDispatch({
                 field: 'avatar_url',

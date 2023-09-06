@@ -100,8 +100,8 @@ const Service: FC<Props> = ({
                             data.image == null?
                             <Box
                                 sx={(theme) =>({
-                                    width: '80%',
-                                    height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
+                                    width: '400px',
+                                    height: '300px',
                                     background: `rgb(
                                             ${Math.floor(Math.random() * (255 )) + 0}, 
                                             ${Math.floor(Math.random() * (255)) + 0},
@@ -110,7 +110,7 @@ const Service: FC<Props> = ({
                                         opacity: '0.7',
                                     },
                                     cursor: 'pointer',
-                                    borderRadius: '10px'
+                                    borderRadius: '10px',
                                 })}
                             ></Box>:
                             <Image alt='' src={data.image} style={{ width: isMobile ? '100%' : 'auto' }} />
