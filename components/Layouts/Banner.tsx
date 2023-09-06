@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import Elements from "@/components/Layouts/Elements";
 import { useRouter } from 'next/router';
 import AuthModal from './AuthModal';
-import { Item, ItemState } from '@/types/elements';
+import { Item, ItemState, Types } from '@/types/elements';
 import InfoModal from '../Item/InfoModal';
 
 const Banner = () => {
@@ -30,6 +30,7 @@ const Banner = () => {
     const [searchList, setSearchList] = useState<Item[]>([])
     const [selectedItem, setSelectedItem] = useState<Item>(ItemState);
     const [infoOpen, setInfoOpen] = useState<boolean>(false);
+    const [types, setTypes] = useState<Types[]>([]);
 
     const router = useRouter();
     let is_homepage = false;
@@ -55,6 +56,12 @@ const Banner = () => {
             getSearchResult();
         }
     }, [search])
+
+    useEffect(() => {
+        if(selectedItem.id !=""){
+            getTypes();
+        }
+    }, [selectedItem])
     
     const getSearchResult = async() => {
         const res = await fetch('/api/home/get_search', {
@@ -84,6 +91,25 @@ const Banner = () => {
     }
     const setWindow = () => {
         setScreenWidth(window.innerWidth);
+    }
+
+    const getTypes = async () => {
+        const res = await fetch('/user/profile/get_types', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 
+                element_id: selectedItem.element_id
+            }),
+        })
+
+        if(res.status == 200){
+            const data_ = await res.json();
+            console.log(data_);
+
+            setTypes(data_.types);
+        }
     }
 
     return (
@@ -161,7 +187,13 @@ const Banner = () => {
             
         </Flex>
         <AuthModal opened={open} open={() => { setOpen(false)} } type={authType} setType={(type: string) => {setAuthType(type)}} />
-            <InfoModal open={() => { setInfoOpen(p_o => (!p_o)) }} opened={infoOpen} data={selectedItem} isMobile={isMobile}/>
+            <InfoModal 
+                open={() => { setInfoOpen(p_o => (!p_o)) }} 
+                opened={infoOpen} 
+                data={selectedItem} 
+                isMobile={isMobile}
+                types={types}
+            />
         </Box>
         
     )

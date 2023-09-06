@@ -162,6 +162,7 @@ const Service: FC<Props> = ({
                             element_name={element_name}
                             types={types}
                             type_name={''}
+                            open={open}
                         />
                         <Box>
                             <Text size='1rem' weight={400} sx={(theme) => ({
