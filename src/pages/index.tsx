@@ -35,8 +35,6 @@ const Home = () => {
 
         if(res.status == 200){
             const data_ = await res.json();
-            console.log(data_);
-
             setElement(data_.element_data);
             setTypes(data_.types);
         }
@@ -49,7 +47,7 @@ const Home = () => {
             scrollHeight,
             clientHeight
         } = document.documentElement;
-        if (scrollTop + clientHeight >= scrollHeight - 5) {
+        if (scrollTop + clientHeight >= scrollHeight - 100) {
             //  setIsLoad(true);
             const merged = items;
             const cnt = baseItem.length > 30?30:baseItem.length;
