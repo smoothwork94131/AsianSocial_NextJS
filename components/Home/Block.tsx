@@ -2,7 +2,6 @@ import { Box, Image, Text } from "@mantine/core";
 import { FC, useState } from 'react';
 import { useMediaQuery } from '@mantine/hooks';
 import { Item, ItemState } from "@/types/elements";
-import InfoModal from "@/components/Item/InfoModal";
 
 interface Props {
     data: Item,
@@ -19,22 +18,44 @@ const Block:FC<Props> = ({data, getSaves, page_type, setSelectedItem}) => {
     }
 
     return (
+        data&&
         <Box
             p={10}
         
         >
-            <Image 
-                src={ data.image } alt='image' 
-                sx={(theme) =>({
-                    '&:hover' :{
-                        opacity: '0.7',
-                    },
-                    cursor: 'pointer',
-                    border: `1px solid ${theme.colors.gray[4]}`,
-                })}
-                onClick={() => {handleSelectItem(data)}}
-                radius={7}
-            />
+            {
+                data.image == null?
+                <Box
+                    sx={(theme) =>({
+                        width: '100%',
+                        height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
+                        background: `rgb(
+                                ${Math.floor(Math.random() * (255 )) + 0}, 
+                                ${Math.floor(Math.random() * (255)) + 0},
+                                ${Math.floor(Math.random() * (255)) + 0})`,
+                        '&:hover' :{
+                            opacity: '0.7',
+                        },
+                        cursor: 'pointer',
+                        borderRadius: '10px'
+                    })}
+                    onClick={() => {handleSelectItem(data)}}
+                >
+                </Box>:
+                <Image 
+                    src={ data.image } alt='image' 
+                    sx={(theme) =>({
+                        '&:hover' :{
+                            opacity: '0.7',
+                        },
+                        cursor: 'pointer',
+                        border: `1px solid ${theme.colors.gray[4]}`,
+                    })}
+                    onClick={() => {handleSelectItem(data)}}
+                    radius={7}
+                />
+            }
+            
             {
                 <Box mt={10}>
                     <Text 

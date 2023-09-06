@@ -1,4 +1,4 @@
-import { Category, CategoryState, ElementState, ElementType, Item, ItemState } from '@/types/elements';
+import { Category, CategoryState, ElementState, ElementType, Item, ItemState, Types, TypesState } from '@/types/elements';
 import {
     Box,
     Button,
@@ -12,21 +12,25 @@ import Categories from '@/components/Element/Categories';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import Block from '@/components/Home/Block';
 import InfoModal from '@/components/Item/InfoModal';
+import TypesComponents from '@/components/Element/Types';
 
 const Elements = () => {
 
     const router = useRouter();
     const isMobile = useMediaQuery(`(max-width: 760px)`);
 
-    const { elements: element_name, category: category_name } = router.query;
+    const { elements: element_name, category: category_name, types: type_name } = router.query;
 
+    console.log('---------------Router Query----------------');
+    
     const [categories, setCatetories] = useState<Category[]>([]);
     const [element, setElement] = useState<ElementType>(ElementState);
+    const [types, setTypes] = useState<Types[]>([]);
 
     const [isLoad, setIsLoad] = useState<boolean>(false);
     const [items, setItems] = useState<Item[]>([]);
 
-    const [selectedCategory, setSelectedCategory] = useState<Category>(CategoryState);
+
     const [selectedItem, setSelectedItem] = useState<Item>(ItemState);
     const [ open, setOpen ] = useState<boolean>(false);
 
@@ -34,50 +38,52 @@ const Elements = () => {
         setItems([]);
         setCatetories([]);
         setElement(ElementState);
+        
         getElementData();
-    }, [element_name])
+    }, [category_name, type_name])
     
     const getElementData = async () => {
+        setIsLoad(true);
         const res = await fetch("/api/element/get_element_data", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name: element_name?.toString()?.replaceAll("_", " ") })
+            body: JSON.stringify({ 
+                element_name: element_name?.toString()?.replaceAll("_", " "),
+                type_name
+            })
         });
         if (res.status == 200) {
             const data = await res.json();
+            
             setElement(data.element_data);
             setCatetories(data.categories);
-            if (data.categories.length > 0) {
-                // setSelectedCategory(data.categories[0]);
-                let category = data.categories[0];
-                data.categories.map((item:Category) => {
-                    if(item.name == category_name){
-                        category = item;
-                    }
-                })
-                setSelectedCategory(category);
+            setTypes(data.types);
+            
+            if(category_name != "no") {
+                if(data.categories.length > 0) {
+                    await getItems(
+                        data.categories.filter((item: Category) => item.name == category_name)[0].id
+                    )
+                }
             }
         } else {
 
         }
+        setIsLoad(false);
+
     }
 
-    useEffect(() => {
-        if (selectedCategory.id != "") {
-            getItems();
-        }
-    }, [selectedCategory])
 
-    const getItems = async () => {
+    const getItems = async (category_id: string) => {
         setIsLoad(true);
         const res = await fetch('/api/element/get_items', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ category_id: selectedCategory.id })
+            body: JSON.stringify({ category_id })
         })
         if (res.status == 200) {
             const data = await res.json();
@@ -86,10 +92,7 @@ const Elements = () => {
         setIsLoad(false);
     }
 
-    const  handleSelectCategory = (category: Category) => {
-        setSelectedCategory(category);
-    }
-    
+  
     return (
         <Box>
             <Box
@@ -120,17 +123,46 @@ const Elements = () => {
             </Box>
             <Box>
                 {
-                    !isLoad&&<Box mt={30}><Categories categories={categories}
-                    selectedCategory={selectedCategory}
-                    selectCategory={handleSelectCategory} /></Box>
+                    !isLoad&&<Box mt={30}>
+                        {
+                            category_name && type_name && element_name &&
+                            <TypesComponents 
+                                type_name={type_name}
+                                types={types}
+                                element_name={element_name}  
+                                open={() => {setOpen(false)}}                  
+                            />
+                        }
+                        
+                    </Box>
                 }
                 
+            </Box>
+            <Box>
+                {
+                    !isLoad&&<Box mt={30}>
+                        {
+                            category_name && type_name && element_name &&
+                            <Categories 
+                                categories={categories}
+                                category_name={category_name}
+                                type_name={type_name}
+                                element_name={element_name}                    
+                            />
+                        }
+                        
+                    </Box>
+                }
             </Box>
             {
                 isLoad ?
                     <Box sx={(theme) => ({ textAlign: 'center' })}>
-                        <Loader variant='dots' />
+                        <Loader size={'lg'}/>
                     </Box> :
+                    items.length == 0?
+                    <Text size='3rem' align='center' mt={50} weight={500} color='gray'>
+                        {/* No data */}
+                    </Text>:
                     <ResponsiveMasonry
                         columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 3, 900: 4, 1550: 5, 1800: 6 }}
                         style={{ marginTop: '20px' }}
@@ -144,8 +176,14 @@ const Elements = () => {
                         </Masonry>
                     </ResponsiveMasonry>
             }
-            <InfoModal open={() => { setOpen(p_o => (!p_o)) }} opened={open} data={selectedItem} isMobile={isMobile} />
-            
+
+            <InfoModal 
+                open={() => { setOpen(p_o => (!p_o)) }} 
+                opened={open} 
+                data={selectedItem} 
+                isMobile={isMobile} 
+                types={types}
+            />
         </Box>
     )
 }

@@ -124,7 +124,7 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
                         />
                         <Box mt={15}>
                             <Button fullWidth size="md" onClick={() =>{authEmail()}}>
-                                {type == "login" ? 'Log in' : 'SignUp'}
+                                {type == "login" ? 'Log in' : 'Sign Up'}
                             </Button>
                             <Text color="gray" size={15} align="center">
                                 Or

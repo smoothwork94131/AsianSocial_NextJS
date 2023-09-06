@@ -2,8 +2,8 @@ import { Box, Image, Loader } from "@mantine/core";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import Block from "@/components/Home/Block";
 import { useMediaQuery } from '@mantine/hooks';
-import { useEffect, useState } from 'react';
-import { Item, ItemState } from "@/types/elements";
+import {  useEffect, useState } from 'react';
+import { Item, ItemState, Types, ElementState, ElementType } from "@/types/elements";
 import InfoModal from "@/components/Item/InfoModal";
 
 const Home = () => {
@@ -13,13 +13,34 @@ const Home = () => {
     const [isLoad, setIsLoad] = useState<boolean>(false);
     const [selectedItem, setSelectedItem] = useState<Item>(ItemState);
     const [ open, setOpen ] = useState<boolean>(false);
-
+    const [element, setElement] = useState<ElementType>(ElementState);
+    const [types, setTypes] = useState<Types[]>([]);
 
     let baseItem: Item[] = [];
     useEffect(() => {
         getItems();
         window.addEventListener('scroll', handleScroll);
     }, [])
+
+    const getTypes = async () => {
+        const res = await fetch('/user/profile/get_types', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 
+                element_id: selectedItem.element_id
+            }),
+        })
+
+        if(res.status == 200){
+            const data_ = await res.json();
+            console.log(data_);
+
+            setElement(data_.element_data);
+            setTypes(data_.types);
+        }
+    }
     
     function handleScroll() {
         if(isLoad) return;
@@ -29,9 +50,9 @@ const Home = () => {
             clientHeight
         } = document.documentElement;
         if (scrollTop + clientHeight >= scrollHeight - 5) {
-             setIsLoad(true);
+            //  setIsLoad(true);
             const merged = items;
-            const cnt = baseItem.length > 8?8:baseItem.length;
+            const cnt = baseItem.length > 30?30:baseItem.length;
             for (let k = 0; k < cnt; k++) {
                 merged.push(baseItem[baseItem.length - k - 1])
             }
@@ -54,13 +75,19 @@ const Home = () => {
         if (res.status == 200) {
             const data = await res.json();
             setItems(data);
+            
             baseItem = data;
         }
         setIsLoad(false);
     }
+    
+    useEffect(() => {
+        if(selectedItem.id !=""){
+            getTypes();
+        }
+    }, [selectedItem])
 
     return (
-
         <Box>
             <Box pb={'30px'}>
                 <ResponsiveMasonry
@@ -88,7 +115,12 @@ const Home = () => {
                     <Loader size='lg' />
                 </Box>
             }
-            <InfoModal open={() => { setOpen(p_o => (!p_o)) }} opened={open} data={selectedItem} isMobile={isMobile} />
+            <InfoModal 
+                open={() => { setOpen(p_o => (!p_o)) }} 
+                opened={open} data={selectedItem}
+                isMobile={isMobile} 
+                types={types}
+            />
         </Box>
     )
 }

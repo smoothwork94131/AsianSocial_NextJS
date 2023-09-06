@@ -4,24 +4,22 @@ import 'react-horizontal-scrolling-menu/dist/styles.css';
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
 import { Category } from "@/types/elements";
 import { FC, useContext, useState, useEffect } from 'react';
+import Link from 'next/link';
 
 interface Props {
     categories: Category[],
-    selectedCategory: Category,
-    selectCategory: (category: Category) => void;
+    category_name: string | string[],
+    type_name: string  | string[],
+    element_name: string | string[]
 }
 
 const Categories: FC<Props> = ({
     categories,
-    selectedCategory,
-    selectCategory
+    type_name,
+    category_name,
+    element_name
 }) => {
     
-    if(!selectedCategory){
-        return(
-            <div></div>
-        )
-    }
     return (
         <Box>
             <ScrollMenu
@@ -34,21 +32,23 @@ const Categories: FC<Props> = ({
             >
                 {
                     categories.map((item, key) =>
+                        item.name&&
                         <Box key={key} ml={5} sx={(theme) => ({
                         })}>
-                            <Button
-                                key={key}
-                                radius={10}
-                                sx={(theme) => ({
-                                    background: selectedCategory.id ==item.id?theme.colors.gray[3]:theme.colors.gray[1],
-                                    color: "black",
-                                    fontWeight: 600,
-                                    '&:hover': { background: theme.colors.gray[3]}
-                                })}
-                                onClick={() => {selectCategory(item)}}
-                            >
-                                {item.name}
-                            </Button>
+                            
+                            <Link href={`/${element_name}/${type_name}/${item.name}`}>
+                                <Button
+                                    radius={10}
+                                    sx={(theme) => ({
+                                        background: category_name == item.name?theme.colors.gray[3]:theme.colors.gray[1],
+                                        color: "black",
+                                        fontWeight: 600,
+                                        '&:hover': { background: theme.colors.gray[3]}
+                                    })}
+                                >
+                                    {item.name}
+                                </Button>
+                            </Link>
                         </Box>
                     )
                 }

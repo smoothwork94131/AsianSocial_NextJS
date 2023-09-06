@@ -10,6 +10,8 @@ const base = Airtable.base("appbwdFJoaRz394SJ");
 
 // Reference a table
 export const airtable = base("Asian Pulse");
-export const Businesses_airtable = base("Restaurants");
+// export const Businesses_airtable = base("Restaurants");
+export const Businesses_airtable = base("Businesses");
+
 
 

@@ -25,32 +25,32 @@ export default function App({ Component, pageProps }: AppProps) {
       colorScheme,
     },
   } = contextValue;
-  
+
   const myTheme: MantineThemeOverride = {
     colorScheme: colorScheme,
     spacing: {
       chatInputPadding: '40px'
     }
   };
-  
+
   return (
     isClient &&
     <HomeContext.Provider
       value={{
         ...contextValue,
       }}>
-    <SessionContextProvider supabaseClient={supabaseClient}>
-      <SessionProvider session={pageProps.session}>
-        <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={() => { }}>
-          <MantineProvider theme={myTheme} withGlobalStyles withNormalizeCSS>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-            <Notifications />
-          </MantineProvider>
-        </ColorSchemeProvider>
-      </SessionProvider>
-    </SessionContextProvider>
+      <SessionContextProvider supabaseClient={supabaseClient}>
+        <SessionProvider session={pageProps.session}>
+          <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={() => { }}>
+            <MantineProvider theme={myTheme} withGlobalStyles withNormalizeCSS>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+              <Notifications />
+            </MantineProvider>
+          </ColorSchemeProvider>
+        </SessionProvider>
+      </SessionContextProvider>
     </HomeContext.Provider>
   )
 }

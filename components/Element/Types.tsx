@@ -1,82 +1,48 @@
-import { ElementType } from "@/types/elements";
-import {
-    Box,
-    Button,
-    Flex,
-    Loader,
-    Text,
-    UnstyledButton
-} from "@mantine/core"
-import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
-import Link from "next/link";
-import { useEffect, useState, useContext } from "react";
+import { Box, Button } from "@mantine/core";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 import 'react-horizontal-scrolling-menu/dist/styles.css';
-import { useRouter } from 'next/router';
+import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
+import { Category, Types } from "@/types/elements";
+import { FC, useContext, useState, useEffect } from 'react';
+import Link from 'next/link';
 
-const Elements = () => {
+interface Props {
+    types: Types[],
+    type_name: string  | string[] | undefined,
+    element_name: string | string[] | undefined,
+    open: () => void
+}
 
-    const [elements, setElements] = useState<ElementType[]>([])
-    const [isLoad, setIsLoad] = useState<boolean>(false);
-
-    const router = useRouter();
-
-    useEffect(() => {
-        getElements();
-    }, [])
-
-    const getElements = async () => {
-        setIsLoad(true);
-        const res = await fetch('/api/home/get_elements');
-        if (res.status == 200) {
-            const data = await res.json();
-            setElements(data);
-        }
-        setIsLoad(false);
-
-    }
-
+const TypesComponents: FC<Props> = ({
+    types,
+    type_name,
+    element_name,
+    open
+}) => {
     return (
-        isLoad ?
-            <Box
-                sx={(theme) => ({
-                    width: '500px',
-                    textAlign: 'center'
-                })}
-            ><Loader size={'md'} variant="dots" /></Box> :
-            <Flex
-                sx={(theme) => ({
-                    width: '500px',
-                    overflowY: 'hidden',
-
-                })}
-            >
-                {/* <ScrollMenu
+        <Box>
+            <ScrollMenu
                 LeftArrow={
                     <LeftArrow />
                 }
                 RightArrow={
                     <RightArrow />
                 }
-            > */}
+            >
                 {
-                    elements.map((item, key) =>
+                    types.map((item, key) =>
+                        item.name&&
                         <Box key={key} ml={5} sx={(theme) => ({
                         })}>
-                            <Link href={`/${item.name}/${item.type_name}/${item.category_name}`}>
+                            
+                            <Link href={`/${element_name}/${item.name}/${item.category_name}`} onClick={() => {open()}}>
                                 <Button
+                                    radius={10}
                                     sx={(theme) => ({
-                                        background: 'transparent',
-                                        color: theme.colors.gray[6],
-                                        '&:hover': {
-                                            color: theme.colors.gray[8],
-                                            background: 'transparent'
-                                        },
-                                        cursor: 'pointer',
-                                        marginLeft: 20,
-                                        padding: 0,
-                                        fontSize: '1.2rem',
-                                        fontWeight: 'bold'
+                                        background: type_name == item.name?theme.colors.green[3]:theme.colors.green[1],
+                                        color: "black",
+                                        fontWeight: 600,
+                                        '&:hover': { background: theme.colors.gray[3]}
                                     })}
                                 >
                                     {item.name}
@@ -85,8 +51,8 @@ const Elements = () => {
                         </Box>
                     )
                 }
-                {/* </ScrollMenu> */}
-            </Flex>
+            </ScrollMenu>
+        </Box>
     )
 }
 
@@ -107,15 +73,14 @@ const LeftArrow = () => {
         }
     }, [isFirstItemVisible, visibleElements]);
     return (
-        <Box
+        !disabled&&<Box
             sx={(theme) => ({
                 background: 'linear-gradient(to left, rgba(255,255,255,0.2), rgba(255,255,255,1))',
                 position: 'relative',
-                left: 20,
+                left: 10,
                 zIndex: 100,
                 padding: '5px 10px 0px 10px',
-                cursor: 'pointer',
-                visibility: disabled ? 'hidden' : 'visible'
+                cursor: 'pointer'
             })}
             onClick={() => scrollPrev()}
         >
@@ -145,15 +110,14 @@ const RightArrow = () => {
     }, [isLastItemVisible, visibleElements]);
 
     return (
-        <Box
+        !disabled&&<Box
             sx={(theme) => ({
                 background: 'linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,1))',
                 position: 'relative',
-                right: 20,
+                right: 10,
                 zIndex: 100,
                 padding: '5px 10px 0px 10px',
-                cursor: 'pointer',
-                visibility: disabled ? 'hidden' : 'visible'
+                cursor: 'pointer'
             })}
             onClick={() => scrollNext()}
         >
@@ -163,5 +127,4 @@ const RightArrow = () => {
         </Box>
     )
 }
-
-export default Elements;
+export default TypesComponents;

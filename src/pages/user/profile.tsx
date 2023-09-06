@@ -3,7 +3,7 @@ import { useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useState, useContext } from "react";
 import { useRouter } from 'next/router';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-import { Collection, CollectionState, Item, ItemState } from "@/types/elements";
+import { Category, Collection, CollectionState, ElementState, Item, ItemState, Types, ElementType } from "@/types/elements";
 import Block from "@/components/Home/Block";
 import { Dropzone } from '@mantine/dropzone';
 import HomeContext from '@/state/index.context';
@@ -29,6 +29,9 @@ const Profile = () => {
     const [isCollectionSaves, setIsCollectionSaves] = useState<boolean>(false);
     const [selectedCollection, setSelectedCollection] = useState<Collection>(CollectionState);
 
+    const [element, setElement] = useState<ElementType>(ElementState);
+    const [types, setTypes] = useState<Types[]>([]);
+
     const {
         state: { avatar_url },
         dispatch: homeDispatch,
@@ -47,10 +50,34 @@ const Profile = () => {
         setWindow();
     }, [])
 
+
     useEffect(() => {
 
     }, [selectedCollection])
 
+    useEffect(() => {
+        if(selectedItem.id != '') {
+            getTypes();
+        }
+    }, [selectedItem])
+
+    const getTypes = async () => {
+        const res = await fetch('/user/profile/get_types', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 
+                element_id: selectedItem.element_id
+            }),
+        })
+        if(res.status == 200){
+            const data_ = await res.json();
+            setElement(data_.element_data);
+            setTypes(data_.types);
+        }
+
+    }
     useEffect(() => {
         if (tabType == 'saves') {
             getSaves();
@@ -126,16 +153,16 @@ const Profile = () => {
         getCollectionItems();
     }, [selectedCollection])
 
-    const getCollectionItems = async() => {
+    const getCollectionItems = async () => {
         setIsLoad(true)
         const res = await fetch('/api/admin/get_collection_items', {
             method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ collection_id: selectedCollection.id }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ collection_id: selectedCollection.id }),
         })
-        if(res.status == 200) {
+        if (res.status == 200) {
             const data_ = await res.json();
             setSaves(data_);
         } else {
@@ -186,7 +213,7 @@ const Profile = () => {
             },
             body: JSON.stringify({ user_id: user?.id, image }),
         })
-
+        
         if (res.status == 200) {
             homeDispatch({
                 field: 'avatar_url',
@@ -197,7 +224,7 @@ const Profile = () => {
         }
     }
 
-    const deleteCollection = async() => {
+    const deleteCollection = async () => {
         setIsLoad(true);
         const res = await fetch('/api/user/profile/delete_collection', {
             method: "POST",
@@ -209,7 +236,7 @@ const Profile = () => {
 
         if (res.status == 200) {
             getCollectionItems();
-        } 
+        }
         setIsLoad(false);
 
     }
@@ -236,10 +263,10 @@ const Profile = () => {
                             align={'center'}
                             gap={'md'}
                         >
-                            <IconTrash color="gray" size={15} style={{cursor: 'pointer'}} onClick={() => {
+                            <IconTrash color="gray" size={15} style={{ cursor: 'pointer' }} onClick={() => {
                                 deleteCollection();
-                            }}/>
-                            <IconTable color="gray" size={15} style={{cursor: 'pointer'}} onClick={() => {setIsCollectionSaves(false); setTabType('saves')}}/>
+                            }} />
+                            <IconTable color="gray" size={15} style={{ cursor: 'pointer' }} onClick={() => { setIsCollectionSaves(false); setTabType('saves') }} />
                         </Flex>
                         <Box>
                             {
@@ -248,26 +275,32 @@ const Profile = () => {
                                 })}>
                                     <Loader />
                                 </Box> :
-                                saves.length == 0 ?
-                                <Text mt={50} align="center" size='3rem' sx={(theme) => ({
-                                    color: theme.colors.gray[3]
-                                })}>
-                                    No {
-                                        tabType
-                                    } Found
-                                </Text> :
-                                <ResponsiveMasonry
-                                    columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 3, 900: 4, 1550: 5, 1800: 6 }}
-                                    style={{ marginTop: '20px' }}
-                                >
-                                    <Masonry>
-                                        {
-                                            saves.map((item: Item, key: number) =>
-                                                <Block key={key} data={item} getSaves={() => { getSaves() }} page_type='admin' setSelectedItem={(item: Item) => { setSelectedItem(item); setOpen(true) }} />
-                                            )
-                                        }
-                                    </Masonry>
-                                </ResponsiveMasonry>
+                                    saves.length == 0 ?
+                                        <Text mt={50} align="center" size='3rem' sx={(theme) => ({
+                                            color: theme.colors.gray[3]
+                                        })}>
+                                            No {
+                                                tabType
+                                            } Found
+                                        </Text> :
+                                        <ResponsiveMasonry
+                                            columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 3, 900: 4, 1550: 5, 1800: 6 }}
+                                            style={{ marginTop: '20px' }}
+                                        >
+                                            <Masonry>
+                                                {
+                                                    saves.map((item: Item, key: number) =>
+                                                        <Block 
+                                                            key={key} 
+                                                            data={item} 
+                                                            getSaves={() => { getSaves() }} 
+                                                            page_type='admin' 
+                                                            setSelectedItem={(item: Item) => { setSelectedItem(item); setOpen(true) }} 
+                                                        />
+                                                    )
+                                                }
+                                            </Masonry>
+                                        </ResponsiveMasonry>
                             }
                         </Box>
                     </Box> :
@@ -456,7 +489,12 @@ const Profile = () => {
                                             </ResponsiveMasonry>
                             }
                         </Box>
-                        <InfoModal open={() => { setOpen(p_o => (!p_o)) }} opened={open} data={selectedItem} isMobile={isMobile} />
+                        <InfoModal
+                            open={() => { setOpen(p_o => (!p_o)) }}
+                            isMobile={isMobile}
+                            opened={open} data={selectedItem}
+                            types={types}
+                        />
                     </Box>
             }
         </Box>

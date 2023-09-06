@@ -1,7 +1,7 @@
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button, Group, Box, Grid, Image, Flex, LoadingOverlay } from '@mantine/core';
 import { FC, useEffect, useState } from 'react';
-import { Category, CategoryState, Collection, ElementState, ElementType, Item, PageType, PageTypeState } from '@/types/elements';
+import { Category, CategoryState, Collection, ElementState, ElementType, Item, PageType, PageTypeState, Types } from '@/types/elements';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 import Events from './Event';
@@ -18,10 +18,18 @@ interface Props {
     data: Item,
     isMobile: boolean,
     getSaves?: () => void | undefined
-    page_type?: string | undefined
+    page_type?: string | undefined,
+    types: Types[],
 }
 
-const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_type }) => {
+const InfoModal: FC<Props> = ({ 
+    opened, open, 
+    data, 
+    isMobile, 
+    getSaves, 
+    page_type, 
+    types,
+ }) => {
 
     const [images, setImages] = useState<string[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
@@ -280,6 +288,8 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_typ
                     open={open}
                     saveItemModal={saveItemModal}
                     isSaved={isSaved}
+                    types={types}
+
                 />
             )
         } else if (pageType.name == 'service') {
@@ -295,7 +305,8 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_typ
                     open={open}
                     saveItemModal={saveItemModal}
                     isSaved={isSaved}
-
+                    types={types}
+                    
                 />
             )
         } else {
@@ -311,11 +322,13 @@ const InfoModal: FC<Props> = ({ opened, open, data, isMobile, getSaves, page_typ
                     open={open}
                     saveItemModal={saveItemModal}
                     isSaved={isSaved}
+                    types={types}
+
                 />
             )
         }
     }
-
+    
     return (
         <Box>
             <Modal opened={opened} onClose={open} fullScreen withCloseButton={false} p={0}>

@@ -36,25 +36,51 @@ export default async function handler(
 }
 
 const insertItem = async(record: any) => {
-    const element_id = '2de204ae-9564-4400-b1ff-557bdb86e21d'
+    const element_id = '5683ddfd-935c-43c5-8c16-94293d46f20a'
 
     const item = record.fields;
-    const category = item.FoodType;
-    const chk_res = await supabaseAdmin.from('asian_categories').select("*").eq('name', category).eq('element_id', element_id);
+    const category = item.SubType;
+    const type = item.TypeofBusiness
+    
     let category_id = 0;
+    let type_id = 0;
+    
+    let chk_res = await supabaseAdmin.from('asian_types').select("*").eq('name', type).eq('element_id', element_id);
+    if(!chk_res.error){
+        if(chk_res.data.length == 0){
+            const add_type =  await supabaseAdmin.from('asian_types').insert([{
+                element_id,
+                name: type
+            }]).select("*").limit(1);
+            if(add_type.data){
+                type_id = add_type.data[0].id;
+            }
+        } else {
+            type_id = chk_res.data[0].id;
+        }
+    }
+
+ 
+
+    chk_res = await supabaseAdmin.from('asian_categories').select("*").eq('name', category).eq('type_id', type_id);
     if(!chk_res.error){
         if(chk_res.data.length == 0){
             const add_cat =  await supabaseAdmin.from('asian_categories').insert([{
-                element_id,
+                type_id,
                 name: category
             }]).select("*").limit(1);
+
             if(add_cat.data){
                 category_id = add_cat.data[0].id;
+            } else {
+                console.log(add_cat.error);   
             }
         } else {
             category_id = chk_res.data[0].id;
         }
     }
+
+
     const { error } = await supabaseAdmin.from('asian_items').insert([{
         name: item.BusinessName,
         category_id,

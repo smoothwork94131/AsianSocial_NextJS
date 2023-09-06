@@ -2,7 +2,9 @@ export interface ElementType{
     name: string,
     summary: string,
     id: string
-    order: string
+    order: string,
+    type_name?:string,
+    category_name?: string
 }
 
 export const ElementState: ElementType = {
@@ -12,15 +14,28 @@ export const ElementState: ElementType = {
     order: '0'
 }
 
-export interface Category {
+export interface Types {
     name: string,
     element_id: string,
+    id: string,
+    category_name?:string
+}
+
+export const TypesState =  {
+    name:'',
+    element_id:'',
+    id:''
+}
+
+export interface Category {
+    name: string,
+    type_id: string,
     id: string
 }
 
 export const CategoryState =  {
     name:'',
-    element_id:'',
+    type_id:'',
     id:''
 }
 

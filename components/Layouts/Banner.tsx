@@ -86,7 +86,6 @@ const Banner = () => {
         setScreenWidth(window.innerWidth);
     }
 
-    
     return (
         <Box>
             <Flex
@@ -108,7 +107,8 @@ const Banner = () => {
                     <Image src='/logo.png' alt='logo' width={130} mt={5} onClick={() => { router.push('/')}}/>
                 }
                 {
-                    screenWidth > 1360 && is_homepage && <Elements />
+                    // is_homepage && 
+                    screenWidth > 1370 && <Elements />
                 }
                 <Select
                     data={convertToSelectList(searchList)}
@@ -136,12 +136,13 @@ const Banner = () => {
                 wrap="wrap"
             >
                 {
-                    screenWidth > 1360 &&
+                    screenWidth > 1370 &&
                     <Auth 
                         setType = {(type) => { setAuthType(type); setOpen(true) }}
                     />
                 }
                 {
+                    screenWidth < 1370 &&
                     <Menu shadow="md" width={200}>
                         <Menu.Target>
                             <Avatar

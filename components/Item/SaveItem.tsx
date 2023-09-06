@@ -123,7 +123,7 @@ const SaveItem: FC<Props> = ({
                             <Box p={15}>
 
                                 <Text size={'lg'} weight={'bold'} align="center">
-                                    Editing Image
+                                    Save to Collection
                                 </Text>
                                 <Flex
                                     mt={20}

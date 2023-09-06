@@ -1,7 +1,7 @@
 import { Modal, Button, Group, Box, Grid, Image, Flex, Text, Rating, Loader } from '@mantine/core';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { FC, useState } from 'react';
-import { Category, Item } from '@/types/elements';
+import { Category, Item, Types } from '@/types/elements';
 import GoogleMapReact from 'google-map-react';
 import Categories from '../Element/Categories';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,6 +10,7 @@ import { useUser } from "@supabase/auth-helpers-react";
 import { notifications } from '@mantine/notifications';
 import AuthModal from '../Layouts/AuthModal';
 import { useRouter } from 'next/router';
+import TypesComponents from '../Element/Types';
 
 interface Props {
     images: string[],
@@ -23,7 +24,8 @@ interface Props {
     saved?: string | undefined
     open: () =>void,
     saveItemModal: () =>void,
-    isSaved: boolean
+    isSaved: boolean,
+    types: Types[]
 }
 
 const Service: FC<Props> = ({
@@ -38,14 +40,15 @@ const Service: FC<Props> = ({
     saved,
     open,
     saveItemModal,
-    isSaved
+    isSaved,
+    types
 }) => {
 
     const user = useUser();
     const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
     const [authType, setAuthType] = useState<string>('login');
     const router = useRouter();
-    
+   
     const deleteItem = async () => {
         if (user) {
             const res = await fetch('/api/item/delete_item', {
@@ -93,7 +96,25 @@ const Service: FC<Props> = ({
                         paddingTop: isMobile ? '0px' : '100px',
                         borderBottom: `${isMobile ? `1px solid ${theme.colors.gray[2]}` : "none"}`
                     })}>
-                        <Image alt='' src={data.image} style={{ width: isMobile ? '100%' : 'auto' }} />
+                        {
+                            data.image == null?
+                            <Box
+                                sx={(theme) =>({
+                                    width: '80%',
+                                    height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
+                                    background: `rgb(
+                                            ${Math.floor(Math.random() * (255 )) + 0}, 
+                                            ${Math.floor(Math.random() * (255)) + 0},
+                                            ${Math.floor(Math.random() * (255)) + 0})`,
+                                    '&:hover' :{
+                                        opacity: '0.7',
+                                    },
+                                    cursor: 'pointer',
+                                    borderRadius: '10px'
+                                })}
+                            ></Box>:
+                            <Image alt='' src={data.image} style={{ width: isMobile ? '100%' : 'auto' }} />
+                        }
                     </Box>
                 </Grid.Col>
 
@@ -131,11 +152,16 @@ const Service: FC<Props> = ({
                             <Text size='1rem' color='gray'>({Number(data.rating)})</Text>
 
                         </Flex>
-                        <Categories categories={categories}
+                        {/* <Categories categories={categories}
                             selectedCategory={
                                 categories.filter(category => category.id == data.category_id)[0]
                             }
                             selectCategory={selectCategory}
+                        /> */}
+                        <TypesComponents 
+                            element_name={element_name}
+                            types={types}
+                            type_name={''}
                         />
                         <Box>
                             <Text size='1rem' weight={400} sx={(theme) => ({
