@@ -56,7 +56,7 @@ const Category = () => {
         setType('edit');
         setSelectedCategoryId(item.id);
         form.setFieldValue('name', item.name);
-        form.setFieldValue('element_id', item.element_id);
+        form.setFieldValue('element_id', item.type_id);
         open();
     }
 
@@ -200,7 +200,7 @@ const Category = () => {
                             filterCategories().map((item: Category, key) =>
                                 <tr key={key} onClick={() => { editModal(item) }}>
                                     <td>{key + 1}</td>
-                                    <td>{elements.filter(element => element.id == item.element_id)[0].name}</td>
+                                    <td>{elements.filter(element => element.id == item.type_id)[0].name}</td>
                                     <td>{item.name}</td>
                                 </tr>
                             )
