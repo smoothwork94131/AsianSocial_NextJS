@@ -135,8 +135,8 @@ const Service: FC<Props> = ({
                             <Flex
                                 gap='lg'
                             >
-                                <FontAwesomeIcon icon={faReply} color='gray' style={{ fontSize: '15px' }} />
-                                <FontAwesomeIcon icon={faFlag} color='gray' style={{ fontSize: '15px' }} />
+                                {/* <FontAwesomeIcon icon={faReply} color='gray' style={{ fontSize: '15px' }} />
+                                <FontAwesomeIcon icon={faFlag} color='gray' style={{ fontSize: '15px' }} /> */}
 
                             </Flex>
                         </Flex>
