@@ -60,8 +60,9 @@ const Profile = () => {
             getTypes();
         }
     }, [selectedItem])
-    
+
     const getTypes = async () => {
+        setTypes([]);
         const res = await fetch('/user/profile/get_types', {
             method: "POST",
             headers: {

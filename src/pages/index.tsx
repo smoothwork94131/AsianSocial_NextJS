@@ -23,6 +23,7 @@ const Home = () => {
     }, [])
 
     const getTypes = async () => {
+        setTypes([]);
         const res = await fetch('/api/user/profile/get_types', {
             method: "POST",
             headers: {
