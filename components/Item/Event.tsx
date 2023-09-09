@@ -22,8 +22,8 @@ interface Props {
     element_name: string,
     getSaves?: () => void | undefined,
     saved?: string | undefined
-    open: () =>void,
-    saveItemModal: () =>void,
+    open: () => void,
+    saveItemModal: () => void,
     isSaved: boolean,
     types: Types[]
 
@@ -49,7 +49,7 @@ const Service: FC<Props> = ({
     const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
     const [authType, setAuthType] = useState<string>('login');
     const router = useRouter();
-    
+
     const deleteItem = async () => {
         if (user) {
             const res = await fetch('/api/item/delete_item', {
@@ -66,8 +66,8 @@ const Service: FC<Props> = ({
                     message: data_.msg,
                     color: 'default'
                 })
-                if(getSaves){
-                    getSaves(); 
+                if (getSaves) {
+                    getSaves();
                     open();
                 }
             } else {
@@ -88,7 +88,7 @@ const Service: FC<Props> = ({
                 padding: isMobile ? 0 : 20
             })}
         >
-            
+
             <Grid gutter={0}>
                 <Grid.Col lg={8} sm={12} md={8}>
                     <Box sx={(theme) => ({
@@ -98,23 +98,23 @@ const Service: FC<Props> = ({
                         borderBottom: `${isMobile ? `1px solid ${theme.colors.gray[2]}` : "none"}`
                     })}>
                         {
-                            data.image == null?
-                            <Box
-                                sx={(theme) =>({
-                                    width: '80%',
-                                    height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
-                                    background: `rgb(
-                                            ${Math.floor(Math.random() * (255 )) + 0}, 
+                            data.image == null ?
+                                <Box
+                                    sx={(theme) => ({
+                                        width: '80%',
+                                        height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
+                                        background: `rgb(
+                                            ${Math.floor(Math.random() * (255)) + 0}, 
                                             ${Math.floor(Math.random() * (255)) + 0},
                                             ${Math.floor(Math.random() * (255)) + 0})`,
-                                    '&:hover' :{
-                                        opacity: '0.7',
-                                    },
-                                    cursor: 'pointer',
-                                    borderRadius: '10px'
-                                })}
-                            ></Box>:
-                            <Image alt='' src={data.image} style={{ width: isMobile ? '100%' : 'auto' }} />
+                                        '&:hover': {
+                                            opacity: '0.7',
+                                        },
+                                        cursor: 'pointer',
+                                        borderRadius: '10px'
+                                    })}
+                                ></Box> :
+                                <Image alt='' src={data.image} style={{ width: isMobile ? '100%' : 'auto' }} />
                         }
                     </Box>
                 </Grid.Col>
@@ -130,7 +130,7 @@ const Service: FC<Props> = ({
                         >
                             <Button onClick={() => { saveItemModal() }}>
                                 {
-                                    isSaved ? 'Edit':'Save'
+                                    isSaved ? 'Edit' : 'Save'
                                 }
                             </Button>
                             <Flex
@@ -153,7 +153,7 @@ const Service: FC<Props> = ({
                             <Text size='1rem' color='gray'>(78)</Text>
 
                         </Flex> */}
-                        <TypesComponents 
+                        <TypesComponents
                             element_name={element_name}
                             types={types}
                             type_name={''}
@@ -192,7 +192,7 @@ const Service: FC<Props> = ({
                                 <Box
                                     sx={(theme) => ({ height: '300px', width: '100%' })}
                                 >
-                                    <GoogleMapReact
+                                    {/* <GoogleMapReact
                                         bootstrapURLKeys={{ key: "AIzaSyB6hZIv8mG7cOvX-AGUbB-vLeR5qZ1-QXI" }}
                                         defaultCenter={{
                                             lat: 44.900209366013954,
@@ -202,8 +202,10 @@ const Service: FC<Props> = ({
                                         yesIWantToUseGoogleMapApiInternals
                                     >
 
-                                    </GoogleMapReact>
+                                    </GoogleMapReact> */}
+                                    <iframe width='100%' height="300px" src={data.map_url} style={{ border: 0 }}>
 
+                                    </iframe>
 
                                 </Box>
                             </Box>

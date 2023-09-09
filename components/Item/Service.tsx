@@ -208,6 +208,7 @@ const Service: FC<Props> = ({
                                     >
 
                                     </GoogleMapReact> */}
+                                    
                                     <iframe width='100%' height="300px" src={data.map_url} style={{border:0}}>
 
                                     </iframe>
