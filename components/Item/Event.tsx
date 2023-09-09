@@ -103,13 +103,7 @@ const Service: FC<Props> = ({
                                     sx={(theme) => ({
                                         width: '80%',
                                         height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
-                                        background: `rgb(
-                                            ${Math.floor(Math.random() * (255)) + 0}, 
-                                            ${Math.floor(Math.random() * (255)) + 0},
-                                            ${Math.floor(Math.random() * (255)) + 0})`,
-                                        '&:hover': {
-                                            opacity: '0.7',
-                                        },
+                                        backgroundImage: 'linear-gradient(180deg, gray, white)',
                                         cursor: 'pointer',
                                         borderRadius: '10px'
                                     })}
