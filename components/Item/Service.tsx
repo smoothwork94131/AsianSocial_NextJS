@@ -100,7 +100,7 @@ const Service: FC<Props> = ({
                             data.image == null ?
                                 <Box
                                     sx={(theme) => ({
-                                        width: '80%',
+                                        width: '300px',
                                         height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
                                         backgroundImage: 'linear-gradient(180deg, gray, white)',
                                         cursor: 'pointer',

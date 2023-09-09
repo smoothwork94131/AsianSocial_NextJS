@@ -94,9 +94,9 @@ const insertItem = async(record: any) => {
             rating: item.CustomerRating,
             phone_number: item.PhoneNumber,
             page_type_id: '8798b644-0e8c-4c43-8529-7023b187fc3d',
-            map_url: item.MapUrl
+            map_url: item.MapUrl,
+            details: item.Details
         }]);
-        console.log(error);
     }
 }
 
