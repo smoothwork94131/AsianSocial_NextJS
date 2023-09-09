@@ -83,12 +83,6 @@ const Home = () => {
                 index++;
             }
             setItems(_items);
-            // for(let k=0; k<100; k++){
-            //     for(let j=0; j<data.length; j++){
-            //         _items.push(data[j]);
-            //     }
-            // }
-
             baseItem = data;
         }
         setIsLoad(false);

@@ -36,7 +36,7 @@ const Categories: FC<Props> = ({
                         <Box key={key} ml={5} sx={(theme) => ({
                         })}>
                             
-                            <Link href={`/${element_name}/${type_name}/${item.name}`}>
+                            <Link href={`/${element_name}/${type_name}/${item.name.replaceAll('/','_')}`}>
                                 <Button
                                     radius={10}
                                     sx={(theme) => ({

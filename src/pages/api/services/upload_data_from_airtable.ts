@@ -2,7 +2,7 @@
 import { airtable, Businesses_airtable } from "@/utils/server/airtable";
 import type { NextApiRequest, NextApiResponse } from 'next'
 import axios from "axios";
-import { supabaseAdmin } from "@/utils/server/supabase-admin";
+import { supabase, supabaseAdmin } from "@/utils/server/supabase-admin";
 type Data = {
     name: string
 }
@@ -41,7 +41,7 @@ const insertItem = async(record: any) => {
     const item = record.fields;
     const category = item.SubType;
     const type = item.TypeofBusiness
-    
+    const name = item.name;
     let category_id = 0;
     let type_id = 0;
     
@@ -79,19 +79,35 @@ const insertItem = async(record: any) => {
             category_id = chk_res.data[0].id;
         }
     }
-
-
-    const { error } = await supabaseAdmin.from('asian_items').insert([{
-        name: item.BusinessName,
-        category_id,
-        sites_url: item.URL,
-        image: item.imageURL,
-        address: item.Address,  
-        element_id,
-        rating: item.CustomerRating,
-        phone_number: item.PhoneNumber,
-        page_type_id: '8798b644-0e8c-4c43-8529-7023b187fc3d'
-    }]);
     
+    const chk_records = await chkExistRecord(name);
+    console.log(chk_records);
+
+    if(chk_records.length == 0) {
+        const { error } = await supabaseAdmin.from('asian_items').insert([{
+            name: item.BusinessName,
+            category_id,
+            sites_url: item.URL,
+            image: item.imageURL,
+            address: item.Address,  
+            element_id,
+            rating: item.CustomerRating,
+            phone_number: item.PhoneNumber,
+            page_type_id: '8798b644-0e8c-4c43-8529-7023b187fc3d',
+            map_url: item.MapUrl
+        }]);
+        console.log(error);
+    }
+}
+
+
+const chkExistRecord = async (name: string) => {
+    const { data } = await supabaseAdmin.from('asian_items').select('*').eq('name', name);
+    if(data) {
+        if(data.length > 0) {
+            return data;
+        }
+    }
+    return [];
 }
 

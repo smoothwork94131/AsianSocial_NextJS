@@ -57,7 +57,8 @@ export interface Item
     page_type_id: string,
     element_id: string,
     category_name?: string,
-    rating: string
+    rating: string,
+    map_url: string
 }
 
 export const  ItemState: Item = {
@@ -76,7 +77,9 @@ export const  ItemState: Item = {
     page_type_id: '',
     name: '',
     element_id:'',
-    rating:'0'
+    rating:'0',
+    map_url: ''
+
 }
 
 

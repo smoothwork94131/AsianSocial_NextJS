@@ -197,7 +197,7 @@ const Service: FC<Props> = ({
                                 <Box
                                     sx={(theme) => ({ height: '300px', width: '100%' })}
                                 >
-                                    <GoogleMapReact
+                                    {/* <GoogleMapReact
                                         bootstrapURLKeys={{ key: "AIzaSyB6hZIv8mG7cOvX-AGUbB-vLeR5qZ1-QXI" }}
                                         defaultCenter={{
                                             lat: 44.900209366013954,
@@ -207,9 +207,10 @@ const Service: FC<Props> = ({
                                         yesIWantToUseGoogleMapApiInternals
                                     >
 
-                                    </GoogleMapReact>
+                                    </GoogleMapReact> */}
+                                    <iframe width='100%' height="300px" src={data.map_url} style={{border:0}}>
 
-
+                                    </iframe>
                                 </Box>
                             </Box>
                         }

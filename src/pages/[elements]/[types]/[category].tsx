@@ -19,8 +19,20 @@ const Elements = () => {
     const router = useRouter();
     const isMobile = useMediaQuery(`(max-width: 760px)`);
 
-    const { elements: element_name, category: category_name, types: type_name } = router.query;
+    let { elements: element_name, category: category_name, types: type_name } = router.query;
 
+    if(category_name && typeof category_name == 'string'){
+        category_name = category_name.replaceAll("_", "/");
+    }
+
+    if(element_name && typeof element_name == 'string'){
+        element_name = element_name.replaceAll("_", "/");
+    }
+
+    if(type_name && typeof type_name == 'string'){
+        type_name = type_name.replaceAll("_", "/");
+    }
+    
     console.log('---------------Router Query----------------');
     
     const [categories, setCatetories] = useState<Category[]>([]);
@@ -34,6 +46,7 @@ const Elements = () => {
     const [selectedItem, setSelectedItem] = useState<Item>(ItemState);
     const [ open, setOpen ] = useState<boolean>(false);
 
+    
     useEffect(() => {
         setItems([]);
         setCatetories([]);
