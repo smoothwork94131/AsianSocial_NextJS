@@ -132,10 +132,10 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
                         </Box>
                     </form>
                     {/* {
-                    type=='login'?<Text align="center" color='gray' size={15}>
-                    Forgot your password
-                </Text>:<></>
-                }
+                        type=='login'?<Text align="center" color='gray' size={15}>
+                            Forgot your password
+                        </Text>:<></>
+                    }
                  */}
                     <Box className="auth-buttons">
                         {/* <Button fullWidth size="md" color="indigo" style={{ textAlign: 'left' }}>

@@ -24,7 +24,6 @@ export default async function handler(
                 let category_name = 'no';
                 const { error, data} = await supabaseAdmin.from('asian_categories').select("*").neq('name', null).eq('type_id', types[k].id);
                 if(data && data.length > 0){
-                    
                     for(let j=0; j<data.length; j++){
                         if(data[j].name != null){
                             category_name = data[j].name;

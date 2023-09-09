@@ -15,11 +15,12 @@ const Home = () => {
     const [ open, setOpen ] = useState<boolean>(false);
     const [element, setElement] = useState<ElementType>(ElementState);
     const [types, setTypes] = useState<Types[]>([]);
+    const [loadCount, setLoadCount] = useState<number>(0);
 
     let baseItem: Item[] = [];
     useEffect(() => {
         getItems();
-        window.addEventListener('scroll', handleScroll);
+        // window.addEventListener('scroll', handleScroll);
     }, [])
 
     const getTypes = async () => {
@@ -42,39 +43,52 @@ const Home = () => {
     }
     
     function handleScroll() {
-        if(isLoad) return;
         const {
             scrollTop,
             scrollHeight,
             clientHeight
         } = document.documentElement;
-        if (scrollTop + clientHeight >= scrollHeight - 100) {
+        if (scrollTop + clientHeight >= scrollHeight - 5) {
             //  setIsLoad(true);
             const merged = items;
             const cnt = baseItem.length > 30?30:baseItem.length;
             for (let k = 0; k < cnt; k++) {
-                merged.push(baseItem[baseItem.length - k - 1])
+                merged.push(baseItem[k])
             }
-            setItems(merged)
+            setItems(merged);
+            console.log(merged);
         } else {
-            setIsLoad(false);
             return;
         }
     }
-
-    useEffect(() => {
-        if(isLoad){
-            setIsLoad(false);
-        }
-    }, [items])
     
+
     const getItems = async () => {
         setIsLoad(true);
         const res = await fetch('/api/home/get_items');
         if (res.status == 200) {
             const data = await res.json();
-            setItems(data);
-            
+            const _items: Item[] = [];
+            let cnt = 0;
+            let index = 0;
+            while(true) {
+                if(cnt === 1000) {
+                    break;
+                }
+                if(index > data.length -1){
+                    index=0;
+                } 
+                _items.push(data[index]);
+                cnt++;
+                index++;
+            }
+            setItems(_items);
+            // for(let k=0; k<100; k++){
+            //     for(let j=0; j<data.length; j++){
+            //         _items.push(data[j]);
+            //     }
+            // }
+
             baseItem = data;
         }
         setIsLoad(false);
@@ -101,6 +115,9 @@ const Home = () => {
                     </Masonry>
                 </ResponsiveMasonry>
             </Box>
+            <div className={`${loadCount}`}>
+                
+            </div>
             {
                 isLoad && <Box
                     pt={20}

@@ -28,16 +28,19 @@ const Block:FC<Props> = ({data, getSaves, page_type, setSelectedItem}) => {
                 <Box
                     sx={(theme) =>({
                         width: '100%',
-                        height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
-                        background: `rgb(
-                                ${Math.floor(Math.random() * (255 )) + 0}, 
-                                ${Math.floor(Math.random() * (255)) + 0},
-                                ${Math.floor(Math.random() * (255)) + 0})`,
-                        '&:hover' :{
-                            opacity: '0.7',
-                        },
+                        // height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
+                        height: 250,
+                        // background: `rgb(
+                        //         ${Math.floor(Math.random() * (255 )) + 0}, 
+                        //         ${Math.floor(Math.random() * (255)) + 0},
+                        //         ${Math.floor(Math.random() * (255)) + 0})`,
+                        // '&:hover' :{
+                        //     opacity: '0.7',
+                        // },
+                        backgroundImage: 'linear-gradient(180deg, gray, white)',
                         cursor: 'pointer',
-                        borderRadius: '10px'
+                        borderRadius: '10px',
+                        border: '1px solid gray'
                     })}
                     onClick={() => {handleSelectItem(data)}}
                 >
