@@ -112,7 +112,7 @@ const Service: FC<Props> = ({
                         }
                     </Box>
                 </Grid.Col>
-
+                
                 <Grid.Col lg={4} sm={12} md={4} p={20}>
                     <Flex
                         gap='lg'
