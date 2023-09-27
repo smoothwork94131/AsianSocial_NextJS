@@ -156,7 +156,7 @@ const getPageUrls = async (url: string) => {
         console.log("-------------Error------------");
         console.log(url);
     }
-
+    
     if (links.length == 0) {
         links.push(url);
     }
