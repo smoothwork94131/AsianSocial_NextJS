@@ -25,7 +25,8 @@ interface Props {
     open: () => void,
     saveItemModal: () => void,
     isSaved: boolean,
-    types: Types[]
+    types: Types[],
+    loadCategories: boolean
 }
 
 const Service: FC<Props> = ({
@@ -41,7 +42,8 @@ const Service: FC<Props> = ({
     open,
     saveItemModal,
     isSaved,
-    types
+    types,
+    loadCategories
 }) => {
 
     const user = useUser();
@@ -152,12 +154,15 @@ const Service: FC<Props> = ({
                             }
                             selectCategory={selectCategory}
                         /> */}
-                        <TypesComponents
-                            element_name={element_name}
-                            types={types}
-                            type_name={''}
-                            open={open}
-                        />
+                        {
+                            loadCategories ? <Loader variant='dots' /> :
+                                <TypesComponents
+                                    element_name={element_name}
+                                    types={types}
+                                    type_name={''}
+                                    open={open}
+                                />
+                        }
                         <Box>
                             <Text size='1rem' weight={400} sx={(theme) => ({
                                 color: "black",

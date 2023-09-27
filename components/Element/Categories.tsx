@@ -19,9 +19,13 @@ const Categories: FC<Props> = ({
     category_name,
     element_name
 }) => {
-    
     return (
-        <Box>
+        <Box
+            pb={30}
+            sx={(theme) =>({
+                
+            })}
+        >
             <ScrollMenu
                 LeftArrow={
                     <LeftArrow />

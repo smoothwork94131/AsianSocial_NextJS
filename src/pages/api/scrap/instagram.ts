@@ -6,7 +6,7 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const html = await await fetchPageContent('https://www.instagram.com/explore/');
+    const html = await fetchPageContent('https://www.instagram.com/web/search/topsearch/?context=blended&query=avengers');
     console.log(html);
     res.status(200).json(html);
 }

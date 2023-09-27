@@ -30,7 +30,7 @@ const InfoModal: FC<Props> = ({
     page_type, 
     types,
  }) => {
-
+    
     const [images, setImages] = useState<string[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [isLoad, setIsLoad] = useState<boolean>(false);
@@ -40,6 +40,7 @@ const InfoModal: FC<Props> = ({
     const [collections, setCollections] = useState<Collection[]>([]);
     const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
     const [authType, setAuthType] = useState<string>('login');
+    const [loadCategories, setLoadCategories] = useState<boolean>(false);
     const [isSaved, setIsSaved] = useState<boolean>(false);
     const router = useRouter();
     const user = useUser();
@@ -54,7 +55,7 @@ const InfoModal: FC<Props> = ({
             getCollections();
         }
     }, [data])
-
+    
     useEffect(() => {
 
         if (user) {
@@ -252,6 +253,7 @@ const InfoModal: FC<Props> = ({
     }
 
     const getCategory = async () => {
+        setLoadCategories(true);
         const res = await fetch('/api/item/get_categories', {
             method: 'POST',
             headers: {
@@ -266,6 +268,7 @@ const InfoModal: FC<Props> = ({
             const data_ = await res.json();
             setCategories(data_);
         }
+        setLoadCategories(false);
     }
 
     const rederItemPage = () => {
@@ -289,7 +292,7 @@ const InfoModal: FC<Props> = ({
                     saveItemModal={saveItemModal}
                     isSaved={isSaved}
                     types={types}
-
+                    loadCategories={loadCategories}
                 />
             )
         } else if (pageType.name == 'service') {
@@ -306,7 +309,7 @@ const InfoModal: FC<Props> = ({
                     saveItemModal={saveItemModal}
                     isSaved={isSaved}
                     types={types}
-                    
+                    loadCategories={loadCategories}
                 />
             )
         } else {
@@ -323,7 +326,7 @@ const InfoModal: FC<Props> = ({
                     saveItemModal={saveItemModal}
                     isSaved={isSaved}
                     types={types}
-
+                    loadCategories={loadCategories}
                 />
             )
         }

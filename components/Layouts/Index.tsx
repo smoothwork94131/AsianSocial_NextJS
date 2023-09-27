@@ -49,7 +49,7 @@ const Index: FC<Props> = ({ children }) => {
             //         Application footer
             //     </Footer>
             // }
-
+            
             navbar={
                 isAdmin ? <Navbar pt="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
                     <AdminNavbar closeNavbar={() =>{setOpened((o) => !o)}}/>

@@ -26,7 +26,7 @@ interface Props {
     saveItemModal: () => void,
     isSaved: boolean,
     types: Types[]
-
+    loadCategories: boolean
 }
 
 const Service: FC<Props> = ({
@@ -42,7 +42,8 @@ const Service: FC<Props> = ({
     open,
     saveItemModal,
     isSaved,
-    types
+    types,
+    loadCategories
 }) => {
 
     const user = useUser();
@@ -112,7 +113,7 @@ const Service: FC<Props> = ({
                         }
                     </Box>
                 </Grid.Col>
-                
+
                 <Grid.Col lg={4} sm={12} md={4} p={20}>
                     <Flex
                         gap='lg'
@@ -147,12 +148,16 @@ const Service: FC<Props> = ({
                             <Text size='1rem' color='gray'>(78)</Text>
 
                         </Flex> */}
-                        <TypesComponents
-                            element_name={element_name}
-                            types={types}
-                            type_name={''}
-                            open={open}
-                        />
+                        {
+                            loadCategories ? <Loader variant='dots' /> :
+
+                                <TypesComponents
+                                    element_name={element_name}
+                                    types={types}
+                                    type_name={''}
+                                    open={open}
+                                />
+                        }
                         <Box>
                             <Text size='1rem' weight={400} sx={(theme) => ({
                                 color: "black",
