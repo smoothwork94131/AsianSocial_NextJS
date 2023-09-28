@@ -31,7 +31,7 @@ const InfoModal: FC<Props> = ({
     types,
  }) => {
     
-    const [images, setImages] = useState<string[]>([]);
+    const [images, setImages] = useState<any>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [isLoad, setIsLoad] = useState<boolean>(false);
     const [element, setElement] = useState<ElementType>(ElementState);
@@ -88,7 +88,7 @@ const InfoModal: FC<Props> = ({
             }
         }
     }
-    
+
     const deleteCollection = async () => {
         if (user) {
             setIsLoad(true);
