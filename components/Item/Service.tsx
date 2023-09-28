@@ -11,6 +11,7 @@ import { notifications } from '@mantine/notifications';
 import AuthModal from '../Layouts/AuthModal';
 import { useRouter } from 'next/router';
 import TypesComponents from '../Element/Types';
+import Link from 'next/link';
 
 interface Props {
     images: string[],
@@ -90,10 +91,10 @@ const Service: FC<Props> = ({
                 backgroundImage: "linear-gradient(transparent 75%, rgb(255, 255, 255) 100%), radial-gradient(at 0% 0%, rgba(39, 36, 31, 0.25) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(79, 72, 69, 0.23) 0px, transparent 50%), radial-gradient(at 40% 40%, rgba(128, 123, 121, 0.21) 0px, transparent 50%), radial-gradient(at 40% 68%, rgba(138, 94, 55, 0.2) 0px, transparent 50%), radial-gradient(at 0% 75%, rgba(217, 222, 226, 0.18) 0px, transparent 50%), radial-gradient(at 80% 0%, rgb(255, 255, 255) 0px, transparent 50%), radial-gradient(at 80% 50%, rgb(255, 255, 255) 0px, transparent 50%), radial-gradient(at 80% 50%, rgb(255, 255, 255) 0px, transparent 50%); background-position: center center; background-size: cover; background-repeat: no-repeat"
             })}
         >
-            <Grid 
+            <Grid
                 gutter={0}
                 pb={40}
-                sx={(theme) =>({
+                sx={(theme) => ({
                     borderBottom: `1px solid #cfcfcf`
                 })}
             >
@@ -119,7 +120,7 @@ const Service: FC<Props> = ({
                                 ></Box>
                                 </Flex> :
                                 <Flex justify={'center'} align={'center'}>
-                                    <Image alt='' src={data.image} style={{ width: isMobile ? '100%' : '50%', height: 'auto' }} radius={5}/>
+                                    <Image alt='' src={data.image} style={{ width: isMobile ? '100%' : '50%', height: 'auto' }} radius={5} />
                                 </Flex>
                         }
                     </Box>
@@ -172,21 +173,27 @@ const Service: FC<Props> = ({
                                     open={open}
                                 />
                         } */}
-                        {
-                            <Button
-                                radius={10}
-                                sx={(theme) => ({
-                                    background: theme.colors.green[3],
-                                    color: "black",
-                                    fontWeight: 600,
-                                    '&:hover': { background: theme.colors.gray[3] }
-                                })}
-                            >
-                                {
-                                    data.category_name
-                                }
-                            </Button>
-                        }
+                        <Box>
+                            <Link href={`/${element_name}/${
+                                types.filter((item: Types) => item.id == data.type_id)[0].name
+                            }/items`} onClick={() => { open() }}>
+
+                                <Button
+                                    radius={10}
+                                    sx={(theme) => ({
+                                        background: theme.colors.gray[3],
+                                        color: "black",
+                                        fontWeight: 600,
+                                        '&:hover': { background: theme.colors.gray[3] }
+                                    })}
+                                >
+                                    {
+                                        types.filter((item: Types) => item.id == data.type_id)[0].name
+                                    }
+                                </Button>
+                            </Link>
+                        </Box>
+
                         <Box>
                             <Text size='1rem' weight={400} sx={(theme) => ({
                                 color: "black",
@@ -212,12 +219,12 @@ const Service: FC<Props> = ({
                             <Text size='1rem' weight={400} sx={(theme) => ({
                                 color: "black"
                             })}>
-                                <a style={{color: 'black'}}> {data.facebook} </a>
+                                <a style={{ color: 'black' }}> {data.facebook} </a>
                             </Text>
                             <Text size='1rem' weight={400} sx={(theme) => ({
                                 color: "black"
                             })}>
-                                <a style={{color: 'black'}}> {data.instagram} </a>
+                                <a style={{ color: 'black' }}> {data.instagram} </a>
                             </Text>
                         </Box>
                         {
@@ -268,7 +275,7 @@ const Service: FC<Props> = ({
 
                 </Grid.Col>
             </Grid>
-            <Box 
+            <Box
                 p={20}
                 mt={20}
                 mb={40}

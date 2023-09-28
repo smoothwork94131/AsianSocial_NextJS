@@ -58,7 +58,10 @@ export interface Item
     element_id: string,
     category_name?: string,
     rating: string,
-    map_url: string
+    map_url: string,
+    facebook: string,
+    instagram: string,
+    type_id: string
 }
 
 export const  ItemState: Item = {
@@ -78,8 +81,10 @@ export const  ItemState: Item = {
     name: '',
     element_id:'',
     rating:'0',
-    map_url: ''
-
+    map_url: '',
+    facebook: '',
+    instagram:'',
+    type_id: ''
 }
 
 

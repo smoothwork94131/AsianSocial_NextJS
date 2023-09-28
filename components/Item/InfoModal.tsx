@@ -57,7 +57,6 @@ const InfoModal: FC<Props> = ({
     }, [data])
     
     useEffect(() => {
-
         if (user) {
             getCollections();
         }
@@ -85,11 +84,11 @@ const InfoModal: FC<Props> = ({
                     }
                 })
             } else {
-
+                
             }
         }
     }
-
+    
     const deleteCollection = async () => {
         if (user) {
             setIsLoad(true);
