@@ -1,6 +1,6 @@
 import { Modal, Button, Group, Box, Grid, Image, Flex, Text, Rating, Loader, Textarea } from '@mantine/core';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-import { FC, useState } from 'react';
+import { FC, useState, useRef } from 'react';
 import { Category, Item, Types } from '@/types/elements';
 import GoogleMapReact from 'google-map-react';
 import Categories from '../Element/Categories';
@@ -12,9 +12,11 @@ import AuthModal from '../Layouts/AuthModal';
 import { useRouter } from 'next/router';
 import TypesComponents from '../Element/Types';
 import Link from 'next/link';
+import Autoplay from 'embla-carousel-autoplay';
+import { Carousel } from '@mantine/carousel';
 
 interface Props {
-    images: string[],
+    images: any,
     isMobile: boolean,
     data: Item,
     categories: Category[],
@@ -51,6 +53,7 @@ const Service: FC<Props> = ({
     const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
     const [authType, setAuthType] = useState<string>('login');
     const router = useRouter();
+    const autoplay = useRef(Autoplay({ delay: 2000 }));
 
     const deleteItem = async () => {
         if (user) {
@@ -120,7 +123,31 @@ const Service: FC<Props> = ({
                                 ></Box>
                                 </Flex> :
                                 <Flex justify={'center'} align={'center'}>
-                                    <Image alt='' src={data.image} style={{ width: isMobile ? '100%' : '50%', height: 'auto' }} radius={5} />
+                                    {/* <Image alt='' src={data.image} style={{ width: isMobile ? '100%' : '50%', height: 'auto' }} radius={5} /> */}
+                                    <Carousel
+                                        withIndicators
+                                        onMouseEnter={autoplay.current.stop}
+                                        onMouseLeave={autoplay.current.reset}
+                                        sx={(theme) =>({
+                                            width: '50%'
+                                        })}
+                                    >
+                                        {/* <Carousel.Slide>1</Carousel.Slide>
+                                        <Carousel.Slide>2</Carousel.Slide>
+                                        <Carousel.Slide>3</Carousel.Slide> */}
+                                        {/* ...other slides */}
+                                        {
+                                            Object.keys(images).includes('videos') ?
+                                                images.videos.map((video: any, key: number) =>
+                                                    <Carousel.Slide key={key}>
+                                                        <a href={video.page_url} target='_blank'>
+                                                            <Image alt='' src={video.image_url} style={{ width: isMobile ? '100%' : '100%', height: 'auto' }} radius={5} key={key} />
+                                                        </a>
+                                                    </Carousel.Slide>
+                                                )
+                                                : <></>
+                                        }
+                                    </Carousel>
                                 </Flex>
                         }
                     </Box>
@@ -173,26 +200,30 @@ const Service: FC<Props> = ({
                                     open={open}
                                 />
                         } */}
-                        <Box>
-                            <Link href={`/${element_name}/${
-                                types.filter((item: Types) => item.id == data.type_id)[0].name
-                            }/items`} onClick={() => { open() }}>
+                        {
+                            types.length == 0 ?
+                                <></> :
+                                <Box>
+                                    <Link href={`/${element_name}/${types.filter((item: Types) => item.id == data.type_id)[0].name
+                                        }/items`} onClick={() => { open() }}>
 
-                                <Button
-                                    radius={10}
-                                    sx={(theme) => ({
-                                        background: theme.colors.gray[3],
-                                        color: "black",
-                                        fontWeight: 600,
-                                        '&:hover': { background: theme.colors.gray[3] }
-                                    })}
-                                >
-                                    {
-                                        types.filter((item: Types) => item.id == data.type_id)[0].name
-                                    }
-                                </Button>
-                            </Link>
-                        </Box>
+                                        <Button
+                                            radius={10}
+                                            sx={(theme) => ({
+                                                background: theme.colors.gray[3],
+                                                color: "black",
+                                                fontWeight: 600,
+                                                '&:hover': { background: theme.colors.gray[3] }
+                                            })}
+                                        >
+                                            {
+                                                types.filter((item: Types) => item.id == data.type_id)[0].name
+                                            }
+                                        </Button>
+                                    </Link>
+                                </Box>
+                        }
+
 
                         <Box>
                             <Text size='1rem' weight={400} sx={(theme) => ({
@@ -287,8 +318,9 @@ const Service: FC<Props> = ({
                         >
                             <Masonry gutter='10px'>
                                 {
-                                    images.map((image, key) =>
-                                        <Box key={key} p={10}><Image src={image} alt='' radius={5} style={{ height: '300px' }} /></Box>
+                                    images.images.map((image: string, key: number) =>
+                                        image ?
+                                            <Box key={key} p={10}><Image src={image} alt='' radius={5} style={{ height: '300px' }} /></Box> : <></>
                                     )
                                 }
                             </Masonry>
