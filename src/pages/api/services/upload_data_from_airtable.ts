@@ -140,6 +140,7 @@ const insertBussinessItem = async(record: any) => {
             instagram,
             facebook,
             zip_code,
+            type_id
         }]).select("*").limit(1);
         if(data) {
             item_id = data[0].id;
@@ -160,7 +161,8 @@ const insertBussinessItem = async(record: any) => {
             instagram,
             facebook,
             email,
-            zip_code
+            zip_code,
+            type_id
         }]).eq("id", chk_records[0].id);
         item_id = chk_records[0].id;
     }
@@ -256,10 +258,11 @@ const insertRestaurantItem = async(record: any) => {
             phone_number: item.PhoneNumber,
             page_type_id: '8798b644-0e8c-4c43-8529-7023b187fc3d',
             map_url: item.MapUrl,
-            details: item.Details,
             instagram,
+            details: item.Details,
             facebook,
             zip_code,
+            type_id
         }]).select("*").limit(1);
         if(data) {
             item_id = data[0].id;
@@ -280,7 +283,8 @@ const insertRestaurantItem = async(record: any) => {
             instagram,
             facebook,
             email,
-            zip_code
+            zip_code,
+            type_id
         }]).eq("id", chk_records[0].id);
         item_id = chk_records[0].id;
     }

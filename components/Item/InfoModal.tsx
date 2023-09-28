@@ -162,9 +162,9 @@ const InfoModal: FC<Props> = ({
         })
         return exist;
     }
-
+    
     const changeCollectionActive = async (collection: Collection) => {
-        setIsLoad(true);
+        setIsLoad(true);    
         const res = await fetch('/api/item/change_collection_active', {
             method: 'POST',
             headers: {
@@ -355,7 +355,7 @@ const InfoModal: FC<Props> = ({
                     <FontAwesomeIcon icon={faClose} color='white' style={{ fontSize: '25px', marginTop: '13px' }} />
                 </Box>
                 {/* <Events images={images} isMobile={isMobile} data={data} category={category} isLoad={isLoad}/> */}
-                <Box pt={50}>
+                <Box pt={50} pb={50}>
                     {
                         rederItemPage()
                     }

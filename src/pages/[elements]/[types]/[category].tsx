@@ -74,13 +74,14 @@ const Elements = () => {
             setCatetories(data.categories);
             setTypes(data.types);
             
-            if(category_name != "no") {
-                if(data.categories.length > 0) {
+            if(type_name != "no") {
+                if(data.types.length > 0) {
                     await getItems(
-                        data.categories.filter((item: Category) => item.name == category_name)[0].id
+                        data.types.filter((item: Category) => item.name == type_name)[0].id
                     )
                 }
             }
+            
         } else {
 
         }
@@ -89,14 +90,14 @@ const Elements = () => {
     }
 
 
-    const getItems = async (category_id: string) => {
+    const getItems = async (type_id: string) => {
         setIsLoad(true);
         const res = await fetch('/api/element/get_items', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ category_id })
+            body: JSON.stringify({ type_id })
         })
         if (res.status == 200) {
             const data = await res.json();
@@ -151,7 +152,7 @@ const Elements = () => {
                 }
                 
             </Box>
-            <Box>
+            {/* <Box>
                 {
                     !isLoad&&<Box mt={30}>
                         {
@@ -166,7 +167,7 @@ const Elements = () => {
                         
                     </Box>
                 }
-            </Box>
+            </Box> */}
             {
                 isLoad ?
                     <Box sx={(theme) => ({ textAlign: 'center' })}>

@@ -7,9 +7,9 @@ export default async function handler(
     res: NextApiResponse
 ) {
     try {
-        const category_id = req.body.category_id;
+        const type_id = req.body.type_id;
         const { error, data: items } = await supabaseAdmin.from('asian_items')
-            .select("*").eq("category_id", category_id);
+            .select("*").eq("type_id", type_id);
 
         if (items) {
             res.status(200).json(items);

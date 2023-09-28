@@ -1,4 +1,4 @@
-import { Modal, Button, Group, Box, Grid, Image, Flex, Text, Rating, Loader } from '@mantine/core';
+import { Modal, Button, Group, Box, Grid, Image, Flex, Text, Rating, Loader, Textarea } from '@mantine/core';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { FC, useState } from 'react';
 import { Category, Item, Types } from '@/types/elements';
@@ -86,21 +86,29 @@ const Service: FC<Props> = ({
     return (
         <Box
             sx={(theme) => ({
-                padding: isMobile ? 0 : 20
+                padding: isMobile ? 0 : 20,
+                backgroundImage: "linear-gradient(transparent 75%, rgb(255, 255, 255) 100%), radial-gradient(at 0% 0%, rgba(39, 36, 31, 0.25) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(79, 72, 69, 0.23) 0px, transparent 50%), radial-gradient(at 40% 40%, rgba(128, 123, 121, 0.21) 0px, transparent 50%), radial-gradient(at 40% 68%, rgba(138, 94, 55, 0.2) 0px, transparent 50%), radial-gradient(at 0% 75%, rgba(217, 222, 226, 0.18) 0px, transparent 50%), radial-gradient(at 80% 0%, rgb(255, 255, 255) 0px, transparent 50%), radial-gradient(at 80% 50%, rgb(255, 255, 255) 0px, transparent 50%), radial-gradient(at 80% 50%, rgb(255, 255, 255) 0px, transparent 50%); background-position: center center; background-size: cover; background-repeat: no-repeat"
             })}
         >
-
-            <Grid gutter={0}>
+            <Grid 
+                gutter={0}
+                pb={40}
+                sx={(theme) =>({
+                    borderBottom: `1px solid #cfcfcf`
+                })}
+            >
                 <Grid.Col lg={8} sm={12} md={8}>
                     <Box sx={(theme) => ({
                         margin: 'auto',
-                        width: isMobile ? '100%' : 'fit-content',
+                        width: isMobile ? '100%' : '100%',
                         paddingTop: isMobile ? '0px' : '100px',
                         borderBottom: `${isMobile ? `1px solid ${theme.colors.gray[2]}` : "none"}`
                     })}>
                         {
                             data.image == null ?
-                                <Box
+                                <Flex
+                                    justify={'center'} align={'center'}
+                                ><Box
                                     sx={(theme) => ({
                                         width: '300px',
                                         height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
@@ -108,12 +116,14 @@ const Service: FC<Props> = ({
                                         cursor: 'pointer',
                                         borderRadius: '10px'
                                     })}
-                                ></Box> :
-                                <Image alt='' src={data.image} style={{ width: isMobile ? '100%' : 'auto' }} />
+                                ></Box>
+                                </Flex> :
+                                <Flex justify={'center'} align={'center'}>
+                                    <Image alt='' src={data.image} style={{ width: isMobile ? '100%' : '50%', height: 'auto' }} radius={5}/>
+                                </Flex>
                         }
                     </Box>
                 </Grid.Col>
-
                 <Grid.Col lg={4} sm={12} md={4} p={20}>
                     <Flex
                         gap='lg'
@@ -133,7 +143,6 @@ const Service: FC<Props> = ({
                             >
                                 {/* <FontAwesomeIcon icon={faReply} color='gray' style={{ fontSize: '15px' }} />
                                 <FontAwesomeIcon icon={faFlag} color='gray' style={{ fontSize: '15px' }} /> */}
-
                             </Flex>
                         </Flex>
                         <Text size='20px' weight={500} sx={(theme) => ({
@@ -142,19 +151,19 @@ const Service: FC<Props> = ({
                         })}>
                             {data.name}
                         </Text>
-                        <Flex>
-                            {/* <Text size='1rem' color='gray'>Number()</Text> */}
+
+                        {/* <Flex>
                             <Rating value={Number(data.rating)} fractions={2} readOnly />
                             <Text size='1rem' color='gray'>({Number(data.rating)})</Text>
-
-                        </Flex>
+                        </Flex> */}
                         {/* <Categories categories={categories}
                             selectedCategory={
                                 categories.filter(category => category.id == data.category_id)[0]
                             }
                             selectCategory={selectCategory}
                         /> */}
-                        {
+
+                        {/* {
                             loadCategories ? <Loader variant='dots' /> :
                                 <TypesComponents
                                     element_name={element_name}
@@ -162,13 +171,28 @@ const Service: FC<Props> = ({
                                     type_name={''}
                                     open={open}
                                 />
+                        } */}
+                        {
+                            <Button
+                                radius={10}
+                                sx={(theme) => ({
+                                    background: theme.colors.green[3],
+                                    color: "black",
+                                    fontWeight: 600,
+                                    '&:hover': { background: theme.colors.gray[3] }
+                                })}
+                            >
+                                {
+                                    data.category_name
+                                }
+                            </Button>
                         }
                         <Box>
                             <Text size='1rem' weight={400} sx={(theme) => ({
                                 color: "black",
                                 textDecoration: 'underline'
                             })}>
-                                {data.sites_url}
+                                <a href={data.sites_url} target='_blank' style={{ color: 'black' }}> {data.sites_url} </a>
                             </Text>
                             <Text size='1rem' weight={400} sx={(theme) => ({
                                 color: "black"
@@ -184,6 +208,16 @@ const Service: FC<Props> = ({
                                 color: "black"
                             })}>
                                 {data.email}
+                            </Text>
+                            <Text size='1rem' weight={400} sx={(theme) => ({
+                                color: "black"
+                            })}>
+                                <a style={{color: 'black'}}> {data.facebook} </a>
+                            </Text>
+                            <Text size='1rem' weight={400} sx={(theme) => ({
+                                color: "black"
+                            })}>
+                                <a style={{color: 'black'}}> {data.instagram} </a>
                             </Text>
                         </Box>
                         {
@@ -209,13 +243,12 @@ const Service: FC<Props> = ({
                                     </GoogleMapReact> */}
 
                                     <iframe width='100%' height="300px" src={data.map_url} style={{ border: 0 }}>
-
                                     </iframe>
                                 </Box>
                             </Box>
                         }
                         <Box>
-                            <Text size='1rem' weight={400} sx={(theme) => ({
+                            <Text size='1rem' weight={500} sx={(theme) => ({
                                 color: "black"
                             })}>
                                 Details:
@@ -223,14 +256,22 @@ const Service: FC<Props> = ({
                             <Text size='1rem' weight={400} sx={(theme) => ({
                                 color: "black"
                             })}>
-                                {data.details}
+                                {
+                                    data.details ?
+                                        <div dangerouslySetInnerHTML={{
+                                            __html: data.details.replaceAll("\n", "<br>")
+                                        }}></div> : <>No Detail</>
+                                }
                             </Text>
                         </Box>
                     </Flex>
 
                 </Grid.Col>
             </Grid>
-            <Box p={20}
+            <Box 
+                p={20}
+                mt={20}
+                mb={40}
             >
                 {
                     isLoad ? <Box><Loader variant='dots' alignmentBaseline='central' /></Box> :
@@ -240,16 +281,14 @@ const Service: FC<Props> = ({
                             <Masonry gutter='10px'>
                                 {
                                     images.map((image, key) =>
-                                        <Box key={key}><Image src={image} alt='' radius={5} style={{ height: '300px' }} /></Box>
+                                        <Box key={key} p={10}><Image src={image} alt='' radius={5} style={{ height: '300px' }} /></Box>
                                     )
                                 }
                             </Masonry>
                         </ResponsiveMasonry>
                 }
-
             </Box>
             <AuthModal type='login' open={() => { setOpenAuthModal(false) }} opened={openAuthModal} setType={(type) => { setAuthType(type) }} />
-
         </Box>
     )
 }
