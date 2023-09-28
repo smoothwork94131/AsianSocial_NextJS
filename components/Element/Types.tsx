@@ -39,7 +39,7 @@ const TypesComponents: FC<Props> = ({
                                 <Button
                                     radius={10}
                                     sx={(theme) => ({
-                                        background: type_name == item.name?theme.colors.green[3]:theme.colors.green[1],
+                                        background: type_name == item.name?theme.colors.gray[3]:theme.colors.gray[1],
                                         color: "black",
                                         fontWeight: 600,
                                         '&:hover': { background: theme.colors.gray[3]}
