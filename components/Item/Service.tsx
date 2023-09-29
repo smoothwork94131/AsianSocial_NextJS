@@ -14,6 +14,7 @@ import TypesComponents from '../Element/Types';
 import Link from 'next/link';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel } from '@mantine/carousel';
+import IFrameResizer from 'iframe-resizer-react';
 
 interface Props {
     images: any,
@@ -57,12 +58,12 @@ const Service: FC<Props> = ({
     const [iframeHeight, setIframeHeight] = useState(0);
     const iframeRef: any = useRef(null);
     const handleIframe = () => {
-        var iframe:any = document.getElementsByClassName("tiktok-iframe");
+        var iframe: any = document.getElementsByClassName("tiktok-iframe");
         console.log(iframe);
-        for(let k=0; k<iframe.length; k++){
+        for (let k = 0; k < iframe.length; k++) {
             iframe[k].width = iframe[k].contentWindow.document.body.scrollWidth;
             iframe[k].height = iframe[k].contentWindow.document.body.scrollHeight;
-        
+
         }
     }
     const deleteItem = async () => {
@@ -347,16 +348,14 @@ const Service: FC<Props> = ({
                                 {
                                     images.videos.map((video: any, key: number) =>
                                         video ?
-                                            <Flex key={key} justify={'center'}  ml={15}>
-                                                <iframe
-                                                    key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)}
-                                                    style={{ width: 'max-content' }}
-                                                    className='tiktok-iframe'
-                                                    onLoad={handleIframe}
-                                                >
+                                            <Flex key={key} justify={'center'} gap={10} ml={15}>
+                                                
+                                                <div dangerouslySetInnerHTML={{
+                                                    __html:
+                                                        "<iframe key={key} style='width:  max-content' onload='this.style.height = this.contentWindow.document.documentElement.scrollHeight' src='https://www.tiktok.com/embed/v2/"+getVideoId(video.page_url)+"'></iframe>"
+                                                }}>
 
-                                                </iframe>
-
+                                                </div>
                                             </Flex>
                                             : <></>
                                     )
