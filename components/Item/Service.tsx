@@ -1,6 +1,6 @@
 import { Modal, Button, Group, Box, Grid, Image, Flex, Text, Rating, Loader, Textarea } from '@mantine/core';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-import { FC, useState, useRef } from 'react';
+import { FC, useState, useRef, useEffect } from 'react';
 import { Category, Item, Types } from '@/types/elements';
 import GoogleMapReact from 'google-map-react';
 import Categories from '../Element/Categories';
@@ -14,6 +14,7 @@ import TypesComponents from '../Element/Types';
 import Link from 'next/link';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel } from '@mantine/carousel';
+import IFrameResizer from 'iframe-resizer-react';
 
 interface Props {
     images: any,
@@ -54,7 +55,17 @@ const Service: FC<Props> = ({
     const [authType, setAuthType] = useState<string>('login');
     const router = useRouter();
     const autoplay = useRef(Autoplay({ delay: 2000 }));
-
+    const [iframeHeight, setIframeHeight] = useState(0);
+    const iframeRef: any = useRef(null);
+    const handleIframe = () => {
+        var iframe:any = document.getElementsByClassName("tiktok-iframe");
+        console.log(iframe);
+        for(let k=0; k<iframe.length; k++){
+            iframe[k].width = iframe[k].contentWindow.document.body.scrollWidth;
+            iframe[k].height = iframe[k].contentWindow.document.body.scrollHeight;
+        
+        }
+    }
     const deleteItem = async () => {
         if (user) {
             const res = await fetch('/api/item/delete_item', {
@@ -93,9 +104,7 @@ const Service: FC<Props> = ({
         return video_id;
     }
 
-    const resizeIframe = (obj: any) => {
-        obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
-    }
+
     return (
         <Box
             sx={(theme) => ({
@@ -138,7 +147,7 @@ const Service: FC<Props> = ({
                                         onMouseEnter={autoplay.current.stop}
                                         onMouseLeave={autoplay.current.reset}
                                         sx={(theme) => ({
-                                            width: isMobile?'100%':'50%'
+                                            width: isMobile ? '100%' : '50%'
                                         })}
                                     >
                                         {/* <Carousel.Slide>1</Carousel.Slide>
@@ -298,7 +307,8 @@ const Service: FC<Props> = ({
 
                                     </GoogleMapReact> */}
 
-                                    <iframe width='100%'  src={data.map_url} style={{ border: 0 }} height="300">
+                                    <iframe width='100%'
+                                        src={data.map_url} style={{ border: 0 }} height="300">
                                     </iframe>
                                 </Box>
                             </Box>
@@ -338,15 +348,16 @@ const Service: FC<Props> = ({
                                 {
                                     images.videos.map((video: any, key: number) =>
                                         video ?
-                                            <Flex key={key} justify={'center'} gap={10} ml={15}>
-                                                <iframe 
-                                                    key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)} 
-                                                    style={{width: 'max-content'}}
-                                                    onLoad={() => {resizeIframe(this)}}
-                                                    
+                                            <Flex key={key} justify={'center'}  ml={15}>
+                                                <iframe
+                                                    key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)}
+                                                    style={{ width: 'max-content' }}
+                                                    className='tiktok-iframe'
+                                                    onLoad={handleIframe}
                                                 >
 
-                                                    </iframe>
+                                                </iframe>
+
                                             </Flex>
                                             : <></>
                                     )
