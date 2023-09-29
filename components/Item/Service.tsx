@@ -294,7 +294,7 @@ const Service: FC<Props> = ({
 
                                     </GoogleMapReact> */}
 
-                                    <iframe width='100%'  src={data.map_url} style={{ border: 0, minHeight:'770px' }}>
+                                    <iframe width='100%'  src={data.map_url} style={{ border: 0 }}>
                                     </iframe>
                                 </Box>
                             </Box>
@@ -335,7 +335,7 @@ const Service: FC<Props> = ({
                                     images.videos.map((video: any, key: number) =>
                                         video ?
                                             <Flex key={key} justify={'center'}>
-                                                <iframe key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)} style={{width: 'max-content'}} height="500"></iframe>
+                                                <iframe key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)} style={{width: 'max-content'}} height="770"></iframe>
                                             </Flex>
                                             : <></>
                                     )
