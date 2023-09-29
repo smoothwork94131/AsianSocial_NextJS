@@ -134,7 +134,7 @@ const Service: FC<Props> = ({
                                         onMouseEnter={autoplay.current.stop}
                                         onMouseLeave={autoplay.current.reset}
                                         sx={(theme) => ({
-                                            width: '50%'
+                                            width: isMobile?'100%':'50%'
                                         })}
                                     >
                                         {/* <Carousel.Slide>1</Carousel.Slide>
@@ -294,7 +294,7 @@ const Service: FC<Props> = ({
 
                                     </GoogleMapReact> */}
 
-                                    <iframe width='100%' height="300px" src={data.map_url} style={{ border: 0 }}>
+                                    <iframe width='100%'  src={data.map_url} style={{ border: 0, minHeight:'770px' }}>
                                     </iframe>
                                 </Box>
                             </Box>
