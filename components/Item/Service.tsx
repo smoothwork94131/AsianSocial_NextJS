@@ -143,12 +143,10 @@ const Service: FC<Props> = ({
                                         {/* ...other slides */}
                                         {
                                             Object.keys(images).includes('videos') ?
-                                                images.videos.map((video: any, key: number) =>
+                                                images.images.map((image: any, key: number) =>
+    
                                                     <Carousel.Slide key={key}>
-                                                        <a href={video.page_url} target='_blank'>
-                                                            {/* <Image alt='' src={video.image_url} style={{ width: isMobile ? '100%' : '100%', height: 'auto' }} radius={5} key={key} /> */}
-                                                            <iframe src={"https://www.tiktok.com/embed/v2/"+getVideoId(video.page_url)} width="100%" height="500"></iframe>
-                                                        </a>
+                                                        <Image alt='' src={image} style={{ width: isMobile ? '100%' : '100%', height: 'auto' }} radius={5} key={key} />
                                                     </Carousel.Slide>
                                                 )
                                                 : <></>
@@ -224,13 +222,11 @@ const Service: FC<Props> = ({
                                         >
                                             {
                                                 types.filter((item: Types) => item.id == data.type_id)[0].name
-                                            }
+                                            }  
                                         </Button>
                                     </Link>
                                 </Box>
                         }
-
-
                         <Box>
                             <Text size='1rem' weight={400} sx={(theme) => ({
                                 color: "black",
@@ -324,9 +320,11 @@ const Service: FC<Props> = ({
                         >
                             <Masonry gutter='10px'>
                                 {
-                                    images.images.map((image: string, key: number) =>
-                                        image ?
-                                            <Box key={key} p={10}><Image src={image} alt='' radius={5} style={{ height: '300px' }} /></Box> : <></>
+                                    images.videos.map((video: any, key: number) =>
+                                    video ?
+                                            <Box key={key} p={10}>
+                                                    <iframe src={"https://www.tiktok.com/embed/v2/"+getVideoId(video.page_url)} width="100%" height="500"></iframe>
+                                            </Box> : <></>
                                     )
                                 }
                             </Masonry>
