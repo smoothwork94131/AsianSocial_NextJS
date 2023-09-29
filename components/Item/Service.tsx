@@ -334,7 +334,9 @@ const Service: FC<Props> = ({
                                 {
                                     images.videos.map((video: any, key: number) =>
                                         video ?
-                                            <iframe key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)} width="100%" height="500"></iframe>
+                                            <Flex key={key} justify={'center'}>
+                                                <iframe key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)} style={{width: 'max-content'}} height="500"></iframe>
+                                            </Flex>
                                             : <></>
                                     )
                                 }
