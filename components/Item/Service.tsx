@@ -146,7 +146,19 @@ const Service: FC<Props> = ({
                                                 images.images.map((image: any, key: number) =>
 
                                                     <Carousel.Slide key={key}>
-                                                        <Image alt='' src={image} style={{ width: isMobile ? '100%' : '100%', height: 'auto' }} radius={5} key={key} />
+                                                        {
+                                                            image == "" ?
+                                                                <Box
+                                                                    sx={(theme) => ({
+                                                                        width: '300px',
+                                                                        height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
+                                                                        backgroundImage: 'linear-gradient(180deg, gray, white)',
+                                                                        cursor: 'pointer',
+                                                                        borderRadius: '10px'
+                                                                    })}
+                                                                ></Box> :
+                                                                <Image alt='' src={image} style={{ width: isMobile ? '100%' : '100%', height: 'auto' }} radius={5} key={key} />
+                                                        }
                                                     </Carousel.Slide>
                                                 )
                                                 : <></>
@@ -318,7 +330,7 @@ const Service: FC<Props> = ({
                         <ResponsiveMasonry
                             columnsCountBreakPoints={{ 350: 1, 500: 2, 750: 3, 900: 4 }}
                         >
-                            <Masonry gutter='10px' style={{background: 'transparent'}}>
+                            <Masonry gutter='10px' style={{ background: 'transparent' }}>
                                 {
                                     images.videos.map((video: any, key: number) =>
                                         video ?
