@@ -92,6 +92,10 @@ const Service: FC<Props> = ({
         const video_id = split[split.length - 1];
         return video_id;
     }
+
+    const resizeIframe = (obj: any) => {
+        obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+    }
     return (
         <Box
             sx={(theme) => ({
@@ -335,7 +339,13 @@ const Service: FC<Props> = ({
                                     images.videos.map((video: any, key: number) =>
                                         video ?
                                             <Flex key={key} justify={'center'}>
-                                                <iframe key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)} style={{width: 'max-content'}} height="770"></iframe>
+                                                <iframe 
+                                                    key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)} 
+                                                    style={{width: 'max-content'}}
+                                                    onLoad={resizeIframe(this)}
+                                                    >
+
+                                                    </iframe>
                                             </Flex>
                                             : <></>
                                     )
