@@ -294,7 +294,7 @@ const Service: FC<Props> = ({
 
                                     </GoogleMapReact> */}
 
-                                    <iframe width='100%'  src={data.map_url} style={{ border: 0 }}>
+                                    <iframe width='100%'  src={data.map_url} style={{ border: 0 }} height="300">
                                     </iframe>
                                 </Box>
                             </Box>
