@@ -64,6 +64,7 @@ const Service: FC<Props> = ({
                 iframe[k].height = iframe[k].contentWindow.document.body.offsetHeight
             }
         }catch(e){
+            
             console.log(e);
         }
         
@@ -353,9 +354,8 @@ const Service: FC<Props> = ({
                                             <Flex key={key} justify={'center'} gap={10} ml={15}>
                                                 <iframe
                                                     key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)}
-                                                    style={{ width: 'max-content' }}
+                                                    style={{ width: 'max-content', height: '760px' }}
                                                     className='tiktok-iframe'
-                                                    onLoad={() => {handleIframe()}}
                                                 >
 
                                                 </iframe>
