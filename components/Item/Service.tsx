@@ -95,6 +95,7 @@ const Service: FC<Props> = ({
 
     const resizeIframe = (obj: any) => {
         obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+        return;
     }
     return (
         <Box
