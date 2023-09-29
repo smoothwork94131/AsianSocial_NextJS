@@ -88,8 +88,8 @@ const Service: FC<Props> = ({
     }
 
     const getVideoId = (url: string) => {
-        const split =  url.split("/");
-        const video_id = split[split.length-1];
+        const split = url.split("/");
+        const video_id = split[split.length - 1];
         return video_id;
     }
     return (
@@ -133,7 +133,7 @@ const Service: FC<Props> = ({
                                         withIndicators
                                         onMouseEnter={autoplay.current.stop}
                                         onMouseLeave={autoplay.current.reset}
-                                        sx={(theme) =>({
+                                        sx={(theme) => ({
                                             width: '50%'
                                         })}
                                     >
@@ -144,7 +144,7 @@ const Service: FC<Props> = ({
                                         {
                                             Object.keys(images).includes('videos') ?
                                                 images.images.map((image: any, key: number) =>
-    
+
                                                     <Carousel.Slide key={key}>
                                                         <Image alt='' src={image} style={{ width: isMobile ? '100%' : '100%', height: 'auto' }} radius={5} key={key} />
                                                     </Carousel.Slide>
@@ -222,7 +222,7 @@ const Service: FC<Props> = ({
                                         >
                                             {
                                                 types.filter((item: Types) => item.id == data.type_id)[0].name
-                                            }  
+                                            }
                                         </Button>
                                     </Link>
                                 </Box>
@@ -316,15 +316,14 @@ const Service: FC<Props> = ({
                 {
                     isLoad ? <Box><Loader variant='dots' alignmentBaseline='central' /></Box> :
                         <ResponsiveMasonry
-                            columnsCountBreakPoints={{ 350: 3, 500: 3, 750: 3, 900: 4 }}
+                            columnsCountBreakPoints={{ 350: 1, 500: 2, 750: 3, 900: 4 }}
                         >
-                            <Masonry gutter='10px'>
+                            <Masonry gutter='10px' style={{background: 'transparent'}}>
                                 {
                                     images.videos.map((video: any, key: number) =>
-                                    video ?
-                                            <Box key={key} p={10}>
-                                                    <iframe src={"https://www.tiktok.com/embed/v2/"+getVideoId(video.page_url)} width="100%" height="500"></iframe>
-                                            </Box> : <></>
+                                        video ?
+                                            <iframe key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)} width="100%" height="500"></iframe>
+                                            : <></>
                                     )
                                 }
                             </Masonry>
