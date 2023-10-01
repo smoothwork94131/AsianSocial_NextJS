@@ -14,7 +14,6 @@ import TypesComponents from '../Element/Types';
 import Link from 'next/link';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel } from '@mantine/carousel';
-import IFrameResizer from 'iframe-resizer-react';
 
 interface Props {
     images: any,
