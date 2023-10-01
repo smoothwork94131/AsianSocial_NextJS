@@ -358,7 +358,7 @@ const Service: FC<Props> = ({
                                         <Flex w={'100%'} justify={'center'} key={key}>
                                             <iframe
                                                 key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)}
-                                                style={{overflow:"hidden", height: "500px", width:"300px", background:'transparent'}}
+                                                style={{overflow:"hidden", height: "780px", width:"300px", background:'transparent'}}
                                                 scrolling="no"
                                             />
                                         </Flex>
