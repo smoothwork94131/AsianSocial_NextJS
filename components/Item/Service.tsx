@@ -14,6 +14,7 @@ import TypesComponents from '../Element/Types';
 import Link from 'next/link';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel } from '@mantine/carousel';
+import IFrameResizer from 'iframe-resizer-react';
 
 interface Props {
     images: any,
@@ -54,20 +55,22 @@ const Service: FC<Props> = ({
     const [authType, setAuthType] = useState<string>('login');
     const router = useRouter();
     const autoplay = useRef(Autoplay({ delay: 2000 }));
-    const [iframeHeight, setIframeHeight] = useState(0);
     const iframeRef: any = useRef(null);
+    const [iframeWidth, setIframeWidth] = useState<number>(0);
+    const [iframeHeight, setIframeHeight] = useState<number>(0);
     const handleIframe = () => {
         var iframe:any = document.getElementsByClassName("tiktok-iframe");
-        console.log(iframe);
         try{
             for(let k=0; k<iframe.length; k++){
-                iframe[k].height = iframe[k].contentWindow.document.body.offsetHeight
+            //    iframe[k].height = iframe[k].contentWindow.document.body.offsetHeight
+            //    console.log(iframe[k].contentWindow.document.body.offsetHeight);
+                // console.log(iframe[k].contentWindow)
+                
             }
         }catch(e){
-            
+            console.log("--------Height-------");
             console.log(e);
         }
-        
     }
     const deleteItem = async () => {
         if (user) {
@@ -311,7 +314,9 @@ const Service: FC<Props> = ({
                                     </GoogleMapReact> */}
 
                                     <iframe width='100%'
-                                        src={data.map_url} style={{ border: 0 }} height="300">
+                                        src={data.map_url} 
+                                        
+                                        style={{ border: 0 }} height="300">
                                     </iframe>
                                 </Box>
                             </Box>
@@ -345,22 +350,20 @@ const Service: FC<Props> = ({
                 {
                     isLoad ? <Box><Loader variant='dots' alignmentBaseline='central' /></Box> :
                         <ResponsiveMasonry
-                            columnsCountBreakPoints={{ 350: 1, 500: 2, 750: 3, 900: 4 }}
+                            columnsCountBreakPoints={{ 350: 1, 750: 2,  1000: 3, 1400: 4, 1600: 5 }}
                         >
                             <Masonry gutter='10px' style={{ background: 'transparent' }}>
                                 {
                                     images.videos.map((video: any, key: number) =>
                                         video ?
-                                            <Flex key={key} justify={'center'} gap={10} ml={15}>
-                                                <iframe
-                                                    key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)}
-                                                    style={{ width: 'max-content', height: '760px' }}
-                                                    className='tiktok-iframe'
-                                                >
-
-                                                </iframe>
+                                        <Flex w={'100%'} justify={'center'} key={key}>
+                                            <iframe
+                                                key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)}
+                                                style={{overflow:"hidden", height: "500px", width:"300px", background:'transparent'}}
+                                                scrolling="no"
+                                            />
+                                        </Flex>
                                                
-                                            </Flex>
                                             : <></>
                                     )
                                 }

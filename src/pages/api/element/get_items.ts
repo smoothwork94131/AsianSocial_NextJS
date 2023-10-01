@@ -16,9 +16,7 @@ export default async function handler(
         } else {
             res.status(201).json([]);
         }
-
     } catch (e) {
         res.status(202).json([]);
     }
-
 }
