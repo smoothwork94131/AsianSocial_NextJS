@@ -29,7 +29,7 @@ const Block:FC<Props> = ({data, getSaves, page_type, setSelectedItem}) => {
                     sx={(theme) =>({
                         width: '100%',
                         // height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
-                        height: 250,
+                        height: Math.floor(Math.random() * 50) + 250,
                         // background: `rgb(
                         //         ${Math.floor(Math.random() * (255 )) + 0}, 
                         //         ${Math.floor(Math.random() * (255)) + 0},

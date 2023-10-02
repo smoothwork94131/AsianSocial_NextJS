@@ -282,19 +282,19 @@ const Service: FC<Props> = ({
                             <Text size='1rem' weight={400} sx={(theme) => ({
                                 color: "black"
                             })}>
-                                <a style={{ color: 'black' }}> {data.facebook} </a>
+                                <a style={{ color: 'black' }} href={data.facebook}> {data.facebook} </a>
                             </Text>
                             <Text size='1rem' weight={400} sx={(theme) => ({
                                 color: "black"
                             })}>
-                                <a style={{ color: 'black' }}> {data.instagram} </a>
+                                <a style={{ color: 'black' }} href={data.instagram}> {data.instagram} </a>
                             </Text>
                         </Box>
                         {
                             (element_name == "Businesses" || element_name == "Restaurants") &&
                             <Box
                             >
-                                <Text size='1.1rem' weight={500}>
+                                <Text size='1.1rem'>
                                     Map
                                 </Text>
                                 <Box
@@ -336,6 +336,7 @@ const Service: FC<Props> = ({
                                         }}></div> : <>No Detail</>
                                 }
                             </Text>
+                            
                         </Box>
                     </Flex>
 
@@ -358,9 +359,8 @@ const Service: FC<Props> = ({
                                         <Flex w={'100%'} justify={'center'} key={key} direction={'column'}>
                                             <iframe
                                                 key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)}
-                                                style={{overflow:"hidden", height: "780px", width:"300px", background:'transparent', border: "none"}}
+                                                style={{overflow:"hidden", height: "500px", width:"300px", background:'transparent', border: "none"}}
                                                 scrolling="no"
-                                                
                                             />
                                             {/* <a style={{marginTop: '10px', color: 'black', textDecorationLine:'underline'}} target='_blank' href={video.page_url}>Go to Tiktok</a> */}
                                         </Flex>:<></>

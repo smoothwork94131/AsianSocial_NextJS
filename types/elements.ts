@@ -36,7 +36,8 @@ export interface Category {
 export const CategoryState =  {
     name:'',
     type_id:'',
-    id:''
+    id:'',
+    
 }
 
 export interface Item 
@@ -61,7 +62,8 @@ export interface Item
     map_url: string,
     facebook: string,
     instagram: string,
-    type_id: string
+    type_id: string,
+    hours: string
 }
 
 export const  ItemState: Item = {
@@ -84,7 +86,8 @@ export const  ItemState: Item = {
     map_url: '',
     facebook: '',
     instagram:'',
-    type_id: ''
+    type_id: '',
+    hours: ""
 }
 
 
