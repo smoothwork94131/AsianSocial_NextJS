@@ -336,7 +336,25 @@ const Service: FC<Props> = ({
                                         }}></div> : <>No Detail</>
                                 }
                             </Text>
-                            
+
+                        </Box>
+                        <Box>
+                            <Text size='1rem' weight={500} sx={(theme) => ({
+                                color: "black"
+                            })}>
+                                Hours:
+                            </Text>
+                            <Text size='1rem' weight={400} sx={(theme) => ({
+                                color: "black"
+                            })}>
+                                {
+                                    data.hours ?
+                                        <div dangerouslySetInnerHTML={{
+                                            __html: data.hours.replaceAll("\n", "<br>")
+                                        }}></div> : <>No Detail</>
+                                }
+                            </Text>
+
                         </Box>
                     </Flex>
 
