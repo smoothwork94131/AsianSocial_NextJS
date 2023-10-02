@@ -362,7 +362,7 @@ const Service: FC<Props> = ({
                                                 scrolling="no"
                                                 
                                             />
-                                            <a style={{marginTop: '10px', color: 'black', textDecorationLine:'underline'}} target='_blank' href={video.page_url}>Go to Tiktok</a>
+                                            {/* <a style={{marginTop: '10px', color: 'black', textDecorationLine:'underline'}} target='_blank' href={video.page_url}>Go to Tiktok</a> */}
                                         </Flex>:<></>
                                     )
                                 }
