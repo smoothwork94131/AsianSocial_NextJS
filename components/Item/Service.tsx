@@ -355,12 +355,14 @@ const Service: FC<Props> = ({
                                 {
                                     images.videos.map((video: any, key: number) =>
                                         video ?
-                                        <Flex w={'100%'} justify={'center'} key={key}>
+                                        <Flex w={'100%'} justify={'center'} key={key} direction={'column'}>
                                             <iframe
                                                 key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)}
                                                 style={{overflow:"hidden", height: "780px", width:"300px", background:'transparent', border: "none"}}
                                                 scrolling="no"
+                                                
                                             />
+                                            <a style={{marginTop: '10px', color: 'black', textDecorationLine:'underline'}} target='_blank' href={video.page_url}>Go to Tiktok</a>
                                         </Flex>:<></>
                                     )
                                 }
