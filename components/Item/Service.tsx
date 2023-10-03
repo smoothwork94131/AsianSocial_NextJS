@@ -351,7 +351,7 @@ const Service: FC<Props> = ({
                                     data.hours ?
                                         <div dangerouslySetInnerHTML={{
                                             __html: data.hours.replaceAll("\n", "<br>")
-                                        }}></div> : <>No Detail</>
+                                        }}></div> : <>No Hours</>
                                 }
                             </Text>
 

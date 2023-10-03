@@ -21,7 +21,6 @@ const Block:FC<Props> = ({data, getSaves, page_type, setSelectedItem}) => {
         data&&
         <Box
             p={10}
-        
         >
             {
                 data.image == null?
