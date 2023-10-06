@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Loader, Modal, TextInput, Textarea, Select, Accordion, Grid, Text, Image } from "@mantine/core";
 import { useEffect, useState } from 'react';
 import { Table } from '@mantine/core';
-import { Category, ElementState, ElementType, Item, ItemState, PageType } from "@/types/elements";
+import { CategoryType, ElementState, ElementType, ItemType, ItemState, PageType } from "@/types/elements";
 import { IconEdit, IconPhoto, IconTrash } from "@tabler/icons-react";
 import { useDisclosure } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
@@ -13,7 +13,7 @@ import { useMediaQuery } from '@mantine/hooks';
 
 const Item = () => {
     const [elements, setElements] = useState<ElementType[]>([]);
-    const [categories, setCategories] = useState<Category[]>([]);
+    const [categories, setCategories] = useState<CategoryType[]>([]);
 
     const [opened, { open, close }] = useDisclosure(false);
     const [type, setType] = useState<string>('add');
@@ -23,7 +23,7 @@ const Item = () => {
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
     const [selectedItemId, setSelectedItemId] = useState<string>('');
     const [search, setSearch] = useState<string>('');
-    const [items, setItems] = useState<Item[]>([]);
+    const [items, setItems] = useState<ItemType[]>([]);
     const [pageTypes, setPageTypes] = useState<PageType[]>([]);
     const [selectedPageTypeId, setSelectedPageTypeId] = useState<string>('');
     const [images, setImages] = useState<string[]>([]);
@@ -303,7 +303,7 @@ const Item = () => {
         setImages([])
     }
 
-    const editModal = async (item: Item) => {
+    const editModal = async (item: ItemType) => {
         setIsLoad(true);
         open();
         setType('edit');
@@ -468,7 +468,7 @@ const Item = () => {
                     {
                         isLoad ? <tr><td colSpan={5} align="center"><Loader variant="dots" /></td></tr> :
                             items.length == 0 ? <tr><td colSpan={5} align="center">No Matched Data</td></tr> :
-                                items.map((item: Item, key) =>
+                                items.map((item: ItemType, key) =>
                                     <tr key={key} style={{ cursor: 'pointer' }} onClick={() => { editModal(item) }}>
                                         <td>{key + 1}</td>
                                         <td>{item.name}</td>

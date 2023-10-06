@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Loader, Modal, TextInput, Textarea, Select } from "@mantine/core";
 import { useEffect, useState } from 'react';
 import { Table } from '@mantine/core';
-import { Category, ElementState, ElementType } from "@/types/elements";
+import { CategoryType, ElementType, ElementState } from "@/types/elements";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { useDisclosure } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
@@ -11,7 +11,7 @@ import { useMediaQuery } from '@mantine/hooks';
 const Category = () => {
 
     const [elements, setElements] = useState<ElementType[]>([]);
-    const [categories, setCategories] = useState<Category[]>([]);
+    const [categories, setCategories] = useState<CategoryType[]>([]);
     
     const [opened, { open, close }] = useDisclosure(false);
     const [type, setType] = useState<string>('add');
@@ -52,11 +52,11 @@ const Category = () => {
     }
     
 
-    const editModal = async (item: Category) => {
+    const editModal = async (item: CategoryType) => {
         setType('edit');
         setSelectedCategoryId(item.id);
         form.setFieldValue('name', item.name);
-        form.setFieldValue('element_id', item.type_id);
+        form.setFieldValue('element_id', item.city_id);
         open();
     }
 
@@ -197,10 +197,10 @@ const Category = () => {
                     {
                         isLoad ? <tr><th colSpan={2} align="center"><Loader variant="dots" /></th></tr> :
                             filterCategories().length == 0 || elements.length == 0?<tr><th colSpan={2} align="center">No matched data</th></tr>:
-                            filterCategories().map((item: Category, key) =>
+                            filterCategories().map((item: CategoryType, key) =>
                                 <tr key={key} onClick={() => { editModal(item) }}>
                                     <td>{key + 1}</td>
-                                    <td>{elements.filter(element => element.id == item.type_id)[0].name}</td>
+                                    <td>{elements.filter(element => element.id == item.city_id)[0].name}</td>
                                     <td>{item.name}</td>
                                 </tr>
                             )

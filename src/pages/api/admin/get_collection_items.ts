@@ -1,4 +1,4 @@
-import { Item } from '@/types/elements';
+import { ItemType } from '@/types/elements';
 import { supabaseAdmin } from '@/utils/server/supabase-admin';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
@@ -21,7 +21,7 @@ export default async function handler(
                 )
             }
             const response = await Promise.all(promise);
-            let data: Item[] = [];
+            let data: ItemType[] = [];
             response.map((item) => {
                 if (item.length > 0) {
                     data.push(item[0])

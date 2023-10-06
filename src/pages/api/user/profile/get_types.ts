@@ -13,14 +13,14 @@ export default async function handler(
         .select("*").eq("id", element_id);
     
     if(element_data) {
-        const { data: types } = await supabaseAdmin.from('asian_types')
+        const { data: cities } = await supabaseAdmin.from('asian_cities')
             .select("*").eq("element_id", element_data[0].id);
 
         
-        if(types) {
-            for(let k=0; k<types?.length; k++){
+        if(cities) {
+            for(let k=0; k<cities?.length; k++){
                 let category_name = 'no';
-                const { error, data} = await supabaseAdmin.from('asian_categories').select("*").neq('name', null).eq('type_id', types[k].id);
+                const { error, data} = await supabaseAdmin.from('asian_categories').select("*").neq('name', null).eq('city_id', cities[k].id);
                 if(data && data.length > 0){
                     for(let j=0; j<data.length; j++){
                         if(data[j].name != null){
@@ -29,13 +29,13 @@ export default async function handler(
                         }
                     }
                 }
-                (types[k] as any)['category_name'] = category_name;
+                (cities[k] as any)['category_name'] = category_name;
             }
         }
         
         res.status(200).json({
             element_data: element_data[0],
-            types
+            cities: cities
         });
     }
 }

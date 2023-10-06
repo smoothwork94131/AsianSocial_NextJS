@@ -11,7 +11,7 @@ export default async function handler(
     const type = req.body.type;
     const id = req.body.id;
 
-    const { error: del_imgages_error} =await supabaseAdmin.from('asian_item_images').delete().eq('edit_id', id);
+    const { error: del_imgages_error} =await supabaseAdmin.from('asian_images').delete().eq('edit_id', id);
 
     let item_id = id;
     try {

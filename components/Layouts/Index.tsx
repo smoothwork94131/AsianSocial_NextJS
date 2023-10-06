@@ -39,7 +39,9 @@ const Index: FC<Props> = ({ children }) => {
         <AppShell
             styles={{
                 main: {
-                    background: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+                    background: theme.colorScheme === 'dark' ? theme.colors.dark[8] : '#fff',
+                    paddingLeft: 0,
+                    paddingRight: 0
                 },
             }}
             navbarOffsetBreakpoint="sm"
@@ -51,10 +53,12 @@ const Index: FC<Props> = ({ children }) => {
             // }
             
             navbar={
-                isAdmin ? <Navbar pt="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
+                isAdmin ? 
+                <Navbar pt="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
                     <AdminNavbar closeNavbar={() =>{setOpened((o) => !o)}}/>
                 </Navbar> : <></>
             }
+
             header={
                 <Header height={{ base: 70, md: 70 }} p="md" style={{zIndex: !isAdmin?100000:10}}>
                     {

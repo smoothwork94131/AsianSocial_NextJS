@@ -13,7 +13,7 @@ interface Props {
 }
 
 const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
-    
+
     const [isLoad, setIsLoad] = useState<boolean>(false);
     const form = useForm({
         initialValues: { email: '', password: '', name: '' },
@@ -23,7 +23,7 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
             name: (value) => (value.length == 0 ? 'Please input a name' : null),
         },
     });
-    
+
     const authEmail = async () => {
         setIsLoad(true);
         try {
@@ -54,7 +54,7 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
                         }
                     }
                 });
-                
+
                 if (error) {
                     notifications.show({
                         title: type,
@@ -71,74 +71,73 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
         }
     }
 
-    const authProvider = async(provider: any) => {
+    const authProvider = async (provider: any) => {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: provider
         })
     }
 
     return (
-        <Modal opened={opened} onClose={open} centered size='440px'  className="auth-modal">
-            
-                <Flex
-                    gap='lg'
-                    direction='column'
-                    pl={70} pr={70} pb={20}
+        <Modal opened={opened} onClose={open} centered size='440px' className="auth-modal">
+            <Flex
+                gap='lg'
+                direction='column'
+                pl={70} pr={70} pb={20}
+            >
+                <Box
+                    sx={(theme) => ({
+                        textAlign: 'center'
+                    })}
                 >
-                    <Box
-                        sx={(theme) => ({
-                            textAlign: 'center'
-                        })}
-                    >
-                        <Image src='/logo.png' alt='logo' width={130} style={{ margin: 'auto' }} />
-                    </Box>
-                    <Text size='1.5rem' align="center" weight={600}>
-                        {
-                            type == 'login' ? 'Log in to your account' : 'Sign up to discover and save amazing creativity.'
-                        }
-                    </Text>
-                    <form onSubmit={form.onSubmit(() => {authEmail()})} >
+                    <Image src='/logo.png' alt='logo' width={130} style={{ margin: 'auto' }} />
+                </Box>
+                <Text size='1.5rem' align="center" weight={600}>
+                    {
+                        type == 'login' ? 'Log in to your account' : 'Sign up to discover and save amazing creativity.'
+                    }
+                </Text>
+                <form onSubmit={form.onSubmit(() => { authEmail() })} >
+                    <TextInput
+                        placeholder="Email"
+                        style={{ border: 'none' }}
+                        size="md"
+                        {...form.getInputProps('email')}
+                    />
+                    {
+                        type != 'login' &&
                         <TextInput
-                            placeholder="Email"
+                            placeholder="User name"
                             style={{ border: 'none' }}
                             size="md"
-                            {...form.getInputProps('email')}
-                        />
-                        {
-                            type != 'login' &&
-                            <TextInput
-                                placeholder="User name"
-                                style={{ border: 'none' }}
-                                size="md"
-                                {...form.getInputProps('name')}
-                                mt={15}
-                            />
-                        }
-                        <TextInput
-                            placeholder="Password"
-                            style={{ border: 'none' }}
-                            type='password'
-                            size="md"
-                            {...form.getInputProps('password')}
+                            {...form.getInputProps('name')}
                             mt={15}
                         />
-                        <Box mt={15}>
-                            <Button fullWidth size="md" onClick={() =>{authEmail()}}>
-                                {type == "login" ? 'Log in' : 'Sign Up'}
-                            </Button>
-                            <Text color="gray" size={15} align="center">
-                                Or
-                            </Text>
-                        </Box>
-                    </form>
-                    {/* {
+                    }
+                    <TextInput
+                        placeholder="Password"
+                        style={{ border: 'none' }}
+                        type='password'
+                        size="md"
+                        {...form.getInputProps('password')}
+                        mt={15}
+                    />
+                    <Box mt={15}>
+                        <Button fullWidth size="md" onClick={() => { authEmail() }}>
+                            {type == "login" ? 'Log in' : 'Sign Up'}
+                        </Button>
+                        <Text color="gray" size={15} align="center">
+                            Or
+                        </Text>
+                    </Box>
+                </form>
+                {/* {
                         type=='login'?<Text align="center" color='gray' size={15}>
                             Forgot your password
                         </Text>:<></>
                     }
                  */}
-                    <Box className="auth-buttons">
-                        {/* <Button fullWidth size="md" color="indigo" style={{ textAlign: 'left' }}>
+                <Box className="auth-buttons">
+                    {/* <Button fullWidth size="md" color="indigo" style={{ textAlign: 'left' }}>
                             <Flex
                                 justify='start'
                                 align='center'
@@ -152,47 +151,45 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
                                 </Text>
                             </Flex>
                         </Button> */}
-                        <Button fullWidth size="md" mt={10} style={{ textAlign: 'left' }} onClick={() => { authProvider('google')}}>
-                            <Flex
-                                justify='start'
-                                align='center'
-                            >
-                                <IconBrandGoogle />
-                                <Text ml={30} >
-                                    {
-                                        type == 'login' ? 'Log in ' : 'Signup '
-                                    }
-                                    with Google
-                                </Text>
-                            </Flex>
-                        </Button>
-                        <Text weight={400} color="black" align="center" mt={20} size={13} sx={(theme) => ({
-                            color: theme.colors.gray[8]
-                        })}>
-                            {
-                                `By continuing, you agree to Designspiration's Terms of Service and acknowledge you've read our Privacy Policy`
-                            }
-                        </Text>
-                        <Text color="blue" weight={700} align="center" mt={20} sx={(theme) => ({
-                            cursor: 'pointer'
-                        })}
-                            onClick={() => {
-                                if (type == 'login') {
-                                    setType('signup');
-                                } else {
-                                    setType('login');
-                                }
-                            }}
+                    <Button fullWidth size="md" mt={10} style={{ textAlign: 'left' }} onClick={() => { authProvider('google') }}>
+                        <Flex
+                            justify='start'
+                            align='center'
                         >
-                            {
-                                type == "login" ? 'Create a account' : 'Log in'
+                            <IconBrandGoogle />
+                            <Text ml={30} >
+                                {
+                                    type == 'login' ? 'Log in ' : 'Signup '
+                                }
+                                with Google
+                            </Text>
+                        </Flex>
+                    </Button>
+                    <Text weight={400} color="black" align="center" mt={20} size={13} sx={(theme) => ({
+                        color: theme.colors.gray[8]
+                    })}>
+                        {
+                            `By continuing, you agree to Designspiration's Terms of Service and acknowledge you've read our Privacy Policy`
+                        }
+                    </Text>
+                    <Text color="blue" weight={700} align="center" mt={20} sx={(theme) => ({
+                        cursor: 'pointer'
+                    })}
+                        onClick={() => {
+                            if (type == 'login') {
+                                setType('signup');
+                            } else {
+                                setType('login');
                             }
-                        </Text>
-                    </Box>
-                </Flex>
-
+                        }}
+                    >
+                        {
+                            type == "login" ? 'Create a account' : 'Log in'
+                        }
+                    </Text>
+                </Box>
+            </Flex>
             <LoadingOverlay visible={isLoad} overlayBlur={2} />
-
         </Modal>
     )
 }

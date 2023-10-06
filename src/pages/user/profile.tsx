@@ -3,7 +3,7 @@ import { useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useState, useContext } from "react";
 import { useRouter } from 'next/router';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-import { Category, Collection, CollectionState, ElementState, Item, ItemState, Types, ElementType } from "@/types/elements";
+import { CategoryType, CollectionType, CollectionState, ElementState, ItemType, ItemState, CityType, ElementType } from "@/types/elements";
 import Block from "@/components/Home/Block";
 import { Dropzone } from '@mantine/dropzone';
 import HomeContext from '@/state/index.context';
@@ -19,18 +19,18 @@ const Profile = () => {
 
     const [isLoad, setIsLoad] = useState<boolean>(false);
     const [screenWidth, setScreenWidth] = useState<number>(0);
-    const [saves, setSaves] = useState<Item[]>([]);
+    const [saves, setSaves] = useState<ItemType[]>([]);
     const [image, setImage] = useState<string>('');
     const [updatingImage, setUpdatingImage] = useState<boolean>(false);
     const [tabType, setTabType] = useState<string>('saves');
-    const [selectedItem, setSelectedItem] = useState<Item>(ItemState);
+    const [selectedItem, setSelectedItem] = useState<ItemType>(ItemState);
     const [open, setOpen] = useState<boolean>(false);
-    const [collections, setCollections] = useState<Collection[]>([]);
+    const [collections, setCollections] = useState<CollectionType[]>([]);
     const [isCollectionSaves, setIsCollectionSaves] = useState<boolean>(false);
-    const [selectedCollection, setSelectedCollection] = useState<Collection>(CollectionState);
+    const [selectedCollection, setSelectedCollection] = useState<CollectionType>(CollectionState);
 
     const [element, setElement] = useState<ElementType>(ElementState);
-    const [types, setTypes] = useState<Types[]>([]);
+    const [cities, setCities] = useState<CityType[]>([]);
 
     const {
         state: { avatar_url },
@@ -62,7 +62,7 @@ const Profile = () => {
     }, [selectedItem])
 
     const getTypes = async () => {
-        setTypes([]);
+        setCities([]);
         const res = await fetch('/user/profile/get_types', {
             method: "POST",
             headers: {
@@ -75,7 +75,7 @@ const Profile = () => {
         if(res.status == 200){
             const data_ = await res.json();
             setElement(data_.element_data);
-            setTypes(data_.types);
+            setCities(data_.types);
         }
 
     }
@@ -290,13 +290,13 @@ const Profile = () => {
                                         >
                                             <Masonry>
                                                 {
-                                                    saves.map((item: Item, key: number) =>
+                                                    saves.map((item: ItemType, key: number) =>
                                                         <Block 
                                                             key={key} 
                                                             data={item} 
                                                             getSaves={() => { getSaves() }} 
                                                             page_type='admin' 
-                                                            setSelectedItem={(item: Item) => { setSelectedItem(item); setOpen(true) }} 
+                                                            setSelectedItem={(item: ItemType) => { setSelectedItem(item); setOpen(true) }} 
                                                         />
                                                     )
                                                 }
@@ -435,8 +435,8 @@ const Profile = () => {
                                             >
                                                 <Masonry>
                                                     {
-                                                        saves.map((item: Item, key: number) =>
-                                                            <Block key={key} data={item} getSaves={() => { getSaves() }} page_type='admin' setSelectedItem={(item: Item) => { setSelectedItem(item); setOpen(true) }} />
+                                                        saves.map((item: ItemType, key: number) =>
+                                                            <Block key={key} data={item} getSaves={() => { getSaves() }} page_type='admin' setSelectedItem={(item: ItemType) => { setSelectedItem(item); setOpen(true) }} />
                                                         )
                                                     }
                                                 </Masonry>
@@ -456,7 +456,7 @@ const Profile = () => {
                                             >
                                                 <Masonry>
                                                     {
-                                                        collections.map((item: Collection, key: number) =>
+                                                        collections.map((item: CollectionType, key: number) =>
                                                             <Box m={15} key={key} style={{ cursor: 'pointer' }}
                                                                 onClick={() => {
                                                                     setSelectedCollection(item);
@@ -494,7 +494,7 @@ const Profile = () => {
                             open={() => { setOpen(p_o => (!p_o)) }}
                             isMobile={isMobile}
                             opened={open} data={selectedItem}
-                            types={types}
+                            cities={cities}
                         />
                     </Box>
             }

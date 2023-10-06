@@ -1,7 +1,7 @@
 import { Modal, Button, Group, Box, Grid, Image, Flex, Text, Rating, Loader, Textarea } from '@mantine/core';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { FC, useState, useRef, useEffect } from 'react';
-import { Category, Item, Types } from '@/types/elements';
+import { CategoryType, CityType, ItemType } from '@/types/elements';
 import GoogleMapReact from 'google-map-react';
 import Categories from '../Element/Categories';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,7 +10,7 @@ import { useUser } from "@supabase/auth-helpers-react";
 import { notifications } from '@mantine/notifications';
 import AuthModal from '../Layouts/AuthModal';
 import { useRouter } from 'next/router';
-import TypesComponents from '../Element/Types';
+import TypesComponents from '../Element/Cities';
 import Link from 'next/link';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel } from '@mantine/carousel';
@@ -18,17 +18,17 @@ import { Carousel } from '@mantine/carousel';
 interface Props {
     images: any,
     isMobile: boolean,
-    data: Item,
-    categories: Category[],
+    data: ItemType,
+    categories: CategoryType[],
     isLoad: boolean,
-    selectCategory: (category: Category) => void,
+    selectCategory: (category: CategoryType) => void,
     element_name: string,
     getSaves?: () => void | undefined,
     saved?: string | undefined
     open: () => void,
     saveItemModal: () => void,
     isSaved: boolean,
-    types: Types[],
+    cities: CityType[],
     loadCategories: boolean
 }
 
@@ -45,7 +45,7 @@ const Service: FC<Props> = ({
     open,
     saveItemModal,
     isSaved,
-    types,
+    cities,
     loadCategories
 }) => {
 
@@ -58,15 +58,15 @@ const Service: FC<Props> = ({
     const [iframeWidth, setIframeWidth] = useState<number>(0);
     const [iframeHeight, setIframeHeight] = useState<number>(0);
     const handleIframe = () => {
-        var iframe:any = document.getElementsByClassName("tiktok-iframe");
-        try{
-            for(let k=0; k<iframe.length; k++){
-            //    iframe[k].height = iframe[k].contentWindow.document.body.offsetHeight
-            //    console.log(iframe[k].contentWindow.document.body.offsetHeight);
+        var iframe: any = document.getElementsByClassName("tiktok-iframe");
+        try {
+            for (let k = 0; k < iframe.length; k++) {
+                //    iframe[k].height = iframe[k].contentWindow.document.body.offsetHeight
+                //    console.log(iframe[k].contentWindow.document.body.offsetHeight);
                 // console.log(iframe[k].contentWindow)
-                
+
             }
-        }catch(e){
+        } catch (e) {
             console.log("--------Height-------");
             console.log(e);
         }
@@ -235,10 +235,10 @@ const Service: FC<Props> = ({
                                 />
                         } */}
                         {
-                            types.length == 0 ?
+                            cities.length == 0 ?
                                 <></> :
                                 <Box>
-                                    <Link href={`/${element_name}/${types.filter((item: Types) => item.id == data.type_id)[0].name
+                                    <Link href={`/${element_name}/${cities.filter((item: CityType) => item.id === data.city_id)[0].name
                                         }/items`} onClick={() => { open() }}>
 
                                         <Button
@@ -251,7 +251,7 @@ const Service: FC<Props> = ({
                                             })}
                                         >
                                             {
-                                                types.filter((item: Types) => item.id == data.type_id)[0].name
+                                                cities.filter((item: CityType) => item.id == data.city_id)[0].name
                                             }
                                         </Button>
                                     </Link>
@@ -274,11 +274,11 @@ const Service: FC<Props> = ({
                             })}>
                                 {data.phone_number}
                             </Text>
-                            <Text size='1rem' weight={400} sx={(theme) => ({
+                            {/* <Text size='1rem' weight={400} sx={(theme) => ({
                                 color: "black"
                             })}>
                                 {data.email}
-                            </Text>
+                            </Text> */}
                             <Text size='1rem' weight={400} sx={(theme) => ({
                                 color: "black"
                             })}>
@@ -311,11 +311,12 @@ const Service: FC<Props> = ({
                                     >
 
                                     </GoogleMapReact> */}
-
-                                    <iframe width='100%'
-                                        src={data.map_url} 
-                                        
-                                        style={{ border: 0 }} height="300">
+                                    <iframe 
+                                        width='100%'
+                                        src={data.map_url}
+                                        style={{ border: 0 }} 
+                                        height="300"
+                                    >
                                     </iframe>
                                 </Box>
                             </Box>
@@ -368,20 +369,20 @@ const Service: FC<Props> = ({
                 {
                     isLoad ? <Box><Loader variant='dots' alignmentBaseline='central' /></Box> :
                         <ResponsiveMasonry
-                            columnsCountBreakPoints={{ 350: 1, 750: 2,  1000: 3, 1400: 4, 1600: 5 }}
+                            columnsCountBreakPoints={{ 350: 1, 750: 2, 1000: 3, 1400: 4, 1600: 5 }}
                         >
                             <Masonry gutter='10px' style={{ background: 'transparent' }}>
                                 {
                                     images.videos.map((video: any, key: number) =>
                                         video ?
-                                        <Flex w={'100%'} justify={'center'} key={key} direction={'column'}>
-                                            <iframe
-                                                key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)}
-                                                style={{overflow:"hidden", height: "500px", width:"300px", background:'transparent', border: "none"}}
-                                                scrolling="no"
-                                            />
-                                            {/* <a style={{marginTop: '10px', color: 'black', textDecorationLine:'underline'}} target='_blank' href={video.page_url}>Go to Tiktok</a> */}
-                                        </Flex>:<></>
+                                            <Flex w={'100%'} justify={'center'} key={key}>
+                                                <iframe
+                                                    key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)}
+                                                    style={{ overflow: "hidden", height: "500px", width: "300px", background: 'transparent', border: "none" }}
+                                                    scrolling="no"
+                                                />
+                                                {/* <a style={{marginTop: '10px', color: 'black', textDecorationLine:'underline'}} target='_blank' href={video.page_url}>Go to Tiktok</a> */}
+                                            </Flex> : <></>
                                     )
                                 }
                             </Masonry>

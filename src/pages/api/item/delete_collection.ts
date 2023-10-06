@@ -1,6 +1,6 @@
 
 
-import { Collection } from '@/types/elements';
+import { CollectionType } from '@/types/elements';
 import { supabaseAdmin } from '@/utils/server/supabase-admin';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
@@ -38,7 +38,7 @@ export default async function handler(
     }
 }
 
-const removeActive = async(data: Collection, item_id: string) => {
+const removeActive = async(data: CollectionType, item_id: string) => {
     const { data:collection_data} = await supabaseAdmin.from('asian_collections').select("*").eq('id', data.id);
         if(collection_data) {
             if(collection_data?.length > 0){

@@ -1,4 +1,4 @@
-import { Category } from '@/types/elements';
+import { CategoryType } from '@/types/elements';
 import { supabaseAdmin } from '@/utils/server/supabase-admin';
 import type { NextApiRequest, NextApiResponse } from 'next'
 

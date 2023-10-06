@@ -11,4 +11,4 @@ export const supabase = createPagesBrowserClient<Database>();
 export const supabaseClient = createClient<Database>(
     SUPABSE_URL || '',
     SUPABSE_ANNON_KEY || ''
- );
+);

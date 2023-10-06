@@ -1,29 +1,51 @@
-import { Box, Image, Text } from "@mantine/core";
-import { FC, useState } from 'react';
+import { Box, Image as MantineImage, Text } from "@mantine/core";
+import React, { FC, useEffect, useState } from 'react';
 import { useMediaQuery } from '@mantine/hooks';
-import { Item, ItemState } from "@/types/elements";
+import { ItemType, ItemState } from "@/types/elements";
 
 interface Props {
-    data: Item,
+    data: ItemType,
     getSaves?:() =>void;
     page_type?:string | undefined
-    setSelectedItem: (item: Item) =>void
+    setSelectedItem: (item: ItemType) =>void
 }
 
-const Block:FC<Props> = ({data, getSaves, page_type, setSelectedItem}) => {
+const Block:FC<Props> = ({
+    data, 
+    getSaves, 
+    page_type, 
+    setSelectedItem
+}) => {
     const isMobile = useMediaQuery(`(max-width: 760px)`);
-
-    const handleSelectItem = (item:Item) => {
+    const [imageExists, setImageExists] = useState<boolean>(false);
+    
+    const handleSelectItem = (item:ItemType) => {
         setSelectedItem(item);
     }
 
+    useEffect(() => {
+        if(data) {
+            if(data.image === null) {
+                setImageExists(false);
+            }
+            else {
+                const img : HTMLImageElement  = new Image();
+                img.onload = () => {
+                    setImageExists(true);
+                };
+                img.onerror = () => {
+                    setImageExists(false);
+                };
+                img.src = data.image;
+            }
+        }
+    }, [data])
+
     return (
         data&&
-        <Box
-            p={10}
-        >
+        <Box>
             {
-                data.image == null?
+                data.image == null || imageExists == false?
                 <Box
                     sx={(theme) =>({
                         width: '100%',
@@ -43,8 +65,9 @@ const Block:FC<Props> = ({data, getSaves, page_type, setSelectedItem}) => {
                     })}
                     onClick={() => {handleSelectItem(data)}}
                 >
-                </Box>:
-                <Image 
+                </Box>
+                :
+                <MantineImage 
                     src={ data.image } alt='image' 
                     sx={(theme) =>({
                         '&:hover' :{
@@ -57,8 +80,7 @@ const Block:FC<Props> = ({data, getSaves, page_type, setSelectedItem}) => {
                     radius={7}
                 />
             }
-            
-            {
+            {/* {
                 <Box mt={10}>
                     <Text 
                     weight={isMobile?500:700}
@@ -87,7 +109,7 @@ const Block:FC<Props> = ({data, getSaves, page_type, setSelectedItem}) => {
                         }
                     </Text>
                 </Box>
-            }
+            } */}
         </Box>
     )
 }

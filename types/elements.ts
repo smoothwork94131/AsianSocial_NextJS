@@ -1,46 +1,45 @@
-export interface ElementType{
+export interface ElementType {
+    id: string
     name: string,
     summary: string,
-    id: string
     order: string,
-    type_name?:string,
+    city_name?:string,
     category_name?: string
 }
 
 export const ElementState: ElementType = {
+    id: '',
     name: '',
     summary: '',
-    id: '',
     order: '0'
 }
 
-export interface Types {
-    name: string,
-    element_id: string,
+export interface CityType {
     id: string,
+    element_id: string,
+    name: string,
     category_name?:string
 }
 
-export const TypesState =  {
-    name:'',
-    element_id:'',
-    id:''
-}
-
-export interface Category {
-    name: string,
-    type_id: string,
-    id: string
-}
-
-export const CategoryState =  {
-    name:'',
-    type_id:'',
+export const CityState:CityType =  {
     id:'',
-    
+    element_id:'',
+    name:''
 }
 
-export interface Item 
+export interface CategoryType {
+    id: string,
+    city_id: string,
+    name: string
+}
+
+export const CategoryState:CategoryType =  {
+    id:'',
+    city_id:'',
+    name:''
+}
+
+export interface ItemType
 {
     id: string,
     name: string,
@@ -62,11 +61,11 @@ export interface Item
     map_url: string,
     facebook: string,
     instagram: string,
-    type_id: string,
+    city_id: string,
     hours: string
 }
 
-export const  ItemState: Item = {
+export const  ItemState: ItemType = {
     id: '',
     sites_url: '',
     event_name: '',
@@ -86,22 +85,21 @@ export const  ItemState: Item = {
     map_url: '',
     facebook: '',
     instagram:'',
-    type_id: '',
+    city_id: '',
     hours: ""
 }
-
 
 export interface PageType{
     id: string,
     name: string
 }
 
-export const PageTypeState = {
+export const PageState = {
     id: '',
     name: ''
 }
 
-export interface Collection {
+export interface CollectionType {
     id: string,
     created_at?:string,
     item_id: string,
@@ -111,7 +109,7 @@ export interface Collection {
     active_item_ids: string[]
 }
 
-export const CollectionState: Collection = {
+export const CollectionState: CollectionType = {
     id: '',
     item_id: '',
     name: '',

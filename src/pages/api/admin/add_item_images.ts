@@ -9,7 +9,7 @@ export default async function handler(
     const image = req.body.image;
     const item_id = req.body.item_id;
 
-    const { error } = await supabaseAdmin.from('asian_item_images').insert([{
+    const { error } = await supabaseAdmin.from('asian_images').insert([{
         image,
         item_id
     }]);

@@ -1,7 +1,7 @@
 import { Modal, Button, Group, Box, Grid, Image, Flex, Text, Rating, Loader } from '@mantine/core';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { FC, useState } from 'react';
-import { Category, Item, Types } from '@/types/elements';
+import { CategoryType, ItemType, CityType } from '@/types/elements';
 import GoogleMapReact from 'google-map-react';
 import Categories from '../Element/Categories';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,22 +10,22 @@ import { useUser } from "@supabase/auth-helpers-react";
 import { notifications } from '@mantine/notifications';
 import AuthModal from '../Layouts/AuthModal';
 import { useRouter } from 'next/router';
-import TypesComponents from '../Element/Types';
+import Cities from '../Element/Cities';
 
 interface Props {
     images: string[],
     isMobile: boolean,
-    data: Item,
-    categories: Category[],
+    data: ItemType,
+    categories: CategoryType[],
     isLoad: boolean,
-    selectCategory: (category: Category) => void,
+    selectCategory: (category: CategoryType) => void,
     element_name: string,
     getSaves?: () => void | undefined,
     saved?: string | undefined
     open: () => void,
     saveItemModal: () => void,
     isSaved: boolean,
-    types: Types[]
+    cities: CityType[]
     loadCategories: boolean
 }
 
@@ -42,7 +42,7 @@ const Service: FC<Props> = ({
     open,
     saveItemModal,
     isSaved,
-    types,
+    cities,
     loadCategories
 }) => {
 
@@ -151,10 +151,10 @@ const Service: FC<Props> = ({
                         {
                             loadCategories ? <Loader variant='dots' /> :
 
-                                <TypesComponents
+                                <Cities
                                     element_name={element_name}
-                                    types={types}
-                                    type_name={''}
+                                    cities={cities}
+                                    city_name={''}
                                     open={open}
                                 />
                         }

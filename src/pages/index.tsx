@@ -3,28 +3,28 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import Block from "@/components/Home/Block";
 import { useMediaQuery } from '@mantine/hooks';
 import {  useEffect, useState } from 'react';
-import { Item, ItemState, Types, ElementState, ElementType } from "@/types/elements";
+import { ItemType, ItemState, CityType, ElementState, ElementType } from "@/types/elements";
 import InfoModal from "@/components/Item/InfoModal";
 
 const Home = () => {
 
     const isMobile = useMediaQuery(`(max-width: 760px)`);
-    const [items, setItems] = useState<Item[]>([]);
+    const [items, setItems] = useState<ItemType[]>([]);
     const [isLoad, setIsLoad] = useState<boolean>(false);
-    const [selectedItem, setSelectedItem] = useState<Item>(ItemState);
+    const [selectedItem, setSelectedItem] = useState<ItemType>(ItemState);
     const [ open, setOpen ] = useState<boolean>(false);
     const [element, setElement] = useState<ElementType>(ElementState);
-    const [types, setTypes] = useState<Types[]>([]);
+    const [cities, setCities] = useState<CityType[]>([]);
     const [loadCount, setLoadCount] = useState<number>(0);
 
-    let baseItem: Item[] = [];
+    let baseItem: ItemType[] = [];
     useEffect(() => {
         getItems();
         // window.addEventListener('scroll', handleScroll);
     }, [])
 
     const getTypes = async () => {
-        setTypes([]);
+        setCities([]);
         const res = await fetch('/api/user/profile/get_types', {
             method: "POST",
             headers: {
@@ -38,7 +38,7 @@ const Home = () => {
         if(res.status == 200){
             const data_ = await res.json();
             setElement(data_.element_data);
-            setTypes(data_.types);
+            setCities(data_.types);
         }
     }
     
@@ -62,22 +62,21 @@ const Home = () => {
         }
     }
     
-
     const getItems = async () => {
         setIsLoad(true);
         const res = await fetch('/api/home/get_items');
         if (res.status == 200) {
             const data = await res.json();
-            const _items: Item[] = [];
+            const _items: ItemType[] = [];
             let cnt = 0;
             let index = 0;
             while(true) {
                 if(cnt === 1000) {
                     break;
                 }
-                if(index > data.length -1){
-                    index=0;
-                } 
+
+                index = Math.floor(Math.random() * 1000);
+                
                 _items.push(data[index]);
                 cnt++;
                 index++;
@@ -89,7 +88,7 @@ const Home = () => {
     }
     
     useEffect(() => {
-        if(selectedItem.id !=""){
+        if(selectedItem.id !="") {
             getTypes();
         }
     }, [selectedItem])
@@ -98,20 +97,18 @@ const Home = () => {
         <Box>
             <Box pb={'30px'}>
                 <ResponsiveMasonry
-                    columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 3, 900: 4 }}
+                    columnsCountBreakPoints={{ 350: 1, 500: 2, 750: 4, 900: 6 }}
                 >
-                    <Masonry>
-                        {
-                            items.map((item: Item, key) =>
-                                <Block data={item} key={key} setSelectedItem={(item: Item) => {setSelectedItem(item); setOpen(true)}}/>
-                            )
-                        }
+                    <Masonry gutter='10px'>
+                    {
+                        items.map((item: ItemType, key) =>
+                            <Block data={item} key={key} setSelectedItem={(item: ItemType) => {setSelectedItem(item); setOpen(true)}}/>
+                        )
+                    }
                     </Masonry>
                 </ResponsiveMasonry>
             </Box>
-            <div className={`${loadCount}`}>
-                
-            </div>
+            <div className={`${loadCount}`}></div>
             {
                 isLoad && <Box
                     pt={20}
@@ -128,8 +125,8 @@ const Home = () => {
             <InfoModal 
                 open={() => { setOpen(p_o => (!p_o)) }} 
                 opened={open} data={selectedItem}
-                isMobile={isMobile} 
-                types={types}
+                isMobile={isMobile}
+                cities={cities}
             />
         </Box>
     )

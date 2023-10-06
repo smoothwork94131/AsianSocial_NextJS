@@ -2,7 +2,7 @@ import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { useEffect, useState } from 'react';
 import Layout from '@/components/Layouts/Index';
-import { MantineProvider, ColorSchemeProvider, MantineThemeOverride } from '@mantine/core';
+import { MantineProvider, ColorSchemeProvider, MantineThemeOverride, Container } from '@mantine/core';
 import { useCreateReducer } from '@/hooks/useCreateReducer';
 import { initialState, HomeInitialState } from '@/state/index.state';
 import { Notifications } from '@mantine/notifications';
@@ -30,7 +30,20 @@ export default function App({ Component, pageProps }: AppProps) {
     colorScheme: colorScheme,
     spacing: {
       chatInputPadding: '40px'
-    }
+    },
+    components: {
+      Container: {
+        defaultProps: {
+          sizes: {
+            xs: 540,
+            sm: 960,
+            md: 1020,
+            lg: 1640,
+            xl: 1920,
+          },
+        },
+      },
+    },
   };
 
   return (
@@ -43,9 +56,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <SessionProvider session={pageProps.session}>
           <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={() => { }}>
             <MantineProvider theme={myTheme} withGlobalStyles withNormalizeCSS>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
+              <Container size="xl">
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </Container>
               <Notifications />
             </MantineProvider>
           </ColorSchemeProvider>

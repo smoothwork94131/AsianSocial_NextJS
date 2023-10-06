@@ -1,7 +1,7 @@
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button, Group, Box, Grid, Image, Flex, LoadingOverlay } from '@mantine/core';
 import { FC, useEffect, useState } from 'react';
-import { Category, CategoryState, Collection, ElementState, ElementType, Item, PageType, PageTypeState, Types } from '@/types/elements';
+import { CategoryType, CategoryState, CollectionType, ElementType, ElementState, ItemType, PageType, PageState, CityType } from '@/types/elements';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 import Events from './Event';
@@ -14,30 +14,30 @@ import { notifications } from '@mantine/notifications';
 
 interface Props {
     opened: boolean,
-    open: () => void
-    data: Item,
+    data: ItemType,
     isMobile: boolean,
     getSaves?: () => void | undefined
     page_type?: string | undefined,
-    types: Types[],
+    cities: CityType[],
+    open: () => void
 }
 
-const InfoModal: FC<Props> = ({ 
+const InfoModal: FC<Props> = ({
     opened, open, 
     data, 
     isMobile, 
     getSaves, 
     page_type, 
-    types,
+    cities,
  }) => {
     
     const [images, setImages] = useState<any>([]);
-    const [categories, setCategories] = useState<Category[]>([]);
+    const [categories, setCategories] = useState<CategoryType[]>([]);
     const [isLoad, setIsLoad] = useState<boolean>(false);
     const [element, setElement] = useState<ElementType>(ElementState);
-    const [pageType, setPageType] = useState<PageType>(PageTypeState);
+    const [pageType, setPageType] = useState<PageType>(PageState);
     const [openSaveModal, setOpenSaveModal] = useState<boolean>(false);
-    const [collections, setCollections] = useState<Collection[]>([]);
+    const [collections, setCollections] = useState<CollectionType[]>([]);
     const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
     const [authType, setAuthType] = useState<string>('login');
     const [loadCategories, setLoadCategories] = useState<boolean>(false);
@@ -78,7 +78,7 @@ const InfoModal: FC<Props> = ({
                 setCollections(data_);
                 setIsSaved(false);
 
-                data_.map((collection: Collection) => {
+                data_.map((collection: CollectionType) => {
                     if (collection.active_item_ids.includes(data.id)) {
                         setIsSaved(true);
                     }
@@ -162,7 +162,7 @@ const InfoModal: FC<Props> = ({
         return exist;
     }
     
-    const changeCollectionActive = async (collection: Collection) => {
+    const changeCollectionActive = async (collection: CollectionType) => {
         setIsLoad(true);    
         const res = await fetch('/api/item/change_collection_active', {
             method: 'POST',
@@ -238,7 +238,7 @@ const InfoModal: FC<Props> = ({
         setIsLoad(false);
     }
 
-    const selectCategory = (category: Category) => {
+    const selectCategory = (category: CategoryType) => {
         router.push(`/${element.name}/${category.name}`)
         open();
     }
@@ -290,7 +290,7 @@ const InfoModal: FC<Props> = ({
                     open={open}
                     saveItemModal={saveItemModal}
                     isSaved={isSaved}
-                    types={types}
+                    cities={cities}
                     loadCategories={loadCategories}
                 />
             )
@@ -307,7 +307,7 @@ const InfoModal: FC<Props> = ({
                     open={open}
                     saveItemModal={saveItemModal}
                     isSaved={isSaved}
-                    types={types}
+                    cities={cities}
                     loadCategories={loadCategories}
                 />
             )
@@ -324,7 +324,7 @@ const InfoModal: FC<Props> = ({
                     open={open}
                     saveItemModal={saveItemModal}
                     isSaved={isSaved}
-                    types={types}
+                    cities={cities}
                     loadCategories={loadCategories}
                 />
             )

@@ -2,20 +2,20 @@ import { Box, Button } from "@mantine/core";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
-import { Category, Types } from "@/types/elements";
+import { CityType } from "@/types/elements";
 import { FC, useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 
 interface Props {
-    types: Types[],
-    type_name: string  | string[] | undefined,
+    cities: CityType[],
+    city_name: string  | string[] | undefined,
     element_name: string | string[] | undefined,
     open: () => void
 }
 
-const TypesComponents: FC<Props> = ({
-    types,
-    type_name,
+const Cities: FC<Props> = ({
+    cities,
+    city_name,
     element_name,
     open
 }) => {
@@ -30,7 +30,7 @@ const TypesComponents: FC<Props> = ({
                 }
             >
                 {
-                    types.map((item, key) =>
+                    cities.map((item, key) =>
                         item.name&&
                         <Box key={key} ml={5} sx={(theme) => ({
                         })}>
@@ -39,7 +39,7 @@ const TypesComponents: FC<Props> = ({
                                 <Button
                                     radius={10}
                                     sx={(theme) => ({
-                                        background: type_name == item.name?theme.colors.gray[3]:theme.colors.gray[1],
+                                        background: city_name == item.name?theme.colors.gray[3]:theme.colors.gray[1],
                                         color: "black",
                                         fontWeight: 600,
                                         '&:hover': { background: theme.colors.gray[3]}
@@ -127,4 +127,5 @@ const RightArrow = () => {
         </Box>
     )
 }
-export default TypesComponents;
+
+export default Cities;

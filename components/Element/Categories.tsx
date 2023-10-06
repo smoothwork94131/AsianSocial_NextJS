@@ -2,22 +2,22 @@ import { Box, Button } from "@mantine/core";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
-import { Category } from "@/types/elements";
+import { CategoryType } from "@/types/elements";
 import { FC, useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 
 interface Props {
-    categories: Category[],
     category_name: string | string[],
-    type_name: string  | string[],
+    city_name: string  | string[],
     element_name: string | string[]
+    categories: CategoryType[],
 }
 
 const Categories: FC<Props> = ({
-    categories,
-    type_name,
+    city_name,
     category_name,
-    element_name
+    element_name,
+    categories
 }) => {
     return (
         <Box
@@ -40,7 +40,7 @@ const Categories: FC<Props> = ({
                         <Box key={key} ml={5} sx={(theme) => ({
                         })}>
                             
-                            <Link href={`/${element_name}/${type_name}/${item.name.replaceAll('/','_')}`}>
+                            <Link href={`/${element_name}/${city_name}/${item.name.replaceAll('/','_')}`}>
                                 <Button
                                     radius={10}
                                     sx={(theme) => ({
@@ -77,6 +77,7 @@ const LeftArrow = () => {
             setDisabled(isFirstItemVisible);
         }
     }, [isFirstItemVisible, visibleElements]);
+    
     return (
         !disabled&&<Box
             sx={(theme) => ({

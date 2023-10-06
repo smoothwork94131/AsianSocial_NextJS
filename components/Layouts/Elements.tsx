@@ -18,7 +18,6 @@ const Elements = () => {
 
     const [elements, setElements] = useState<ElementType[]>([])
     const [isLoad, setIsLoad] = useState<boolean>(false);
-
     const router = useRouter();
 
     useEffect(() => {
@@ -33,7 +32,6 @@ const Elements = () => {
             setElements(data);
         }
         setIsLoad(false);
-
     }
 
     return (
@@ -63,7 +61,7 @@ const Elements = () => {
                     elements.map((item, key) =>
                         <Box key={key} ml={5} sx={(theme) => ({
                         })}>
-                            <Link href={`/${item.name}/${item.type_name}/${item.category_name}`}>
+                            <Link href={`/${item.name}/${item.city_name}/${item.category_name}`}>
                                 <Button
                                     sx={(theme) => ({
                                         background: 'transparent',
@@ -101,7 +99,6 @@ const LeftArrow = () => {
         !initComplete || (initComplete && isFirstItemVisible)
     );
     useEffect(() => {
-        // NOTE: detect if whole component visible
         if (visibleElements.length) {
             setDisabled(isFirstItemVisible);
         }

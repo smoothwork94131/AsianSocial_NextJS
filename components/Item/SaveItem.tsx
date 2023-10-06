@@ -1,4 +1,4 @@
-import { Collection, CollectionState, Item } from "@/types/elements";
+import { CollectionType, CollectionState, ItemType } from "@/types/elements";
 import {
     Box,
     Button,
@@ -17,10 +17,10 @@ import { FC, useEffect, useState } from "react";
 
 interface Props {
     isMobile: boolean,
-    data: Item,
+    data: ItemType,
     closeSaveModal: () => void,
-    collections: Collection[],
-    changeCollectionActive: (collection: Collection) => void,
+    collections: CollectionType[],
+    changeCollectionActive: (collection: CollectionType) => void,
     createCollection: (collection_name: string) => void
     deleteCollection: () => void,
     isSaved: boolean
@@ -44,10 +44,10 @@ const SaveItem: FC<Props> = ({
     const [collectionInput, setCollectionInput] = useState<string>('');
     const [websites, setWebsites] = useState<string>('');
     const [describe, setDescribe] = useState<string>('');
-    const [selCollection, setSelCollection] = useState<Collection>(CollectionState);
+    const [selCollection, setSelCollection] = useState<CollectionType>(CollectionState);
     const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
-    const [filteredCollections, setFilteredCollections] = useState<Collection[]>([]);
+    const [filteredCollections, setFilteredCollections] = useState<CollectionType[]>([]);
 
     useEffect(() => {
         collections.map((collection) => {
@@ -63,7 +63,7 @@ const SaveItem: FC<Props> = ({
     }, [search])
 
     const filterCollections = () => {
-        const filtered_collections:Collection[] = collections.filter((item) => item.name.indexOf(search) > -1);
+        const filtered_collections:CollectionType[] = collections.filter((item) => item.name.indexOf(search) > -1);
         setFilteredCollections(filtered_collections);
     }
     
@@ -160,7 +160,7 @@ const SaveItem: FC<Props> = ({
                                         </Text>
                                         <Box>
                                             {
-                                                collections.map((collection: Collection, key: number) =>
+                                                collections.map((collection: CollectionType, key: number) =>
                                                     data.id == collection.item_id && isSaved &&
                                                     <NavLink
                                                         key={key}
@@ -219,7 +219,7 @@ const SaveItem: FC<Props> = ({
                                         </Text>
                                         {
                                             
-                                            filteredCollections.map((collection: Collection, key: number) =>
+                                            filteredCollections.map((collection: CollectionType, key: number) =>
                                                 <NavLink
                                                     key={key}
                                                     label={
