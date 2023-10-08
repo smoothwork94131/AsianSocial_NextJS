@@ -1,12 +1,15 @@
+import { ProfileType, ProfileState } from '@/types/profile'
+
+
 export interface HomeInitialState {
     colorScheme: 'light' | 'dark';
     lightMode: 'light' | 'dark';
-    avatar_url: string | null,
+    user_profile: ProfileType,
 }
 
 export const initialState: HomeInitialState = {
     colorScheme: 'light',
     lightMode: 'light',
-    avatar_url: null
+    user_profile: ProfileState
 };
   

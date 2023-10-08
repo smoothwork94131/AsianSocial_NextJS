@@ -44,41 +44,13 @@ const Auth: FC<Props> = ({
     const [userMenuOpened, setUserMenuOpened] = useState(false);
 
     const {
-        state: { avatar_url },
-        dispatch: homeDispatch,
+        state: { user_profile },
     } = useContext(HomeContext);
 
     const logout = async () => {
         await supabase.auth.signOut();
         router.push('/');
     }
-
-    useEffect(() => {
-        const fetch_user = async () => {
-            if(user) {
-                try {
-                    const res = await fetch('/api/user/profile/get_profile', {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ id: user?.id }),
-                    })
-                    if (res.status == 200) {
-                        const data = await res.json();
-                        homeDispatch({
-                            field: 'avatar_url',
-                            value: data.avatar_url
-                        })
-                    }
-                } catch (e) {
-                    console.log(e);
-                }
-            }
-        }
-
-        fetch_user();
-    }, [user])
 
     return (
         <Box
@@ -105,7 +77,7 @@ const Auth: FC<Props> = ({
                         <Menu.Target>
                             <UnstyledButton>
                                 <Group spacing='md'>
-                                    <Avatar src={avatar_url} radius="40px" size={40} />
+                                    <Avatar src={user_profile.avatar_url} radius="40px" size={40} />
                                 </Group>
                             </UnstyledButton>
                         </Menu.Target>

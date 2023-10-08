@@ -1,10 +1,12 @@
 
 import { Box, Text, Button, Flex, Modal, Image, TextInput, LoadingOverlay } from "@mantine/core"
 import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
-import { FC, useState } from 'react';
+import { FC, useState, useContext } from 'react';
 import { useForm } from '@mantine/form';
 import { supabase } from "@/utils/app/supabase-client";
 import { notifications } from '@mantine/notifications';
+import HomeContext from '@/state/index.context';
+
 interface Props {
     open: () => void,
     opened: boolean,
@@ -15,6 +17,10 @@ interface Props {
 const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
 
     const [isLoad, setIsLoad] = useState<boolean>(false);
+    const {
+        dispatch: homeDispatch,
+    } = useContext(HomeContext);
+
     const form = useForm({
         initialValues: { email: '', password: '', name: '' },
         validate: {
@@ -40,6 +46,8 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
                         color: 'red'
                     })
                 } else {
+                    const user_id = data.user.id
+                    getUserProfile(user_id);
                     open();
                 }
                 setIsLoad(false);
@@ -75,6 +83,28 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: provider
         })
+    }
+
+    const getUserProfile = async (user_id:string) => {
+        try {
+            const res = await fetch('/api/user/profile/get_profile', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id: user_id }),
+            })
+
+            if(res.ok) {
+                const data = await res.json();
+                homeDispatch({
+                    field: 'user_profile',
+                    value: data
+                })
+            }
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     return (

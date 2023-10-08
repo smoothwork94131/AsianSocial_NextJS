@@ -20,6 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const contextValue = useCreateReducer<HomeInitialState>({
     initialState,
   });
+  
   const {
     state: {
       colorScheme,

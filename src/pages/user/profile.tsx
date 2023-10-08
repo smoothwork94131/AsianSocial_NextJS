@@ -33,13 +33,12 @@ const Profile = () => {
     const [cities, setCities] = useState<CityType[]>([]);
 
     const {
-        state: { avatar_url },
+        state: { user_profile },
         dispatch: homeDispatch,
     } = useContext(HomeContext);
 
     useEffect(() => {
         if (user) {
-            getUserProfile();
             getSaves();
         } else {
             router.push('/');
@@ -56,7 +55,7 @@ const Profile = () => {
     }, [selectedCollection])
 
     useEffect(() => {
-        if(selectedItem.id != '') {
+        if (selectedItem.id != '') {
             getTypes();
         }
     }, [selectedItem])
@@ -68,11 +67,11 @@ const Profile = () => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 element_id: selectedItem.element_id
             }),
         })
-        if(res.status == 200){
+        if (res.status == 200) {
             const data_ = await res.json();
             setElement(data_.element_data);
             setCities(data_.types);
@@ -129,21 +128,6 @@ const Profile = () => {
 
         }
         setIsLoad(false);
-    }
-
-    const getUserProfile = async () => {
-        try {
-            const res = await fetch('/api/user/profile/get_profile', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ id: user?.id }),
-            })
-
-        } catch (e) {
-
-        }
     }
 
     const setWindow = () => {
@@ -206,7 +190,6 @@ const Profile = () => {
     }
 
     const updatePicture = async (image: string) => {
-
         const res = await fetch('/api/user/profile/update_picture', {
             method: "POST",
             headers: {
@@ -217,11 +200,9 @@ const Profile = () => {
 
         if (res.status == 200) {
             homeDispatch({
-                field: 'avatar_url',
+                field: 'user_profile',
                 value: image
             })
-        } else {
-
         }
     }
 
@@ -271,11 +252,13 @@ const Profile = () => {
                         </Flex>
                         <Box>
                             {
-                                isLoad ? <Box mt={30} sx={(theme) => ({
-                                    textAlign: 'center'
-                                })}>
-                                    <Loader />
-                                </Box> :
+                                isLoad ?
+                                    <Box mt={30} sx={(theme) => ({
+                                        textAlign: 'center'
+                                    })}>
+                                        <Loader />
+                                    </Box>
+                                    :
                                     saves.length == 0 ?
                                         <Text mt={50} align="center" size='3rem' sx={(theme) => ({
                                             color: theme.colors.gray[3]
@@ -291,12 +274,12 @@ const Profile = () => {
                                             <Masonry>
                                                 {
                                                     saves.map((item: ItemType, key: number) =>
-                                                        <Block 
-                                                            key={key} 
-                                                            data={item} 
-                                                            getSaves={() => { getSaves() }} 
-                                                            page_type='admin' 
-                                                            setSelectedItem={(item: ItemType) => { setSelectedItem(item); setOpen(true) }} 
+                                                        <Block
+                                                            key={key}
+                                                            data={item}
+                                                            getSaves={() => { getSaves() }}
+                                                            page_type='admin'
+                                                            setSelectedItem={(item: ItemType) => { setSelectedItem(item); setOpen(true) }}
                                                         />
                                                     )
                                                 }
@@ -318,11 +301,11 @@ const Profile = () => {
                             >
                                 <Box>
                                     <Avatar color="blue" radius="180px" size={180}>
-
                                         {
-                                            updatingImage ? <Loader /> :
-                                                avatar_url != '' && avatar_url != null ?
-                                                    <Image src={avatar_url} alt="" /> : null
+                                            updatingImage ? 
+                                            <Loader /> :
+                                                user_profile.avatar_url !== '' ?
+                                                <Image src={user_profile.avatar_url} alt="" /> : null
                                         }
                                     </Avatar>
                                     {
