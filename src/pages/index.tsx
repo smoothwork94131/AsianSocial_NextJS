@@ -38,7 +38,7 @@ const Home = () => {
         if(res.status == 200){
             const data_ = await res.json();
             setElement(data_.element_data);
-            setCities(data_.types);
+            setCities(data_.cities);
         }
     }
     

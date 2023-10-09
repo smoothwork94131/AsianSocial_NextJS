@@ -67,20 +67,20 @@ const Setting = () => {
 
     const profileform = useForm({
         initialValues: {
-            avatar_url: '',
-            first_name: '',
-            last_name: '',
-            website: '',
-            bio: '',
-            location: '',
+            avatar_url: user_profile.avatar_url,
+            first_name: user_profile.first_name,
+            last_name: user_profile.last_name,
+            website: user_profile.website,
+            bio: user_profile.bio,
+            location: user_profile.location,
         },
     });
 
     const socialform = useForm({
         initialValues: {
-            instagram_link: '',
-            facebook_link: '',
-            twitter_link: ''
+            instagram_link: user_profile.instagram,
+            facebook_link: user_profile.facebook,
+            twitter_link: user_profile.twitter
         },
     });
 

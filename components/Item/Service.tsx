@@ -371,18 +371,20 @@ const Service: FC<Props> = ({
                         <ResponsiveMasonry
                             columnsCountBreakPoints={{ 350: 1, 750: 2, 1000: 3, 1400: 4, 1600: 5 }}
                         >
-                            <Masonry gutter='10px' style={{ background: 'transparent' }}>
+                            <Masonry style={{ background: 'transparent' }}>
                                 {
                                     images.videos.map((video: any, key: number) =>
                                         video ?
-                                            <Flex w={'100%'} justify={'center'} key={key}>
-                                                <iframe
-                                                    key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)}
-                                                    style={{ overflow: "hidden", height: "500px", width: "300px", background: 'transparent', border: "none" }}
-                                                    scrolling="no"
-                                                />
-                                                {/* <a style={{marginTop: '10px', color: 'black', textDecorationLine:'underline'}} target='_blank' href={video.page_url}>Go to Tiktok</a> */}
-                                            </Flex> : <></>
+                                        <Flex w={'100%'} justify={'center'} key={key}>
+                                            <iframe
+                                                key={key} src={"https://www.tiktok.com/embed/v2/" + getVideoId(video.page_url)}
+                                                style={{ overflow: "hidden", height: "500px", width: "300px", background: 'transparent', border: "none" }}
+                                                scrolling="no"
+                                            />
+                                            {/* <a style={{marginTop: '10px', color: 'black', textDecorationLine:'underline'}} target='_blank' href={video.page_url}>Go to Tiktok</a> */}
+                                        </Flex> 
+                                        : 
+                                        <></>
                                     )
                                 }
                             </Masonry>
