@@ -133,7 +133,7 @@ const Setting = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ 
-                    user: user,
+                    user_id: user?.id,
                     password: values.password
                 }),
             })

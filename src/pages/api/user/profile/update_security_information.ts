@@ -7,10 +7,10 @@ export default async function handler(
     res: NextApiResponse
 ) {
 
-    const user = req.body.useruser;
+    const user_id = req.body.user_id;
     const password = req.body.password;
     
-    const { data, error } = await supabaseAdmin.auth.updateUser({ password: password });
+    const { data, error } = await supabaseAdmin.auth.admin.updateUserById(user_id, { password: password });
     if (!error) {
         res.status(200).json(data);
     }

@@ -152,7 +152,7 @@ const Elements = () => {
                         columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 3, 900: 4, 1550: 5, 1800: 6 }}
                         style={{ marginTop: '20px' }}
                     >
-                        <Masonry>
+                        <Masonry gutter='10px'>
                             {
                                 items.map((item: ItemType, key: number) =>
                                     <Block key={key} data={item} setSelectedItem={(item: ItemType) => {setSelectedItem(item); setOpen(true)}}/>
