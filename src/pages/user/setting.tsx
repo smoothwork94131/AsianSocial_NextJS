@@ -31,6 +31,7 @@ const Setting = () => {
     const router = useRouter();
     const theme = useMantineTheme();
     const openDropzoneRef = useRef<() => void>(null);
+    const isMobile = useMediaQuery(`(max-width: 760px)`);
 
     const {
         state: { user_profile },
@@ -288,13 +289,16 @@ const Setting = () => {
         user && 
         <Grid>
             <Grid.Col 
-                span={2}
+                lg={2}
+                md={6}
+                xs={12}
             >
                 <Box
                     style={{
-                        position: 'sticky',
+                        position: isMobile ? 'static' : 'sticky',
                         top: '85px',
-                        left: '20px'
+                        left: '20px',
+                        display: isMobile?'none':'block'
                     }}
                 >
                     <Box
@@ -397,7 +401,11 @@ const Setting = () => {
                     </Box>
                 </Box>
             </Grid.Col>
-            <Grid.Col span={10}>
+            <Grid.Col 
+                lg={10}
+                md={6}
+                xs={12}
+            >
                 {
                     isLoad ? 
                     <Box mt={30} sx={(theme) => ({
@@ -417,7 +425,7 @@ const Setting = () => {
                             <Card.Section p="md">
                                 <Box
                                     style={{
-                                        width : '30%'
+                                        width : isMobile ? '100%':'30%'
                                     }}
                                 >
                                     <form onSubmit={accountform.onSubmit((values) => updateAccount(values))}>
@@ -450,7 +458,7 @@ const Setting = () => {
                             <Card.Section p="md">
                                 <Box
                                     style={{
-                                        width : '30%'
+                                        width : isMobile ? '100%':'30%'
                                     }}
                                 >
                                     <form onSubmit={securityform.onSubmit((values) => updateSecurity(values))}>
@@ -486,7 +494,7 @@ const Setting = () => {
                             <Card.Section p="md">
                                 <Box
                                     style={{
-                                        width : '30%'
+                                        width : isMobile ? '100%':'30%'
                                     }}
                                 >
                                     <form onSubmit={profileform.onSubmit((values) => updateProfile(values))}>
@@ -563,7 +571,7 @@ const Setting = () => {
                             <Card.Section p="md">
                                 <Box
                                     style={{
-                                        width : '30%'
+                                        width : isMobile ? '100%':'30%'
                                     }}
                                 >
                                     <form onSubmit={socialform.onSubmit((values) => updateSocial(values))}>

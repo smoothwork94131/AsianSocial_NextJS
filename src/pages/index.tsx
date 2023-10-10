@@ -97,7 +97,7 @@ const Home = () => {
         <Box>
             <Box pb={'30px'}>
                 <ResponsiveMasonry
-                    columnsCountBreakPoints={{ 350: 1, 500: 2, 750: 4, 900: 6 }}
+                    columnsCountBreakPoints={{ 350: 2, 500: 4, 750: 5, 900: 6 }}
                 >
                     <Masonry gutter='10px'>
                     {

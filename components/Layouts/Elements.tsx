@@ -1,90 +1,82 @@
-import { ElementType } from "@/types/elements";
+import { useEffect, useState, useContext } from "react";
+import { VisibilityContext } from "react-horizontal-scrolling-menu";
+import 'react-horizontal-scrolling-menu/dist/styles.css';
 import {
     Box,
     Button,
     Flex,
     Loader,
-    Text,
-    UnstyledButton
 } from "@mantine/core"
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import Link from "next/link";
-import { useEffect, useState, useContext } from "react";
-import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
-import 'react-horizontal-scrolling-menu/dist/styles.css';
-import { useRouter } from 'next/router';
+
+import HomeContext from '@/state/index.context';
 
 const Elements = () => {
 
-    const [elements, setElements] = useState<ElementType[]>([])
+    const {
+        state: { elements },
+    } = useContext(HomeContext);
+    
     const [isLoad, setIsLoad] = useState<boolean>(false);
-    const router = useRouter();
-
-    useEffect(() => {
-        getElements();
-    }, [])
-
-    const getElements = async () => {
-        setIsLoad(true);
-        const res = await fetch('/api/home/get_elements');
-        if (res.status == 200) {
-            const data = await res.json();
-            setElements(data);
-        }
-        setIsLoad(false);
-    }
 
     return (
         isLoad ?
-            <Box
-                sx={(theme) => ({
-                    width: '500px',
-                    textAlign: 'center'
-                })}
-            ><Loader size={'md'} variant="dots" /></Box> :
-            <Flex
-                sx={(theme) => ({
-                    width: '500px',
-                    overflowY: 'hidden',
+        <Box
+            sx={(theme) => ({
+                width: '500px',
+                textAlign: 'center'
+            })}
+        >
+            <Loader size={'md'} variant="dots" />
+        </Box> 
+        :
+        <Flex
+            sx={(theme) => ({
+                width: '500px',
+                overflowY: 'hidden',
 
-                })}
-            >
-                {/* <ScrollMenu
-                LeftArrow={
-                    <LeftArrow />
-                }
-                RightArrow={
-                    <RightArrow />
-                }
-            > */}
-                {
-                    elements.map((item, key) =>
-                        <Box key={key} ml={5} sx={(theme) => ({
-                        })}>
-                            <Link href={`/${item.name}/${item.city_name}/${item.category_name}`}>
-                                <Button
-                                    sx={(theme) => ({
-                                        background: 'transparent',
-                                        color: theme.colors.gray[6],
-                                        '&:hover': {
-                                            color: theme.colors.gray[8],
-                                            background: 'transparent'
-                                        },
-                                        cursor: 'pointer',
-                                        marginLeft: 20,
-                                        padding: 0,
-                                        fontSize: '1.2rem',
-                                        fontWeight: 'bold'
-                                    })}
-                                >
-                                    {item.name}
-                                </Button>
-                            </Link>
-                        </Box>
-                    )
-                }
-                {/* </ScrollMenu> */}
-            </Flex>
+            })}
+        >
+            {/* <ScrollMenu
+            LeftArrow={
+                <LeftArrow />
+            }
+            RightArrow={
+                <RightArrow />
+            }
+        > */}
+            {
+                elements.map((item, key) =>
+                    <Box 
+                        key={key} 
+                        ml={5} 
+                        sx={(theme) => ({})}
+                    >
+                        <Link href={`/${item.name}/${item.city_name}/${item.category_name}`}>
+                            <Button
+                                sx={(theme) => ({
+                                    background: 'transparent',
+                                    color: theme.colors.gray[6],
+                                    '&:hover': {
+                                        color: theme.colors.gray[8],
+                                        background: 'transparent'
+                                    },
+                                    cursor: 'pointer',
+                                    marginLeft: 20,
+                                    padding: 0,
+                                    fontSize: '1.2rem',
+                                    fontWeight: 'bold'
+                                })}
+                            >
+                                {item.name}
+                            </Button>
+                        </Link>
+                    </Box>
+                )
+            }
+            {/* </ScrollMenu> */}
+        </Flex>
     )
 }
 

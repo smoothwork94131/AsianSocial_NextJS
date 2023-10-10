@@ -16,7 +16,6 @@ export default async function handler(
         const { data: cities } = await supabaseAdmin.from('asian_cities')
             .select("*").eq("element_id", element_data[0].id);
 
-        
         if(cities) {
             for(let k=0; k<cities?.length; k++){
                 let category_name = 'no';

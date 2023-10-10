@@ -1,23 +1,26 @@
-import { Box, Button, Flex, Loader, Modal, TextInput, Textarea, Select, Accordion, Grid, Text, Image } from "@mantine/core";
-import { useEffect, useState } from 'react';
-import { Table } from '@mantine/core';
-import { CategoryType, ElementState, ElementType, ItemType, ItemState, PageType } from "@/types/elements";
-import { IconEdit, IconPhoto, IconTrash } from "@tabler/icons-react";
+import { useEffect, useState, useContext } from 'react';
+
+import { Table, Box, Button, Flex, Loader, Modal, TextInput, Textarea, Select, Accordion, Grid, Text, Image } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
-import GoogleMapReact from 'google-map-react';
 import { Dropzone } from '@mantine/dropzone';
-import { setFlagsFromString } from "v8";
 import { useMediaQuery } from '@mantine/hooks';
+import { IconEdit, IconPhoto, IconTrash } from "@tabler/icons-react";
+
+import { CategoryType, ElementState, ElementType, ItemType, ItemState, PageType } from "@/types/elements";
+
+import HomeContext from '@/state/index.context';
 
 const Item = () => {
-    const [elements, setElements] = useState<ElementType[]>([]);
-    const [categories, setCategories] = useState<CategoryType[]>([]);
 
+    const {
+        state: { elements },
+    } = useContext(HomeContext);
+
+    const [categories, setCategories] = useState<CategoryType[]>([]);
     const [opened, { open, close }] = useDisclosure(false);
     const [type, setType] = useState<string>('add');
-    const [selectedId, setSelectedId] = useState<string>('');
     const [isLoad, setIsLoad] = useState<boolean>(false);
     const [selectedElementId, setSelectedElementId] = useState<string>('');
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
@@ -45,7 +48,9 @@ const Item = () => {
     });
 
     useEffect(() => {
-        getElements();
+        if (elements.length > 0) {
+            setSelectedElementId(elements[0].id);
+        }
         getPageTypes();
     }, [])
 
@@ -123,9 +128,9 @@ const Item = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({item_id: selectedItemId})
+            body: JSON.stringify({ item_id: selectedItemId })
         })
-        if(res.status == 200) {
+        if (res.status == 200) {
             getItems();
             notifications.show({
                 title: 'Delete',
@@ -152,7 +157,7 @@ const Item = () => {
         //     });
         //     return;
         // }
-        
+
         setIsLoad(true);
         close();
         if (selectedCategoryId == '' || selectedElementId == '' || selectedPageTypeId == '') {
@@ -207,7 +212,7 @@ const Item = () => {
         setIsLoad(false);
     }
 
-    const uploadImage = async(image: string, item_id: string, index: number) => {
+    const uploadImage = async (image: string, item_id: string, index: number) => {
         const res = await fetch('/api/admin/add_item_images', {
             method: 'POST',
             headers: {
@@ -230,25 +235,12 @@ const Item = () => {
         }
     }
 
-    const getElements = async () => {
-        setIsLoad(true);
-        const res = await fetch('/api/admin/get_elements');
-        if (res.status == 200) {
-            const data = await res.json();
-            setElements(data);
-            if (data.length > 0) {
-                setSelectedElementId(data[0].id);
-            }
-        }
-        setIsLoad(false);
-    }
-
     const parsedElements = () => {
         const parsed_elements: {
             value: string,
             label: string
         }[] = [];
-        
+
         elements.map((item) => {
             parsed_elements.push({
                 value: item.id,
@@ -326,7 +318,7 @@ const Item = () => {
             },
             body: JSON.stringify({ item_id: item.id })
         })
-        if(res.status == 200){
+        if (res.status == 200) {
             const data = await res.json();
             setImages(data);
         }
@@ -391,8 +383,8 @@ const Item = () => {
                 console.error(error);
             }
         }
-        let  p_images: any = [];
-        p_images = p_images.concat(images, _images); 
+        let p_images: any = [];
+        p_images = p_images.concat(images, _images);
         setImages(p_images);
     }
 
@@ -423,7 +415,7 @@ const Item = () => {
         <Box>
             <Flex
                 gap="md"
-                direction={isMobile?'column':'row'}
+                direction={isMobile ? 'column' : 'row'}
 
             >
                 <Select
@@ -585,7 +577,7 @@ const Item = () => {
                         </Text>
                         <Text align="right" color="red" size='log'>
                             {
-                                form.values.image != "" ? <Button color="red" variant="outline" onClick={() =>{ form.setFieldValue('image', '') }}>Delete Category Image</Button> : ''
+                                form.values.image != "" ? <Button color="red" variant="outline" onClick={() => { form.setFieldValue('image', '') }}>Delete Category Image</Button> : ''
                             }
                         </Text>
                         <Grid>
@@ -629,7 +621,7 @@ const Item = () => {
 
                         <Text align="right" color="red" size='log'>
                             {
-                                images.length > 0 ? <Button color="red" variant="outline" onClick={() =>{setImages([])}}>Delete Detail Images</Button> : ''
+                                images.length > 0 ? <Button color="red" variant="outline" onClick={() => { setImages([]) }}>Delete Detail Images</Button> : ''
                             }
                         </Text>
                         <Grid>

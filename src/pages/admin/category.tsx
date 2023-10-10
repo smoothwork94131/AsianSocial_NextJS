@@ -1,18 +1,21 @@
-import { Box, Button, Flex, Loader, Modal, TextInput, Textarea, Select } from "@mantine/core";
-import { useEffect, useState } from 'react';
-import { Table } from '@mantine/core';
-import { CategoryType, ElementType, ElementState } from "@/types/elements";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
+import { useEffect, useState, useContext } from 'react';
+import { Table, Box, Button, Flex, Loader, Modal, TextInput, Textarea, Select } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { useMediaQuery } from '@mantine/hooks';
 
+import { CategoryType, ElementType, ElementState } from "@/types/elements";
+
+import HomeContext from '@/state/index.context';
+
 const Category = () => {
 
-    const [elements, setElements] = useState<ElementType[]>([]);
+    const {
+        state: { elements },
+    } = useContext(HomeContext);
+
     const [categories, setCategories] = useState<CategoryType[]>([]);
-    
     const [opened, { open, close }] = useDisclosure(false);
     const [type, setType] = useState<string>('add');
     const [selectedId, setSelectedId] = useState<string>('');
@@ -28,29 +31,6 @@ const Category = () => {
             element_id: '',
         },
     });
-    
-    useEffect(() =>{
-        getElements();
-    }, [])
-
-    useEffect(() =>{
-    }, [elements])
-
-    useEffect(() =>{
-        
-        getCategories();
-    }, [selectedElementId]);
-    
-    const getElements = async() => {
-        setIsLoad(true);
-        const res = await fetch('/api/admin/get_elements');
-        if(res.status == 200){
-            const data = await res.json();
-            setElements(data);
-        }
-        setIsLoad(false);
-    }
-    
 
     const editModal = async (item: CategoryType) => {
         setType('edit');
@@ -161,6 +141,10 @@ const Category = () => {
     const filterCategories = () => {
         return categories.filter(item => item.name.indexOf(search) > -1);
     }
+
+    useEffect(() =>{    
+        getCategories();
+    }, [selectedElementId]);
     
     return (
         <Box>

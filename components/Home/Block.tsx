@@ -17,6 +17,7 @@ const Block:FC<Props> = ({
     setSelectedItem
 }) => {
     const isMobile = useMediaQuery(`(max-width: 760px)`);
+    
     const [imageExists, setImageExists] = useState<boolean>(false);
     
     const handleSelectItem = (item:ItemType) => {

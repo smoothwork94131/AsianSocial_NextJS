@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, useContext } from 'react';
 import {
     AppShell,
     Navbar,
@@ -10,9 +10,12 @@ import {
     Burger,
     useMantineTheme,
 } from '@mantine/core';
-import MainHeader from './Header';
 import { useRouter } from 'next/router';
+
+import MainHeader from '@/components/Layouts/Header';
 import AdminNavbar from '@/components/Admin/AdminNavbar';
+
+import HomeContext from '@/state/index.context';
 
 interface Props {
     children: JSX.Element,
@@ -26,6 +29,11 @@ const Index: FC<Props> = ({ children }) => {
     const [opened, setOpened] = useState(false);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
+    const {
+        state: { elements },
+        dispatch: homeDispatch
+    } = useContext(HomeContext);
+
     useEffect(() => {
         const { pathname } = router;
         if (pathname.indexOf('/admin') > -1) {
@@ -35,13 +43,30 @@ const Index: FC<Props> = ({ children }) => {
         }
     }, [router.query])
 
+    useEffect(() => {
+        getElements();
+    }, [])
+
+    const getElements = async () => {
+        const res = await fetch('/api/home/get_elements');
+        if (res.status == 200) {
+            const data = await res.json();
+            homeDispatch({
+                field: 'elements',
+                value: data
+            })
+        }
+    }
+
     return (
         <AppShell
+            padding= '0'
             styles={{
                 main: {
                     background: theme.colorScheme === 'dark' ? theme.colors.dark[8] : '#fff',
                     paddingLeft: 0,
-                    paddingRight: 0
+                    paddingRight: 0,
+                    paddingTop: 80
                 },
             }}
             navbarOffsetBreakpoint="sm"
