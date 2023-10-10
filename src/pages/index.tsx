@@ -1,10 +1,12 @@
-import { Box, Image, Loader } from "@mantine/core";
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-import Block from "@/components/Home/Block";
-import { useMediaQuery } from '@mantine/hooks';
 import {  useEffect, useState } from 'react';
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
+import { Box, Image, Loader } from "@mantine/core";
+import { useMediaQuery } from '@mantine/hooks';
+
 import { ItemType, ItemState, CityType, ElementState, ElementType } from "@/types/elements";
+
 import InfoModal from "@/components/Item/InfoModal";
+import Block from "@/components/Home/Block";
 
 const Home = () => {
 
@@ -97,7 +99,7 @@ const Home = () => {
         <Box>
             <Box pb={'30px'}>
                 <ResponsiveMasonry
-                    columnsCountBreakPoints={{ 350: 2, 500: 4, 750: 5, 900: 6 }}
+                    columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 4, 900: 5, 1550: 6 }}
                 >
                     <Masonry gutter='10px'>
                     {

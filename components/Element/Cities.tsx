@@ -1,10 +1,11 @@
+import { FC, useContext, useState, useEffect } from 'react';
 import { Box, Button } from "@mantine/core";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
-import { CityType } from "@/types/elements";
-import { FC, useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
+
+import { CityType } from "@/types/elements";
 
 interface Props {
     cities: CityType[],
@@ -32,7 +33,7 @@ const Cities: FC<Props> = ({
                 {
                     cities.map((item, key) =>
                         item.name&&
-                        <Box key={key} ml={5} sx={(theme) => ({
+                        <Box key={key} mr={5} sx={(theme) => ({
                         })}>
                             
                             <Link href={`/${element_name}/${item.name}/${item.category_name}`} onClick={() => {open()}}>

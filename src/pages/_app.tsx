@@ -1,14 +1,16 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
+import { SessionProvider } from "next-auth/react";
 import { useEffect, useState } from 'react';
-import Layout from '@/components/Layouts/Index';
 import { MantineProvider, ColorSchemeProvider, MantineThemeOverride, Container } from '@mantine/core';
-import { useCreateReducer } from '@/hooks/useCreateReducer';
-import { initialState, HomeInitialState } from '@/state/index.state';
 import { Notifications } from '@mantine/notifications';
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
-import { SessionProvider } from "next-auth/react";
+
+import { initialState, HomeInitialState } from '@/state/index.state';
+import { useCreateReducer } from '@/hooks/useCreateReducer';
 import { supabaseClient } from "@/utils/app/supabase-client";
+
+import Layout from '@/components/Layouts/Index';
 import HomeContext from '@/state/index.context';
 
 export default function App({ Component, pageProps }: AppProps) {

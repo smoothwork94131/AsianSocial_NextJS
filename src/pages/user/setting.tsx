@@ -1,3 +1,6 @@
+import { useEffect, useState, useContext, useRef } from "react";
+import { useRouter } from 'next/router';
+
 import { 
     Grid, 
     Box, 
@@ -17,14 +20,13 @@ import {
     Divider,
 } from "@mantine/core";
 import { Dropzone } from '@mantine/dropzone';
-import { IconChevronRight } from '@tabler/icons-react';
-import { useUser } from "@supabase/auth-helpers-react";
-import { useEffect, useState, useContext, useRef } from "react";
-import { useRouter } from 'next/router';
-import HomeContext from '@/state/index.context';
 import { useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches, matchesField } from '@mantine/form';
+import { IconChevronRight } from '@tabler/icons-react';
+
+import { useUser } from "@supabase/auth-helpers-react";
+import HomeContext from '@/state/index.context';
 
 const Setting = () => {
     const user = useUser();
@@ -267,7 +269,7 @@ const Setting = () => {
 
             for (let i = sections.length - 1; i >= 0; i--) {
                 const rect = sections[i].getBoundingClientRect();
-                if (rect.top <= window.innerHeight * 0.5) {
+                if (rect.top <= window.innerHeight * 0.3) {
                     currentSection = sections[i].id;
                     break;
                 }
@@ -441,7 +443,7 @@ const Setting = () => {
                                             required />
                                         <Group position="left" mt="md">
                                             <Button type="submit">Save</Button>
-                                            <Button type="button" variant="default">Reset</Button>
+                                            <Button type="button" onClick={() => accountform.reset()} variant="default">Reset</Button>
                                         </Group>
                                     </form>
                                 </Box>
@@ -477,7 +479,7 @@ const Setting = () => {
                                         />
                                         <Group position="left" mt="md">
                                             <Button type="submit">Save</Button>
-                                            <Button type="button" variant="default">Reset</Button>
+                                            <Button type="button" onClick={() => securityform.reset()} variant="default">Reset</Button>
                                         </Group>
                                     </form>
                                 </Box>
@@ -554,7 +556,7 @@ const Setting = () => {
                                         />
                                         <Group position="left" mt="md">
                                             <Button type="submit">Save</Button>
-                                            <Button type="button" variant="default">Reset</Button>
+                                            <Button type="button" onClick={() => profileform.reset()} variant="default">Reset</Button>
                                         </Group>
                                     </form>
                                 </Box>
@@ -564,7 +566,7 @@ const Setting = () => {
                         <Card withBorder shadow="sm" radius="md" mt='md' id="social_section" className="link_section">
                             <Card.Section withBorder pl="md" py="md" >
                                 <Group position="apart">
-                                    <Text weight={500}>Profile</Text>
+                                    <Text weight={500}>Social</Text>
                                 </Group>
                             </Card.Section>
                             
@@ -592,7 +594,7 @@ const Setting = () => {
                                         />
                                         <Group position="left" mt="md">
                                             <Button type="submit">Save</Button>
-                                            <Button type="button" variant="default">Reset</Button>
+                                            <Button type="button" onClick={() => socialform.reset()} variant="default">Reset</Button>
                                         </Group>
                                     </form>
                                 </Box>

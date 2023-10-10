@@ -1,15 +1,17 @@
-import { ElementType, ElementState, CityType, CityState, CategoryType, CategoryState, ItemType, ItemState } from '@/types/elements';
+import { useEffect, useState } from 'react';
 import {
     Box,
     Button,
     Loader,
     Text,
 } from '@mantine/core';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { useMediaQuery } from '@mantine/hooks';
-import Categories from '@/components/Element/Categories';
+import { useRouter } from 'next/router';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
+
+import { ElementType, ElementState, CityType, CityState, CategoryType, CategoryState, ItemType, ItemState } from '@/types/elements';
+
+import Categories from '@/components/Element/Categories';
 import Block from '@/components/Home/Block';
 import InfoModal from '@/components/Item/InfoModal';
 import Cities from '@/components/Element/Cities';
@@ -84,7 +86,7 @@ const Elements = () => {
         <Box>
             <Box
                 sx={(theme) => ({
-                    margin: '2% 5%',
+                    // margin: '2% 5%',
                     width: isMobile ? '90%' : '40%'
                 })}
             >
@@ -119,8 +121,7 @@ const Elements = () => {
                                 cities={cities}
                                 open={() => {setOpen(false)}}                  
                             />
-                        }
-                        
+                        }   
                     </Box>
                 }
             </Box>
@@ -141,15 +142,17 @@ const Elements = () => {
             </Box>
             {
                 isLoad ?
-                    <Box sx={(theme) => ({ textAlign: 'center' })}>
-                        <Loader size={'lg'}/>
-                    </Box> :
-                    items.length == 0?
+                <Box sx={(theme) => ({ textAlign: 'center' })}>
+                    <Loader size={'lg'}/>
+                </Box> 
+                :
+                items.length == 0?
                     <Text size='3rem' align='center' mt={50} weight={500} color='gray'>
                         {/* No data */}
-                    </Text>:
+                    </Text>
+                    :
                     <ResponsiveMasonry
-                        columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 3, 900: 4, 1550: 5, 1800: 6 }}
+                        columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 4, 900: 5, 1550: 6 }}
                         style={{ marginTop: '20px' }}
                     >
                         <Masonry gutter='10px'>
