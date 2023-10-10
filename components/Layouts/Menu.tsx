@@ -53,7 +53,8 @@ const MyMenu:FC<Props> = ({
     }
 
     return (
-        <Box
+        <>
+            <Box
             sx={(theme) => ({
                 textAlign: 'center'
             })}
@@ -267,6 +268,7 @@ const MyMenu:FC<Props> = ({
                 </>
             }
         </Box>
+        </>
     )
 }
 

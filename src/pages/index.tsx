@@ -1,4 +1,4 @@
-import {  useEffect, useState } from 'react';
+import {  useEffect, useState, useCallback } from 'react';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { Box, Image, Loader } from "@mantine/core";
 import { useMediaQuery } from '@mantine/hooks';
@@ -20,11 +20,7 @@ const Home = () => {
     const [loadCount, setLoadCount] = useState<number>(0);
 
     let baseItem: ItemType[] = [];
-    useEffect(() => {
-        getItems();
-        // window.addEventListener('scroll', handleScroll);
-    }, [])
-
+    
     const getTypes = async () => {
         setCities([]);
         const res = await fetch('/api/user/profile/get_types', {
@@ -50,15 +46,17 @@ const Home = () => {
             scrollHeight,
             clientHeight
         } = document.documentElement;
-        if (scrollTop + clientHeight >= scrollHeight - 5) {
-            //  setIsLoad(true);
-            const merged = items;
-            const cnt = baseItem.length > 30?30:baseItem.length;
-            for (let k = 0; k < cnt; k++) {
-                merged.push(baseItem[k])
-            }
-            setItems(merged);
-            console.log(merged);
+
+        if (scrollTop + clientHeight >= scrollHeight) {
+            console.log('asdfadfasdf')
+            setLoadCount(originCount => originCount + 1);
+            // const merged = items;
+            // const cnt = baseItem.length > 30?30:baseItem.length;
+            // for (let k = 0; k < cnt; k++) {
+            //     merged.push(baseItem[k])
+            // }
+            // setItems(merged);
+            // console.log(merged);
         } else {
             return;
         }
@@ -66,26 +64,40 @@ const Home = () => {
     
     const getItems = async () => {
         setIsLoad(true);
-        const res = await fetch('/api/home/get_items');
+
+        console.log('111111111111111111')
+        
+        const res = await fetch('/api/home/get_items', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                loadCount: loadCount
+            })
+        });
+
         if (res.status == 200) {
             const data = await res.json();
-            const _items: ItemType[] = [];
-            let cnt = 0;
-            let index = 0;
-            while(true) {
-                if(cnt === 1000) {
-                    break;
-                }
+            // const _items: ItemType[] = [];
+            // let cnt = 0;
+            // let index = 0;
+            // while(true) {
+            //     if(cnt === 1000) {
+            //         break;
+            //     }
 
-                index = Math.floor(Math.random() * 1000);
+            //     index = Math.floor(Math.random() * 1000);
                 
-                _items.push(data[index]);
-                cnt++;
-                index++;
-            }
-            setItems(_items);
-            baseItem = data;
+            //     _items.push(data[index]);
+            //     cnt++;
+            //     index++;
+            // }
+            // setItems(_items);
+            // baseItem = data;
+            setItems(originItems => originItems.concat(data));
         }
+        
         setIsLoad(false);
     }
     
@@ -94,6 +106,19 @@ const Home = () => {
             getTypes();
         }
     }, [selectedItem])
+
+    useEffect(() => {
+        getItems();
+    }, [loadCount])
+
+    useEffect(() => {
+        console.log(items);
+    }, [items])
+
+    useEffect(() => {
+        // getItems();
+        window.addEventListener('scroll', handleScroll);
+    }, [])
 
     return (
         <Box>
