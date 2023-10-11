@@ -46,7 +46,7 @@ export default async function handler(
                 _new_categories_data = _categories_data;
 
                 const {data: _items_data } = await supabaseAdmin.from('asian_items')
-                    .select("*")
+                    .select(`*, asian_elements (id, name), asian_cities (id, name), asian_categories (id, name), asian_page_type (id, name), asian_images (id, url)`)
                     .not('name', 'is', null)
                     .order('id', { ascending: true })
                     .eq("city_id", _new_cities_data?.filter((item:CityType) => item.name === city_name)[0]?.id)
