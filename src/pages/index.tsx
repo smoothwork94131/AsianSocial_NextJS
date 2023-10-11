@@ -80,7 +80,20 @@ const Home = () => {
 
     return (
         <Box>
-            <Box pb={'30px'}>
+            {
+                isLoad ? 
+                <Box
+                    pt={20}
+                    sx={(theme) => ({
+                        textAlign: 'center',
+                        position: "fixed",
+                        top: '30%',
+                        left: '48%',
+                        zIndex: 10000000
+                    })}>
+                    <Loader size='lg' />
+                </Box>
+                :
                 <ResponsiveMasonry
                     columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 4, 900: 5, 1550: 6 }}
                 >
@@ -92,20 +105,6 @@ const Home = () => {
                     }
                     </Masonry>
                 </ResponsiveMasonry>
-            </Box>
-            <div className={`${loadCount}`}></div>
-            {
-                isLoad && <Box
-                    pt={20}
-                    sx={(theme) => ({
-                        textAlign: 'center',
-                        position: "fixed",
-                        bottom: '20px',
-                        left: '48%',
-                        zIndex: 10000000
-                    })}>
-                    <Loader size='lg' />
-                </Box>
             }
             <InfoModal
                 opened={open} 
