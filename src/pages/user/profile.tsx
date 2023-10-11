@@ -285,8 +285,6 @@ const Profile = () => {
                                         <Block
                                             key={key}
                                             data={item}
-                                            getSaves={() => { getSaves() }}
-                                            page_type='admin'
                                             setSelectedItem={(item: ItemType) => { setSelectedItem(item); setOpen(true) }}
                                         />
                                     )
@@ -403,7 +401,7 @@ const Profile = () => {
                                         <Masonry>
                                             {
                                                 saves.map((item: ItemType, key: number) =>
-                                                    <Block key={key} data={item} getSaves={() => { getSaves() }} page_type='admin' setSelectedItem={(item: ItemType) => { setSelectedItem(item); setOpen(true) }} />
+                                                    <Block key={key} data={item} setSelectedItem={(item: ItemType) => { setSelectedItem(item); setOpen(true) }} />
                                                 )
                                             }
                                         </Masonry>
