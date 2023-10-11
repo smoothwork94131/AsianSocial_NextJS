@@ -378,86 +378,92 @@ const Profile = () => {
                     </Tabs>
                 </Box>
                 <Box mt={20}>
-                    {
-                        isLoad ? <Box mt={30} sx={(theme) => ({
-                            textAlign: 'center'
-                        })}>
-                            <Loader />
-                        </Box> :
+                {
+                    isLoad ? 
+                    <Box mt={30} sx={(theme) => ({
+                        textAlign: 'center'
+                    })}>
+                        <Loader />
+                    </Box> 
+                    :
+                    tabType == 'saves' ?
 
-                            tabType == 'saves' ?
-                                saves.length == 0 ?
-                                    <Text mt={50} align="center" size='3rem' sx={(theme) => ({
-                                        color: theme.colors.gray[3]
-                                    })}>
-                                        No {
-                                            tabType
-                                        } Found
-                                    </Text> :
-                                    <ResponsiveMasonry
-                                        columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 3, 900: 4, 1550: 5, 1800: 6 }}
-                                        style={{ marginTop: '20px' }}
+                    saves.length == 0 ?
+                    <Text mt={50} align="center" size='3rem' sx={(theme) => ({
+                        color: theme.colors.gray[3]
+                    })}>
+                        No 
+                        {
+                            tabType
+                        } 
+                        Found
+                    </Text> 
+                    :
+                    <ResponsiveMasonry
+                        columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 4, 900: 5, 1550: 6 }}
+                    >
+                        <Masonry gutter="10px">
+                        {
+                            saves.map((item: ItemType, key: number) =>
+                                <Block key={key} data={item} setSelectedItem={(item: ItemType) => { setSelectedItem(item); setOpen(true) }} />
+                            )
+                        }
+                        </Masonry>
+                    </ResponsiveMasonry>
+                    :
+                    collections.length == 0 ?
+                    <Text mt={50} align="center" size='3rem' sx={(theme) => ({
+                        color: theme.colors.gray[3]
+                    })}>
+                        No 
+                        {
+                            tabType
+                        } 
+                        Found
+                    </Text> 
+                    :
+                    <ResponsiveMasonry
+                        columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 4, 900: 5, 1550: 6 }}
+                    >
+                        <Masonry gutter="10px">
+                            {
+                                collections.map((item: CollectionType, key: number) =>
+                                    <Box m={15} key={key} style={{ cursor: 'pointer' }}
+                                        onClick={() => {
+                                            setSelectedCollection(item);
+                                            setIsCollectionSaves(true);
+                                        }}
                                     >
-                                        <Masonry>
+                                        <Image src={item.image_url} key={key} alt="" sx={(theme) => ({
+                                            '&:hover': {
+                                                opacity: '0.7',
+                                            },
+                                            cursor: 'pointer',
+                                            border: `1px solid ${theme.colors.gray[4]}`,
+                                        })} />
+                                        <Text
+                                            weight={isMobile ? 300 : 500}
+                                            size={isMobile ? '13px' : '19px'}
+                                            sx={(theme) => ({
+                                                color: theme.colors.gray[7],
+                                                whiteSpace: 'nowrap',
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis'
+                                            })}>
                                             {
-                                                saves.map((item: ItemType, key: number) =>
-                                                    <Block key={key} data={item} setSelectedItem={(item: ItemType) => { setSelectedItem(item); setOpen(true) }} />
-                                                )
+                                                item.name
                                             }
-                                        </Masonry>
-                                    </ResponsiveMasonry>
-                                :
-                                collections.length == 0 ?
-                                    <Text mt={50} align="center" size='3rem' sx={(theme) => ({
-                                        color: theme.colors.gray[3]
-                                    })}>
-                                        No {
-                                            tabType
-                                        } Found
-                                    </Text> :
-                                    <ResponsiveMasonry
-                                        columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 3, 900: 4, 1550: 5, 1800: 6 }}
-                                        style={{ marginTop: '20px' }}
-                                    >
-                                        <Masonry>
-                                            {
-                                                collections.map((item: CollectionType, key: number) =>
-                                                    <Box m={15} key={key} style={{ cursor: 'pointer' }}
-                                                        onClick={() => {
-                                                            setSelectedCollection(item);
-                                                            setIsCollectionSaves(true);
-                                                        }}
-                                                    >
-                                                        <Image src={item.image_url} key={key} alt="" sx={(theme) => ({
-                                                            '&:hover': {
-                                                                opacity: '0.7',
-                                                            },
-                                                            cursor: 'pointer',
-                                                            border: `1px solid ${theme.colors.gray[4]}`,
-                                                        })} />
-                                                        <Text
-                                                            weight={isMobile ? 300 : 500}
-                                                            size={isMobile ? '13px' : '19px'}
-                                                            sx={(theme) => ({
-                                                                color: theme.colors.gray[7],
-                                                                whiteSpace: 'nowrap',
-                                                                overflow: 'hidden',
-                                                                textOverflow: 'ellipsis'
-                                                            })}>
-                                                            {
-                                                                item.name
-                                                            }
-                                                        </Text>
-                                                    </Box>
-                                                )
-                                            }
-                                        </Masonry>
-                                    </ResponsiveMasonry>
-                    }
+                                        </Text>
+                                    </Box>
+                                )
+                            }
+                        </Masonry>
+                    </ResponsiveMasonry>
+                }
                 </Box>
                 <InfoModal
                     open={() => { 
-                        setOpen(p_o => (!p_o)) 
+                        setOpen(p_o => (!p_o))
                     }}
                     isMobile={isMobile}
                     opened={open} 
