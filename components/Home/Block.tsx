@@ -5,19 +5,13 @@ import { ItemType, ItemState } from "@/types/elements";
 
 interface Props {
     data: ItemType,
-    getSaves?:() =>void;
-    page_type?:string | undefined
     setSelectedItem: (item: ItemType) =>void
 }
 
 const Block:FC<Props> = ({
     data, 
-    getSaves, 
-    page_type, 
     setSelectedItem
-}) => {
-    const isMobile = useMediaQuery(`(max-width: 760px)`);
-    
+}) => {    
     const [imageExists, setImageExists] = useState<boolean>(false);
     
     const handleSelectItem = (item:ItemType) => {
@@ -30,7 +24,14 @@ const Block:FC<Props> = ({
                 setImageExists(false);
             }
             else {
-                setImageExists(true);
+                const img : HTMLImageElement  = new Image();
+                img.onload = () => {
+                    setImageExists(true);
+                };
+                img.onerror = () => {
+                    setImageExists(false);
+                };
+                img.src = data.image;
             }
         }
     }, [data])
@@ -67,36 +68,6 @@ const Block:FC<Props> = ({
                     radius={7}
                 />
             }
-            {/* {
-                <Box mt={10}>
-                    <Text 
-                    weight={isMobile?500:700}
-                    size={isMobile?'13px': '19px'}
-                    sx={(theme) =>({
-                        color: theme.colors.gray[9],
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis'
-                    })}>
-                        {
-                            data.name
-                        }
-                    </Text>
-                    <Text 
-                    weight={isMobile?300:500}
-                    size={isMobile?'13px': '19px'}
-                    sx={(theme) =>({
-                        color: theme.colors.gray[7],
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis'
-                    })}>
-                        {
-                            data.details
-                        }
-                    </Text>
-                </Box>
-            } */}
         </Box>
     )
 }
