@@ -177,7 +177,6 @@ const MainHeader = () => {
                 opened={infoOpen}
                 data={selectedItem}
                 isMobile={isMobile}
-                cities={cities}
             />
         </Box>
     )
