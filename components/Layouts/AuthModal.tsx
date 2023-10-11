@@ -1,9 +1,10 @@
 
 import { Box, Text, Button, Flex, Modal, Image, TextInput, LoadingOverlay } from "@mantine/core"
 import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
-import { FC, useState, useContext } from 'react';
+import { FC, useState, useContext, useEffect } from 'react';
 import { useForm } from '@mantine/form';
 import { supabase } from "@/utils/app/supabase-client";
+import { useUser } from "@supabase/auth-helpers-react";
 import { notifications } from '@mantine/notifications';
 import HomeContext from '@/state/index.context';
 
@@ -17,6 +18,7 @@ interface Props {
 const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
 
     const [isLoad, setIsLoad] = useState<boolean>(false);
+    const user = useUser();
     const {
         dispatch: homeDispatch,
     } = useContext(HomeContext);
@@ -106,6 +108,12 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
             console.log(e);
         }
     }
+
+    useEffect(() => {
+        if(user) {
+            getUserProfile(user.id);
+        }
+    }, [user])
 
     return (
         <Modal opened={opened} onClose={open} centered size='440px' className="auth-modal">

@@ -1,4 +1,4 @@
-import {  useEffect, useState, useCallback } from 'react';
+import {  useEffect, useState, useCallback, useRef } from 'react';
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { Box, Image, Loader } from "@mantine/core";
 import { useMediaQuery } from '@mantine/hooks';
@@ -25,7 +25,6 @@ const Home = () => {
         } = document.documentElement;
 
         if (scrollTop + clientHeight >= scrollHeight) {
-            console.log('asdfadfasdf')
             setLoadCount(originCount => originCount + 1);
         } else {
             return;
@@ -49,32 +48,35 @@ const Home = () => {
             const data = await res.json();
             const _items: ItemType[] = [];
             let cnt = 0;
-            let index = 0;
+            let data_length = data.length;
             while(true) {
-                if(cnt === 100) {
+                if(cnt === 100 || data_length === 0) {
                     break;
                 }
 
-                index = Math.floor(Math.random() * 30);
-                
+                let index = Math.floor(Math.random() * data_length);
                 _items.push(data[index]);
+                data.splice(index, 1);
                 cnt++;
-                index++;
+                data_length--;
             }
             setItems(originItems => originItems.concat(_items));
         }
+        
         
         setIsLoad(false);
     }
     
     useEffect(() => {
+        if(isLoad == true) {
+            return;
+        }
         getItems();
-    }, [loadCount])
+    }, [loadCount]);
 
    useEffect(() => {
-        // getItems();
         window.addEventListener('scroll', handleScroll);
-    }, [])
+    }, []);
 
     return (
         <Box>

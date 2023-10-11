@@ -2,7 +2,7 @@ import { FC, useContext, useState, useEffect } from 'react';
 import { Box, UnstyledButton, Menu, Group, Text, Button } from "@mantine/core";
 import { Carousel } from '@mantine/carousel';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconChevronRight } from '@tabler/icons-react';
+import { IconChevronDown } from '@tabler/icons-react';
 import { useRouter } from "next/router";
 
 import { CityType } from "@/types/elements";
@@ -31,23 +31,24 @@ const Cities: FC<Props> = ({
         >
             <Menu 
                 withArrow
-                zIndex={1000000}
+                // zIndex={1000000}
                 withinPortal={true}
-                position={isMobile?'bottom':'right'}
-                width={isMobile?'100%':'30%'}
+                // position={isMobile?'bottom':'right'}
+                width='200px'
             >
                 <Menu.Target>
-                    <UnstyledButton
-                        sx={(theme) => ({
-                            display: 'block',
-                            width: '100%',
-                            padding: theme.spacing.md,
-                            color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-                            '&:hover': {
-                            backgroundColor:
-                                theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
-                            },
-                        })}
+                    <Button
+                        // sx={(theme) => ({
+                        //     display: 'block',
+                        //     width: '100%',
+                        //     padding: theme.spacing.md,
+                        //     color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+                        //     '&:hover': {
+                        //     backgroundColor:
+                        //         theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
+                        //     },
+                        // })}
+                        variant='white'
                     >
                         <Group>
                             <Text size="md" weight={500}>
@@ -55,9 +56,9 @@ const Cities: FC<Props> = ({
                                     city_name
                                 }
                             </Text>
-                            <IconChevronRight size="1rem" />
+                            <IconChevronDown size="1rem" />
                         </Group>
-                    </UnstyledButton>
+                    </Button>
                 </Menu.Target>
                 <Menu.Dropdown 
                     sx={(theme) => ({

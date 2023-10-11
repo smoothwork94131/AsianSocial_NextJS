@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {
     Box,
     Button,
+    Flex,    
     Loader,
     Text,
 } from '@mantine/core';
@@ -34,9 +35,7 @@ const Elements = () => {
     if(category_name && typeof category_name == 'string'){
         category_name = category_name.replaceAll("_", "/");
     }
-    
-    console.log('---------------Router Query----------------');
-    
+        
     const [element, setElement] = useState<ElementType>(ElementState);
     const [cities, setCities] = useState<CityType[]>([]);
     const [categories, setCatetories] = useState<CategoryType[]>([]);
@@ -84,47 +83,53 @@ const Elements = () => {
         <Box>
             <Box
                 sx={(theme) => ({
-                    margin: '2% 5%',
-                    width: isMobile ? '90%' : '40%'
+                    margin: isMobile?'0':'2% 5%',
+                    width: isMobile ? '100%' : '40%'
                 })}
             >
-                <Text size={isMobile ? 36 : 72} weight={600} sx={(theme) => ({
-                    color: theme.colors.gray[8]
-                })}>
-                    {
-                        element_name?.toString()?.replaceAll("_", " ")
-                    }
-                </Text>
-                <Text
-                    size={18}
-                    mt={24}
-                    weight={450}
-                    sx={(theme) => ({
-                        color: theme.colors.gray[6]
-                    })}
-                >
-                    {
-                        element?.summary
-                    }
-                </Text>
-            </Box>
-            <Box>
-                {
-                    !isLoad&&
-                    <Box 
-                        my={30}
+                <Box>
+                    <Flex
+                        direction={isMobile?'column':'row'}
+                        align='center'
+                        justify='space-between'
+                    >
+                        <Text size={isMobile ? 36 : 72} weight={600} sx={(theme) => ({
+                            color: theme.colors.gray[8]
+                        })}>
+                            {
+                                element_name?.toString()?.replaceAll("_", " ")
+                            }
+                        </Text>
+                        {
+                            !isLoad&&
+                            <Box>
+                                {
+                                    element_name && city_name && category_name &&
+                                    <Cities
+                                        city_name={city_name}
+                                        element_name={element_name}  
+                                        cities={cities}
+                                        open={() => {setOpen(false)}}                  
+                                    />
+                                }   
+                            </Box>
+                        }
+                    </Flex>
+                </Box>
+                <Box>
+                    <Text
+                        size={18}
+                        mt={24}
+                        weight={450}
+                        sx={(theme) => ({
+                            color: theme.colors.gray[6]
+                        })}
                     >
                         {
-                            element_name && city_name && category_name &&
-                            <Cities
-                                city_name={city_name}
-                                element_name={element_name}  
-                                cities={cities}
-                                open={() => {setOpen(false)}}                  
-                            />
-                        }   
-                    </Box>
-                }
+                            element?.summary
+                        }
+                    </Text>
+                </Box>
             </Box>
             <Box>
                 {

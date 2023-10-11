@@ -187,7 +187,6 @@ const InfoModal: FC<Props> = ({
     }
 
     const rederItemPage = () => {
-        console.log(data);
         if (data?.asian_page_type?.name == "") {
             return (
                 <div></div>

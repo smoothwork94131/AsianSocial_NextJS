@@ -40,17 +40,45 @@ const MyMenu:FC<Props> = ({
     const user = useUser();
     const router = useRouter();
     const theme = useMantineTheme();
-    const [opened, { toggle }] = useDisclosure(false);
-    const [userMenuOpened, setUserMenuOpened] = useState(false);
 
     const {
         state: { user_profile, elements },
+        dispatch: homeDispatch,
     } = useContext(HomeContext);
 
     const logout = async () => {
         await supabase.auth.signOut();
         router.push('/');
     }
+
+    const getUserProfile = async (user_id:string) => {
+        try {
+            const res = await fetch('/api/user/profile/get_profile', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id: user_id }),
+            })
+
+            if(res.ok) {
+                const data = await res.json();
+                homeDispatch({
+                    field: 'user_profile',
+                    value: data
+                })
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+
+    useEffect(() => {
+        if(user) {
+            getUserProfile(user.id);
+        }
+    }, [user])
 
     return (
         <>
@@ -60,7 +88,8 @@ const MyMenu:FC<Props> = ({
             })}
         >
             {
-                user ? <Flex
+                user ? 
+                <Flex
                     gap="md"
                     justify="center"
                     align="center"
@@ -71,8 +100,6 @@ const MyMenu:FC<Props> = ({
                         width={260}
                         position="bottom-end"
                         transitionProps={{ transition: 'pop-bottom-right' }}
-                        onClose={() => setUserMenuOpened(false)}
-                        onOpen={() => setUserMenuOpened(true)}
                         withinPortal
                     >
                         <Menu.Target>

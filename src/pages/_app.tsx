@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const contextValue = useCreateReducer<HomeInitialState>({
     initialState,
   });
-  
+
   const {
     state: {
       colorScheme,
@@ -49,26 +49,27 @@ export default function App({ Component, pageProps }: AppProps) {
     },
   };
 
+
+
   return (
     isClient &&
-    <HomeContext.Provider
-      value={{
-        ...contextValue,
-      }}>
-      <SessionContextProvider supabaseClient={supabaseClient}>
-        <SessionProvider session={pageProps.session}>
+    <SessionContextProvider supabaseClient={supabaseClient}>
+        <HomeContext.Provider
+          value={{
+            ...contextValue,
+          }}>
           <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={() => { }}>
             <MantineProvider theme={myTheme} withGlobalStyles withNormalizeCSS>
               {/* <Container size="xl"> */}
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
               {/* </Container> */}
               <Notifications />
             </MantineProvider>
           </ColorSchemeProvider>
-        </SessionProvider>
-      </SessionContextProvider>
-    </HomeContext.Provider>
+        </HomeContext.Provider>
+    </SessionContextProvider>
+
   )
 }

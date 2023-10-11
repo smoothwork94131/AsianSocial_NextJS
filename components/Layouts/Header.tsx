@@ -30,44 +30,9 @@ const MainHeader = () => {
     const [searchList, setSearchList] = useState<ItemType[]>([])
     const [selectedItem, setSelectedItem] = useState<ItemType>(ItemState);
     const [infoOpen, setInfoOpen] = useState<boolean>(false);
-    const [cities, setCities] = useState<CityType[]>([]);
 
     const router = useRouter();
-    let is_homepage = false;
-
-    const {
-        state: { user_profile },
-    } = useContext(HomeContext);
-
-    if (Object.keys(router.query).length == 0) {
-        is_homepage = true;
-    }
-
-    useEffect(() => {
-        window.addEventListener('resize', function () {
-            setWindow();
-        });
-        setWindow();
-    }, []);
-
-    // useEffect(() => {
-    //     if(authType != ''){
-    //         setOpen(true);
-    //     }
-    // }, [authType])
-
-    useEffect(() => {
-        if (search != "") {
-            getSearchResult();
-        }
-    }, [search])
-
-    useEffect(() => {
-        if (selectedItem.id != "") {
-            getTypes();
-        }
-    }, [selectedItem])
-
+    
     const getSearchResult = async () => {
         const res = await fetch('/api/home/get_search', {
             method: 'POST',
@@ -98,24 +63,24 @@ const MainHeader = () => {
         setScreenWidth(window.innerWidth);
     }
 
-    const getTypes = async () => {
-        setCities([]);
-        const res = await fetch('/api/user/profile/get_types', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                element_id: selectedItem.element_id
-            }),
-        })
+    // useEffect(() => {
+    //     if(authType != ''){
+    //         setOpen(true);
+    //     }
+    // }, [authType])
 
-        if (res.status == 200) {
-            const data_ = await res.json();
-            console.log(data_);
-            setCities(data_.types);
+    useEffect(() => {
+        if (search != "") {
+            getSearchResult();
         }
-    }
+    }, [search])
+
+    useEffect(() => {
+        window.addEventListener('resize', function () {
+            setWindow();
+        });
+        setWindow();
+    }, []);
 
     return (
         <Box>
