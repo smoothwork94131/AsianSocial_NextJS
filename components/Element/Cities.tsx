@@ -26,7 +26,7 @@ const Cities: FC<Props> = ({
     return (
         <Box
             style={{
-                width: isMobile?'100%':'150px'
+                width: isMobile?'100%':'200px'
             }}
         >
             <Menu 
