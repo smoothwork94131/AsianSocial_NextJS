@@ -131,7 +131,7 @@ const Service: FC<Props> = ({
                                                 </Carousel.Slide>)
                                             }
                                         </Carousel>
-                                    // </Flex>
+                                    </Flex>
                                 }
                             </Box>
                         </Grid.Col>
