@@ -1,66 +1,40 @@
-import { useDisclosure } from '@mantine/hooks';
-import { Modal, Button, Group, Box, Grid, Image, Flex, LoadingOverlay } from '@mantine/core';
 import { FC, useEffect, useState } from 'react';
-import { CategoryType, CategoryState, CollectionType, ElementType, ElementState, ItemType, PageType, PageState, CityType } from '@/types/elements';
+import { Modal, Box, LoadingOverlay } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { useUser } from "@supabase/auth-helpers-react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons'
-import Events from './Event';
-import Service from './Service';
-import { useRouter } from 'next/router';
-import SaveItem from './SaveItem';
-import AuthModal from '../Layouts/AuthModal';
-import { useUser } from "@supabase/auth-helpers-react";
-import { notifications } from '@mantine/notifications';
+
+import { CollectionType, ItemType } from '@/types/elements';
+
+import Events from '@/components/Item/Event';
+import Service from '@/components/Item/Service';
+import SaveItem from '@/components/Item/SaveItem';
+import AuthModal from '@/components/Layouts/AuthModal';
 
 interface Props {
     opened: boolean,
-    data: ItemType,
     isMobile: boolean,
-    getSaves?: () => void | undefined
-    page_type?: string | undefined,
-    cities: CityType[],
+    data: ItemType,
     open: () => void
+    getSaves?: () => void | undefined,
 }
 
 const InfoModal: FC<Props> = ({
-    opened, open, 
-    data, 
+    opened,
     isMobile, 
+    data, 
+    open,
     getSaves, 
-    page_type, 
-    cities,
- }) => {
-    
+}) => {
     const [images, setImages] = useState<any>([]);
-    const [categories, setCategories] = useState<CategoryType[]>([]);
     const [isLoad, setIsLoad] = useState<boolean>(false);
-    const [element, setElement] = useState<ElementType>(ElementState);
-    const [pageType, setPageType] = useState<PageType>(PageState);
     const [openSaveModal, setOpenSaveModal] = useState<boolean>(false);
     const [collections, setCollections] = useState<CollectionType[]>([]);
     const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
     const [authType, setAuthType] = useState<string>('login');
-    const [loadCategories, setLoadCategories] = useState<boolean>(false);
     const [isSaved, setIsSaved] = useState<boolean>(false);
-    const router = useRouter();
     const user = useUser();
-
-    useEffect(() => {
-
-        if (data.id != "") {
-            getImages();
-            getCategory();
-            getElement();
-            getPageType();
-            getCollections();
-        }
-    }, [data])
-    
-    useEffect(() => {
-        if (user) {
-            getCollections();
-        }
-    }, [user])
 
     const getCollections = async () => {
         if (user) {
@@ -185,40 +159,6 @@ const InfoModal: FC<Props> = ({
         setIsLoad(false);
     }
 
-    const getElement = async () => {
-        const res = await fetch('/api/item/get_element', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                element_id: data.element_id
-            })
-        })
-
-        if (res.status == 200) {
-            const data_ = await res.json();
-            setElement(data_);
-        }
-    }
-
-    const getPageType = async () => {
-        const res = await fetch('/api/item/get_page_types', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                type_id: data.page_type_id
-            })
-        })
-
-        if (res.status == 200) {
-            const data_ = await res.json();
-            setPageType(data_);
-        }
-    }
-
     const getImages = async () => {
         setIsLoad(true);
         const res = await fetch('/api/admin/get_item_images', {
@@ -238,11 +178,6 @@ const InfoModal: FC<Props> = ({
         setIsLoad(false);
     }
 
-    const selectCategory = (category: CategoryType) => {
-        router.push(`/${element.name}/${category.name}`)
-        open();
-    }
-
     const saveItemModal = async () => {
         if (user) {
             setOpenSaveModal(true);
@@ -251,64 +186,36 @@ const InfoModal: FC<Props> = ({
         }
     }
 
-    const getCategory = async () => {
-        setLoadCategories(true);
-        const res = await fetch('/api/item/get_categories', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                element_id: data.element_id
-            })
-        })
-
-        if (res.status == 200) {
-            const data_ = await res.json();
-            setCategories(data_);
-        }
-        setLoadCategories(false);
-    }
-
     const rederItemPage = () => {
-        if (pageType.id == "") {
+        console.log(data);
+        if (data?.asian_page_type?.name == "") {
             return (
                 <div></div>
             )
         }
 
-        if (pageType.name == 'event') {
+        if (data?.asian_page_type?.name == 'event') {
             return (
                 <Events 
                     images={images}
                     isMobile={isMobile}
                     data={data}
-                    categories={categories}
                     isLoad={isLoad}
-                    selectCategory={selectCategory}
-                    element_name={element.name}
                     open={open}
                     saveItemModal={saveItemModal}
                     isSaved={isSaved}
-                    cities={cities}
-                    loadCategories={loadCategories}
                 />
             )
-        } else if (pageType.name == 'service') {
+        } else if (data?.asian_page_type?.name == 'service') {
             return (
                 <Service
                     images={images}
                     isMobile={isMobile}
                     data={data}
-                    categories={categories}
                     isLoad={isLoad}
-                    selectCategory={selectCategory}
-                    element_name={element.name}
                     open={open}
                     saveItemModal={saveItemModal}
                     isSaved={isSaved}
-                    cities={cities}
-                    loadCategories={loadCategories}
                 />
             )
         } else {
@@ -317,28 +224,36 @@ const InfoModal: FC<Props> = ({
                     images={images}
                     isMobile={isMobile}
                     data={data}
-                    categories={categories}
                     isLoad={isLoad}
-                    selectCategory={selectCategory}
-                    element_name={element.name}
                     open={open}
                     saveItemModal={saveItemModal}
                     isSaved={isSaved}
-                    cities={cities}
-                    loadCategories={loadCategories}
                 />
             )
         }
     }
+
+    useEffect(() => {
+        if (user) {
+            getCollections();
+        }
+    }, [user])
+
+    useEffect(() => {
+        if (data.id != "") {
+            getImages();
+            getCollections();
+        }
+    }, [data])
     
     return (
         <Box>
-            <Modal opened={opened} onClose={open} fullScreen withCloseButton={false} p={0}>
+            <Modal opened={opened} onClose={open} fullScreen withCloseButton={false} py={10}>
                 <Box
                     sx={(theme) => ({
                         position: 'absolute',
                         top: '90px',
-                        left: '10px',
+                        left: '20px',
                         width: '50px',
                         height: '50px',
                         background: theme.colors.gray[6],
@@ -353,14 +268,13 @@ const InfoModal: FC<Props> = ({
                 >
                     <FontAwesomeIcon icon={faClose} color='white' style={{ fontSize: '25px', marginTop: '13px' }} />
                 </Box>
-                {/* <Events images={images} isMobile={isMobile} data={data} category={category} isLoad={isLoad}/> */}
                 <Box pt={50} pb={50}>
                     {
                         rederItemPage()
                     }
                 </Box>
             </Modal>
-            <Modal opened={openSaveModal} size={740} onClose={() => { setOpenSaveModal(false) }} centered withCloseButton={false} className="auth-modal" p={0}>
+            <Modal opened={openSaveModal} size={740} onClose={() => { setOpenSaveModal(false) }} centered withCloseButton={false} className="auth-modal" py={10}>
                 <SaveItem
                     isMobile={isMobile}
                     data={data}

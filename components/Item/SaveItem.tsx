@@ -69,8 +69,10 @@ const SaveItem: FC<Props> = ({
     
     return (
         data &&
-        <Box sx={(theme) => ({
+        <Box 
+        sx={(theme) => ({
             height: '535px',
+            
         })}>
             {
                 confirmDelete ?

@@ -62,7 +62,12 @@ export interface ItemType
     facebook: string,
     instagram: string,
     city_id: string,
-    hours: string
+    hours: string,
+    asian_elements?: any
+    asian_cities?: any
+    asian_categories?: any
+    asian_page_type?: any,
+    asian_images?: any
 }
 
 export const  ItemState: ItemType = {

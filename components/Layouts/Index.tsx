@@ -25,7 +25,6 @@ const Index: FC<Props> = ({ children }) => {
 
     const theme = useMantineTheme();
     const router = useRouter();
-
     const [opened, setOpened] = useState(false);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
@@ -60,13 +59,11 @@ const Index: FC<Props> = ({ children }) => {
 
     return (
         <AppShell
-            padding= '0'
             styles={{
                 main: {
                     background: theme.colorScheme === 'dark' ? theme.colors.dark[8] : '#fff',
-                    paddingLeft: 0,
-                    paddingRight: 0,
-                    paddingTop: 80
+                    paddingTop: 80,
+                    width: '100%'
                 },
             }}
             navbarOffsetBreakpoint="sm"
@@ -85,7 +82,7 @@ const Index: FC<Props> = ({ children }) => {
             }
 
             header={
-                <Header height={{ base: 70, md: 70 }} p="md" style={{zIndex: !isAdmin?100000:10}}>
+                <Header height={{ base: 70, md: 70 }} p="md" style={{zIndex: !isAdmin?10000:10}}>
                     {
                         isAdmin&&
                         <MediaQuery largerThan="sm" styles={{ display: 'none' }}>

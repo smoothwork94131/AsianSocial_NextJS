@@ -3,7 +3,7 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { Box, Image, Loader } from "@mantine/core";
 import { useMediaQuery } from '@mantine/hooks';
 
-import { ItemType, ItemState, CityType, ElementState, ElementType } from "@/types/elements";
+import { ItemType, ItemState } from "@/types/elements";
 
 import InfoModal from "@/components/Item/InfoModal";
 import Block from "@/components/Home/Block";
@@ -15,30 +15,7 @@ const Home = () => {
     const [isLoad, setIsLoad] = useState<boolean>(false);
     const [selectedItem, setSelectedItem] = useState<ItemType>(ItemState);
     const [ open, setOpen ] = useState<boolean>(false);
-    const [element, setElement] = useState<ElementType>(ElementState);
-    const [cities, setCities] = useState<CityType[]>([]);
     const [loadCount, setLoadCount] = useState<number>(0);
-
-    let baseItem: ItemType[] = [];
-    
-    const getTypes = async () => {
-        setCities([]);
-        const res = await fetch('/api/user/profile/get_types', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ 
-                element_id: selectedItem.element_id
-            }),
-        })
-
-        if(res.status == 200){
-            const data_ = await res.json();
-            setElement(data_.element_data);
-            setCities(data_.cities);
-        }
-    }
     
     function handleScroll() {
         const {
@@ -50,13 +27,6 @@ const Home = () => {
         if (scrollTop + clientHeight >= scrollHeight) {
             console.log('asdfadfasdf')
             setLoadCount(originCount => originCount + 1);
-            // const merged = items;
-            // const cnt = baseItem.length > 30?30:baseItem.length;
-            // for (let k = 0; k < cnt; k++) {
-            //     merged.push(baseItem[k])
-            // }
-            // setItems(merged);
-            // console.log(merged);
         } else {
             return;
         }
@@ -65,8 +35,6 @@ const Home = () => {
     const getItems = async () => {
         setIsLoad(true);
 
-        console.log('111111111111111111')
-        
         const res = await fetch('/api/home/get_items', {
             method: "POST",
             headers: {
@@ -79,43 +47,31 @@ const Home = () => {
 
         if (res.status == 200) {
             const data = await res.json();
-            // const _items: ItemType[] = [];
-            // let cnt = 0;
-            // let index = 0;
-            // while(true) {
-            //     if(cnt === 1000) {
-            //         break;
-            //     }
+            const _items: ItemType[] = [];
+            let cnt = 0;
+            let index = 0;
+            while(true) {
+                if(cnt === 100) {
+                    break;
+                }
 
-            //     index = Math.floor(Math.random() * 1000);
+                index = Math.floor(Math.random() * 30);
                 
-            //     _items.push(data[index]);
-            //     cnt++;
-            //     index++;
-            // }
-            // setItems(_items);
-            // baseItem = data;
-            setItems(originItems => originItems.concat(data));
+                _items.push(data[index]);
+                cnt++;
+                index++;
+            }
+            setItems(originItems => originItems.concat(_items));
         }
         
         setIsLoad(false);
     }
     
     useEffect(() => {
-        if(selectedItem.id !="") {
-            getTypes();
-        }
-    }, [selectedItem])
-
-    useEffect(() => {
         getItems();
     }, [loadCount])
 
-    useEffect(() => {
-        console.log(items);
-    }, [items])
-
-    useEffect(() => {
+   useEffect(() => {
         // getItems();
         window.addEventListener('scroll', handleScroll);
     }, [])
@@ -149,11 +105,11 @@ const Home = () => {
                     <Loader size='lg' />
                 </Box>
             }
-            <InfoModal 
-                open={() => { setOpen(p_o => (!p_o)) }} 
-                opened={open} data={selectedItem}
+            <InfoModal
+                opened={open} 
                 isMobile={isMobile}
-                cities={cities}
+                data={selectedItem}
+                open={() => { setOpen(p_o => (!p_o)) }} 
             />
         </Box>
     )

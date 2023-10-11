@@ -190,33 +190,41 @@ const MyMenu:FC<Props> = ({
                                 </Avatar>
                             </Menu.Target>
                             <Menu.Dropdown>
-                                <Box> 
-                                    <Flex
-                                        gap="md"
-                                        justify="center"
-                                        align="center"
-                                        direction="row"
-                                        wrap="wrap"
-                                    >
-                                        <Button
-                                            sx={(theme) => ({
-                                                color: theme.colors.gray[7],
-                                                '&:hover': {
-                                                    color: theme.colors.gray[9],
-                                                },
-                                            })}
-                                            variant='white'
-                                            onClick={() => { setType('login') }}
+                                <Menu.Item>
+                                    <Box> 
+                                        <Flex
+                                            gap="xs"
+                                            justify="center"
+                                            align="center"
+                                            direction="row"
+                                            // wrap="wrap"
                                         >
-                                            Log in
-                                        </Button>
-                                        <Button
-                                            onClick={() => { setType('signup') }}
-                                        >
-                                            Sign up
-                                        </Button>
-                                    </Flex>
-                                </Box>
+                                            <Button
+                                                size="xs"
+                                                sx={(theme) => ({
+                                                    color: theme.colors.gray[7],
+                                                    '&:hover': {
+                                                        color: theme.colors.gray[9],
+                                                    },
+                                                })}
+                                                variant='white'
+                                                onClick={() => { 
+                                                    setType('login') 
+                                                }}
+                                            >
+                                                Log in
+                                            </Button>
+                                            <Button
+                                                size="xs"
+                                                onClick={() => { 
+                                                    setType('signup') 
+                                                }}
+                                            >
+                                                Sign up
+                                            </Button>
+                                        </Flex>
+                                    </Box>
+                                </Menu.Item>
                                 {
                                     elements.map((item, key) =>
                                         <Menu.Item
@@ -254,12 +262,16 @@ const MyMenu:FC<Props> = ({
                                     },
                                 })}
                                 variant='white'
-                                onClick={() => { setType('login') }}
+                                onClick={() => { 
+                                    setType('login') 
+                                }}
                             >
                                 Log in
                             </Button>
                             <Button
-                                onClick={() => { setType('signup') }}
+                                onClick={() => { 
+                                    setType('signup') 
+                                }}
                             >
                                 Sign up
                             </Button>

@@ -46,7 +46,7 @@ const Block:FC<Props> = ({
         data&&
         <Box>
             {
-                data.image == null || imageExists == false?
+                data.image == null || imageExists == false ?
                 <Box
                     sx={(theme) =>({
                         width: '100%',
@@ -69,7 +69,8 @@ const Block:FC<Props> = ({
                 </Box>
                 :
                 <MantineImage 
-                    src={ data.image } alt='image' 
+                    src={ data.image } 
+                    alt='image' 
                     sx={(theme) =>({
                         '&:hover' :{
                             opacity: '0.7',
@@ -114,4 +115,5 @@ const Block:FC<Props> = ({
         </Box>
     )
 }
+
 export default Block;

@@ -59,11 +59,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <SessionProvider session={pageProps.session}>
           <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={() => { }}>
             <MantineProvider theme={myTheme} withGlobalStyles withNormalizeCSS>
-              <Container size="xl">
+              {/* <Container size="xl"> */}
                 <Layout>
                   <Component {...pageProps} />
                 </Layout>
-              </Container>
+              {/* </Container> */}
               <Notifications />
             </MantineProvider>
           </ColorSchemeProvider>

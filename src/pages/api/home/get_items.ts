@@ -7,10 +7,9 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const loadCount = req.body.loadCount;
-    const limit = 30;
     const { error, data } = await supabaseAdmin.from('asian_items')
-        .select("*")
-        .range(loadCount * 30, (loadCount + 1) * 29)
+        .select(`*, asian_elements (id, name), asian_cities (id, name), asian_categories (id, name), asian_page_type (id, name), asian_images (id, url)`)
+        .range(loadCount * 100, (loadCount + 1) * 99)
         .order('id',  {ascending: true});
     if(data) {
         res.status(200).json(data);

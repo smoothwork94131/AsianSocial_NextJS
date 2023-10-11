@@ -40,11 +40,9 @@ const Elements = () => {
     const [element, setElement] = useState<ElementType>(ElementState);
     const [cities, setCities] = useState<CityType[]>([]);
     const [categories, setCatetories] = useState<CategoryType[]>([]);
-    
 
     const [isLoad, setIsLoad] = useState<boolean>(false);
     const [items, setItems] = useState<ItemType[]>([]);
-
 
     const [selectedItem, setSelectedItem] = useState<ItemType>(ItemState);
     const [ open, setOpen ] = useState<boolean>(false);
@@ -86,7 +84,7 @@ const Elements = () => {
         <Box>
             <Box
                 sx={(theme) => ({
-                    // margin: '2% 5%',
+                    margin: '2% 5%',
                     width: isMobile ? '90%' : '40%'
                 })}
             >
@@ -112,7 +110,10 @@ const Elements = () => {
             </Box>
             <Box>
                 {
-                    !isLoad&&<Box mt={30}>
+                    !isLoad&&
+                    <Box 
+                        my={30}
+                    >
                         {
                             element_name && city_name && category_name &&
                             <Cities
@@ -127,7 +128,10 @@ const Elements = () => {
             </Box>
             <Box>
                 {
-                    !isLoad&&<Box mt={30}>
+                    !isLoad&&
+                    <Box 
+                        my={30}
+                    >
                         {
                             element_name && city_name && category_name &&
                             <Categories
@@ -158,7 +162,14 @@ const Elements = () => {
                         <Masonry gutter='10px'>
                             {
                                 items.map((item: ItemType, key: number) =>
-                                    <Block key={key} data={item} setSelectedItem={(item: ItemType) => {setSelectedItem(item); setOpen(true)}}/>
+                                    <Block 
+                                        key={key} 
+                                        data={item} 
+                                        setSelectedItem={(item: ItemType) => {
+                                            setSelectedItem(item); 
+                                            setOpen(true);
+                                        }}
+                                    />
                                 )
                             }
                         </Masonry>
@@ -168,7 +179,6 @@ const Elements = () => {
                 opened={open}
                 data={selectedItem}
                 isMobile={isMobile}
-                cities={cities}
                 open={() => { setOpen(p_o => (!p_o)) }} 
             />
         </Box>

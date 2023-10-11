@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { useRouter } from 'next/router';
 import { Box, Avatar, Flex, Text, Button, Tabs, Textarea, Loader, Image } from "@mantine/core";
+import { notifications } from '@mantine/notifications';
 import { Dropzone } from '@mantine/dropzone';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconEdit, IconTable, IconTrash } from "@tabler/icons-react";
@@ -201,10 +202,16 @@ const Profile = () => {
         })
 
         if (res.status == 200) {
+            const data = await res.json();
             homeDispatch({
                 field: 'user_profile',
-                value: image
-            })
+                value: data[0]
+            });
+
+            notifications.show({
+                message: 'Success',
+                color: 'default'
+            });
         }
     }
 
@@ -451,10 +458,12 @@ const Profile = () => {
                     }
                 </Box>
                 <InfoModal
-                    open={() => { setOpen(p_o => (!p_o)) }}
+                    open={() => { 
+                        setOpen(p_o => (!p_o)) 
+                    }}
                     isMobile={isMobile}
-                    opened={open} data={selectedItem}
-                    cities={cities}
+                    opened={open} 
+                    data={selectedItem}
                 />
             </Box>
         }

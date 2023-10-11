@@ -15,8 +15,14 @@ export default async function handler(
     }]).eq('id', user_id);
 
     if(!error) {
+        const { error, data } = await supabaseAdmin.from('users')
+            .select('*')
+            .eq('id', user_id)
+            .limit(1);
+
         res.status(200).json(data);
-    } else {
+    }
+    else {
         res.status(201).json([]);
     }
 }
