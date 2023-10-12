@@ -5,7 +5,7 @@ export interface HomeInitialState {
     colorScheme: 'light' | 'dark';
     lightMode: 'light' | 'dark';
     user_profile: ProfileType;
-    elements: ElementType[]
+    elements: ElementType[];
 }
 
 export const initialState: HomeInitialState = {

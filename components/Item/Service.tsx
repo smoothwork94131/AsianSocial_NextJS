@@ -25,8 +25,6 @@ interface Props {
     open: () => void,
     saveItemModal: () => void,
     isSaved: boolean,
-    getSaves?: () => void | undefined,
-    saved?: string | undefined
 }
 
 const Service: FC<Props> = ({
@@ -37,12 +35,7 @@ const Service: FC<Props> = ({
     open,
     saveItemModal,
     isSaved,
-    getSaves,
-    saved,
-}) => {
-
-    console.log(isMobile);
-    
+}) => {    
     const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
     const [authType, setAuthType] = useState<string>('login');
     const autoplay = useRef(Autoplay({ delay: 2000 }));
@@ -299,9 +292,9 @@ const Service: FC<Props> = ({
                 >
                 {
                     isLoad ? 
-                    <Box>
-                        <Loader variant='dots' alignmentBaseline='central' />
-                    </Box> 
+                    <Box sx={(theme) => ({ textAlign: 'center' })}>
+                        <Loader size={'lg'}/>
+                    </Box>
                     :
                     <ResponsiveMasonry
                         columnsCountBreakPoints={{ 350: 1, 750: 2, 1000: 3, 1400: 4, 1600: 5 }}

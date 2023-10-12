@@ -14,7 +14,8 @@ export interface ProfileType {
     location: string,
     instagram: string,
     twitter: string,
-    facebook: string
+    facebook: string,
+    asian_collections?: any
 }
 
 export const ProfileState: ProfileType = {
@@ -33,5 +34,6 @@ export const ProfileState: ProfileType = {
     location: '',
     instagram: '',
     twitter: '',
-    facebook: ''
+    facebook: '', 
+    asian_collections:[]
 }

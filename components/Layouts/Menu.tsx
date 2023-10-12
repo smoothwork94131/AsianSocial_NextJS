@@ -73,7 +73,6 @@ const MyMenu:FC<Props> = ({
         }
     }
 
-
     useEffect(() => {
         if(user) {
             getUserProfile(user.id);

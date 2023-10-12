@@ -15,21 +15,22 @@ export default async function handler(
     const name = req.body.collection_name;
     const active_item_ids = req.body.active_item_ids;
 
-    const { error } = await supabaseAdmin.from('asian_collections').insert([{
+    const { error, data } = await supabaseAdmin
+    .from('asian_collections')
+    .insert([{
         item_id,
         user_id,
         image_url,
         name,
         active_item_ids
     }])
+    .select('id, name, item_id, image_url, active_item_ids');
     
     if(error){
         res.status(201).json({
             msg: 'Server Error!'
         })
     } else {
-        res.status(200).json({
-            msg: 'success'
-        })
+        res.status(200).json(data)
     }
 }

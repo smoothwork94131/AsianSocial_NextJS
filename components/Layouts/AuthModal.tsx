@@ -4,9 +4,7 @@ import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
 import { FC, useState, useContext, useEffect } from 'react';
 import { useForm } from '@mantine/form';
 import { supabase } from "@/utils/app/supabase-client";
-import { useUser } from "@supabase/auth-helpers-react";
 import { notifications } from '@mantine/notifications';
-import HomeContext from '@/state/index.context';
 
 interface Props {
     open: () => void,
@@ -17,12 +15,7 @@ interface Props {
 
 const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
 
-    const [isLoad, setIsLoad] = useState<boolean>(false);
-    const user = useUser();
-    const {
-        dispatch: homeDispatch,
-    } = useContext(HomeContext);
-
+    const [isLoad, setIsLoad] = useState<boolean>(false);    
     const form = useForm({
         initialValues: { email: '', password: '', name: '' },
         validate: {
@@ -48,8 +41,6 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
                         color: 'red'
                     })
                 } else {
-                    const user_id = data.user.id
-                    getUserProfile(user_id);
                     open();
                 }
                 setIsLoad(false);
@@ -86,35 +77,7 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
             provider: provider
         })
     }
-
-    const getUserProfile = async (user_id:string) => {
-        try {
-            const res = await fetch('/api/user/profile/get_profile', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ id: user_id }),
-            })
-
-            if(res.ok) {
-                const data = await res.json();
-                homeDispatch({
-                    field: 'user_profile',
-                    value: data
-                })
-            }
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    useEffect(() => {
-        if(user) {
-            getUserProfile(user.id);
-        }
-    }, [user])
-
+    
     return (
         <Modal opened={opened} onClose={open} centered size='440px' className="auth-modal">
             <Flex

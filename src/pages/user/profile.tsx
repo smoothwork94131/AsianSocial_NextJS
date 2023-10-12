@@ -33,88 +33,20 @@ const Profile = () => {
     const [selectedCollection, setSelectedCollection] = useState<CollectionType>(CollectionState);
 
     const [element, setElement] = useState<ElementType>(ElementState);
-    const [cities, setCities] = useState<CityType[]>([]);
 
     const {
         state: { user_profile },
         dispatch: homeDispatch,
     } = useContext(HomeContext);
 
-    useEffect(() => {
-        if (user) {
-            getSaves();
-        } else {
-            router.push('/');
-        }
-        window.addEventListener('resize', function () {
-            setWindow();
-        });
-        setWindow();
-    }, [])
-
-
-    useEffect(() => {
-
-    }, [selectedCollection])
-
-    useEffect(() => {
-        if (selectedItem.id != '') {
-            getTypes();
-        }
-    }, [selectedItem])
-
-    const getTypes = async () => {
-        setCities([]);
-        const res = await fetch('/user/profile/get_types', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                element_id: selectedItem.element_id
-            }),
-        })
-        if (res.status == 200) {
-            const data_ = await res.json();
-            setElement(data_.element_data);
-            setCities(data_.types);
-        }
-
-    }
-    useEffect(() => {
-        if (tabType == 'saves') {
-            getSaves();
-        } else {
-            getCollections();
-        }
-    }, [tabType])
-
-    const getCollections = async () => {
-        setIsLoad(true);
-        try {
-            const res = await fetch('/api/user/profile/get_collections', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ user_id: user?.id }),
-            })
-            if (res.status == 200) {
-                const data = await res.json();
-                setCollections(data);
-            } else {
-
-            }
-        } catch (e) {
-
-        }
-        setIsLoad(false);
+    const setWindow = () => {
+        setScreenWidth(window.innerWidth);
     }
 
     const getSaves = async () => {
         setIsLoad(true);
         try {
-            const res = await fetch('/api/user/profile/get_saves', {
+            const res = await fetch('/api/item/get_saves', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -133,13 +65,27 @@ const Profile = () => {
         setIsLoad(false);
     }
 
-    const setWindow = () => {
-        setScreenWidth(window.innerWidth);
-    }
+    const getCollections = async () => {
+        setIsLoad(true);
+        try {
+            const res = await fetch('/api/item/get_collections', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ user_id: user?.id }),
+            })
+            if (res.status == 200) {
+                const data = await res.json();
+                setCollections(data);
+            } else {
 
-    useEffect(() => {
-        getCollectionItems();
-    }, [selectedCollection])
+            }
+        } catch (e) {
+
+        }
+        setIsLoad(false);
+    }
 
     const getCollectionItems = async () => {
         setIsLoad(true)
@@ -153,9 +99,8 @@ const Profile = () => {
         if (res.status == 200) {
             const data_ = await res.json();
             setSaves(data_);
-        } else {
-
         }
+        
         setIsLoad(false);
     }
 
@@ -217,12 +162,15 @@ const Profile = () => {
 
     const deleteCollection = async () => {
         setIsLoad(true);
-        const res = await fetch('/api/user/profile/delete_collection', {
+        const res = await fetch('/api/item/delete_collection', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ id: selectedCollection.id }),
+            body: JSON.stringify({ 
+                collection_id: selectedCollection.id,
+                user_id: user?.id
+            }),
         })
 
         if (res.status == 200) {
@@ -231,6 +179,30 @@ const Profile = () => {
         setIsLoad(false);
 
     }
+
+    useEffect(() => {
+        if (tabType == 'saves') {
+            getSaves();
+        } else {
+            getCollections();
+        }
+    }, [tabType])
+
+    useEffect(() => {
+        getCollectionItems();
+    }, [selectedCollection])
+
+    useEffect(() => {
+        if (user) {
+            getSaves();
+        } else {
+            router.push('/');
+        }
+        window.addEventListener('resize', function () {
+            setWindow();
+        });
+        setWindow();
+    }, [])
 
     return (
         user && <Box>
@@ -253,10 +225,23 @@ const Profile = () => {
                     align={'center'}
                     gap={'md'}
                 >
-                    <IconTrash color="gray" size={15} style={{ cursor: 'pointer' }} onClick={() => {
-                        deleteCollection();
-                    }} />
-                    <IconTable color="gray" size={15} style={{ cursor: 'pointer' }} onClick={() => { setIsCollectionSaves(false); setTabType('saves') }} />
+                    <IconTrash 
+                        color="gray" 
+                        size={15} 
+                        style={{ cursor: 'pointer' }} 
+                        onClick={() => {
+                            deleteCollection();
+                        }} 
+                    />
+                    <IconTable 
+                        color="gray" 
+                        size={15} 
+                        style={{ cursor: 'pointer' }} 
+                        onClick={() => { 
+                            setIsCollectionSaves(false); 
+                            setTabType('saves') 
+                        }} 
+                    />
                 </Flex>
                 <Box>
                     {
@@ -279,7 +264,7 @@ const Profile = () => {
                             columnsCountBreakPoints={{ 350: 2, 500: 3, 750: 3, 900: 4, 1550: 5, 1800: 6 }}
                             style={{ marginTop: '20px' }}
                         >
-                            <Masonry>
+                            <Masonry gutter="10px">
                                 {
                                     saves.map((item: ItemType, key: number) =>
                                         <Block
@@ -387,7 +372,6 @@ const Profile = () => {
                     </Box> 
                     :
                     tabType == 'saves' ?
-
                     saves.length == 0 ?
                     <Text mt={50} align="center" size='3rem' sx={(theme) => ({
                         color: theme.colors.gray[3]
@@ -462,9 +446,7 @@ const Profile = () => {
                 }
                 </Box>
                 <InfoModal
-                    open={() => { 
-                        setOpen(p_o => (!p_o))
-                    }}
+                    open={() => { setOpen(p_o => (!p_o)) }}
                     isMobile={isMobile}
                     opened={open} 
                     data={selectedItem}

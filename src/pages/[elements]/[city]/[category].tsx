@@ -80,29 +80,32 @@ const Elements = () => {
     }, [element_name, city_name, category_name])
 
     return (
-        <Box>
+        <Box
+            mt={20}
+        >
             <Box
                 sx={(theme) => ({
-                    margin: isMobile?'0':'2% 5%',
                     width: isMobile ? '100%' : '40%'
                 })}
             >
                 <Box>
                     <Flex
-                        direction={isMobile?'column':'row'}
+                        direction='row'
                         align='center'
-                        justify='space-between'
+                        justify={isMobile?'center':'flex-start'}
                     >
-                        <Text size={isMobile ? 36 : 72} weight={600} sx={(theme) => ({
+                        <Text size={24} weight={600} sx={(theme) => ({
                             color: theme.colors.gray[8]
                         })}>
                             {
-                                element_name?.toString()?.replaceAll("_", " ")
+                                element_name?.toString()?.replaceAll("_", " ") + " in"
                             }
                         </Text>
                         {
                             !isLoad&&
-                            <Box>
+                            <Box
+                                mt={5}
+                            >
                                 {
                                     element_name && city_name && category_name &&
                                     <Cities

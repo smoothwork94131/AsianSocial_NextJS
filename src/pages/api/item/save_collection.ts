@@ -12,14 +12,18 @@ export default async function handler(
 
     const item_id = req.body.item_id;
     const user_id = req.body.user_id;
-    const image_url = req.body.image_url;
     const collection_id = req.body.collection_id;
     
-
     await unActiveCollection(item_id, user_id)
+
     let active_item_ids: string[] = [];
-    const { data: collection_data } = await supabaseAdmin.from('asian_collections').select("*").eq('id', collection_id);
-    if(collection_data){
+    
+    const { data: collection_data } = await supabaseAdmin
+        .from('asian_collections')
+        .select("*")
+        .eq('id', collection_id);
+
+    if(collection_data) {
         active_item_ids = collection_data[0].active_item_ids;
         active_item_ids.push(item_id);
     }
@@ -33,9 +37,17 @@ export default async function handler(
             msg: 'Server Error!'
         })
     } else {
-        res.status(200).json({
-            msg: 'success'
-        })
+        const {error, data} = await supabaseAdmin
+            .from('asian_collections')
+            .select('id, name, item_id, image_url, active_item_ids')
+            .eq('user_id', user_id);
+
+        if(error) {
+            res.status(201).json({msg:'Server Error'});
+        }
+        else {
+            res.status(200).json(data)
+        } 
     }
 }
 
@@ -45,7 +57,6 @@ export const unActiveCollection = async (item_id: string, user_id: string) => {
     let promise: any = [];
     if(data) {
         for (let k = 0; k < data.length; k++) {
-            // const prompt = prompts[k];
             promise.push(
                 removeActive(data[k], item_id)
             )
@@ -57,22 +68,17 @@ export const unActiveCollection = async (item_id: string, user_id: string) => {
 
 const removeActive = async(data: CollectionType, item_id: string) => {
     const { data:collection_data} = await supabaseAdmin.from('asian_collections').select("*").eq('id', data.id);
-        if(collection_data) {
-            if(collection_data?.length > 0){
-                const active_item_ids = collection_data[0].active_item_ids;
-
-                const filter_item_ids = active_item_ids.filter((item: string) => item.toString() != item_id)
-
-                console.log(filter_item_ids);
-
-                const { error } = await supabaseAdmin.from('asian_collections').update([{
-                    active_item_ids:filter_item_ids
-                }]).eq('id', data.id);
-                
-                if(error){
-                    
-                    return false;
-                }
-            }    
-        }
+    if(collection_data) {
+        if(collection_data?.length > 0){
+            const active_item_ids = collection_data[0].active_item_ids;
+            const filter_item_ids = active_item_ids.filter((item: string) => item.toString() != item_id)
+            const { error } = await supabaseAdmin.from('asian_collections').update([{
+                active_item_ids:filter_item_ids
+            }]).eq('id', data.id);
+            
+            if(error){
+                return false;
+            }
+        }    
+    }
 }
