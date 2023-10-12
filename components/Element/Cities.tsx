@@ -49,14 +49,15 @@ const Cities: FC<Props> = ({
                         //     },
                         // })}
                         variant='white'
+                        size='lg'
                     >
                         <Group>
-                            <Text size="md" weight={500}>
+                            <Text size="xl" weight={800}>
                                 {
                                     city_name
                                 }
                             </Text>
-                            <IconChevronDown size="1rem" />
+                            <IconChevronDown size="1.5rem" />
                         </Group>
                     </Button>
                 </Menu.Target>

@@ -94,18 +94,20 @@ const Elements = () => {
                         align='center'
                         justify={isMobile?'center':'flex-start'}
                     >
-                        <Text size={24} weight={600} sx={(theme) => ({
-                            color: theme.colors.gray[8]
-                        })}>
+                        <Text 
+                            size={22} 
+                            weight={800} 
+                            sx={(theme) => ({
+                                color: theme.colors.gray[8]
+                            })}
+                        >
                             {
                                 element_name?.toString()?.replaceAll("_", " ") + " in"
                             }
                         </Text>
                         {
                             !isLoad&&
-                            <Box
-                                mt={5}
-                            >
+                            <Box>
                                 {
                                     element_name && city_name && category_name &&
                                     <Cities

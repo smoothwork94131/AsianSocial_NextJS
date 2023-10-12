@@ -15,14 +15,13 @@ import Autoplay from 'embla-carousel-autoplay';
 import { ItemType } from '@/types/elements';
 
 import AuthModal from '@/components/Layouts/AuthModal';
+import { IconBrandFacebook, IconBrandInstagram } from '@tabler/icons-react';
 
 interface Props {
     images: any,
     isMobile: boolean,
     data: ItemType,
     isLoad: boolean,
-    getSaves?: () => void | undefined,
-    saved?: string | undefined
     open: () => void,
     saveItemModal: () => void,
     isSaved: boolean,
@@ -33,14 +32,10 @@ const Event: FC<Props> = ({
     isMobile,
     data,
     isLoad,
-    getSaves,
-    saved,
     open,
     saveItemModal,
     isSaved,
-}) => {
-
-    
+}) => {    
     const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
     const [authType, setAuthType] = useState<string>('login');
     const autoplay = useRef(Autoplay({ delay: 2000 }));
@@ -62,7 +57,7 @@ const Event: FC<Props> = ({
                 <Box>
                     <Grid
                         gutter={20}
-                        pt={40}
+                        pt={20}
                         sx={(theme) => ({
                             borderBottom: `1px solid #cfcfcf`
                         })}
@@ -72,14 +67,15 @@ const Event: FC<Props> = ({
                                 margin: '0 auto',
                             })}>
                                 {
-                                    data.image == null ?
+                                    data.image == null || data?.asian_images?.length == 0 ?
                                     <Flex
                                         justify={'center'} align={'center'}
                                     >
                                         <Box
                                             sx={(theme) => ({
                                                 width: isMobile?'100%':'500px',
-                                                height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
+                                                // height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
+                                                height: '400px',
                                                 backgroundImage: 'linear-gradient(180deg, gray, white)',
                                                 cursor: 'pointer',
                                                 borderRadius: '10px'
@@ -87,48 +83,45 @@ const Event: FC<Props> = ({
                                         ></Box>
                                     </Flex>
                                     :
-                                    <Flex justify={'center'} align={'center'}>
+                                    <Flex 
+                                        justify={'center'} align={'center'}
+                                    >
                                         <Carousel
+                                            slideSize='100%'
                                             withIndicators
-                                            // slideSize='100%'
-                                            // onMouseEnter={autoplay.current.stop}
-                                            // onMouseLeave={autoplay.current.reset}
-                                            draggable
-                                            // sx={(theme) => ({
-                                            //     width: isMobile ? '100%' : '50%'
-                                            // })}
+                                            onMouseEnter={autoplay.current.stop}
+                                            onMouseLeave={autoplay.current.reset}
+                                            maw={isMobile ? '100%' : '600px'}
                                         >
                                             {
-                                                Object.keys(images).includes('videos') ?
-                                                    images.images.map((image: any, key: number) =>
-
-                                                        <Carousel.Slide key={key}>
-                                                            {
-                                                                image == "" ?
-                                                                <Box
-                                                                    sx={(theme) => ({
-                                                                        width: isMobile?'100%':'500px', 
-                                                                        // height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
-                                                                        backgroundImage: 'linear-gradient(180deg, gray, white)',
-                                                                        cursor: 'pointer',
-                                                                        borderRadius: '10px'
-                                                                    })}
-                                                                ></Box> 
-                                                                :
-                                                                <Image alt='' 
-                                                                    src={image} 
-                                                                    style={{ 
-                                                                        width: isMobile?'100%':'500px', 
-                                                                        height: 'auto', 
-                                                                        objectFit: 'cover' 
-                                                                    }} 
-                                                                    radius={5} 
-                                                                    key={key} 
-                                                                />
-                                                            }
-                                                        </Carousel.Slide>
-                                                    )
-                                                    : <></>
+                                                data?.asian_images?.map((image: any, key: number) =>
+                                                <Carousel.Slide key={key}>
+                                                    {
+                                                        image.id == "" ?
+                                                        <Box
+                                                            sx={(theme) => ({
+                                                                width:'100%', 
+                                                                // height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
+                                                                height: '400px',
+                                                                backgroundImage: 'linear-gradient(180deg, gray, white)',
+                                                                cursor: 'pointer',
+                                                                borderRadius: '10px'
+                                                            })}
+                                                        ></Box> 
+                                                        :
+                                                        <Box>
+                                                            <Image 
+                                                                src={image.url}
+                                                                sx={{
+                                                                    width: '100%', 
+                                                                    height: '400px', 
+                                                                    objectFit: 'cover'
+                                                                }}
+                                                                radius={5} 
+                                                            />
+                                                        </Box>
+                                                    }
+                                                </Carousel.Slide>)
                                             }
                                         </Carousel>
                                     </Flex>
@@ -190,6 +183,7 @@ const Event: FC<Props> = ({
                                     })}>
                                         <a href={data.sites_url} target='_blank' style={{ color: 'black' }}> {data.sites_url} </a>
                                     </Text>
+
                                     <Text size='1rem' weight={400} sx={(theme) => ({
                                         color: "black"
                                     })}>
@@ -200,21 +194,27 @@ const Event: FC<Props> = ({
                                     })}>
                                         {data.phone_number}
                                     </Text>
-                                    {/* <Text size='1rem' weight={400} sx={(theme) => ({
-                                        color: "black"
-                                    })}>
-                                        {data.email}
-                                    </Text> */}
-                                    <Text size='1rem' weight={400} sx={(theme) => ({
-                                        color: "black"
-                                    })}>
-                                        <a style={{ color: 'black' }} href={data.facebook}> {data.facebook} </a>
-                                    </Text>
-                                    <Text size='1rem' weight={400} sx={(theme) => ({
-                                        color: "black"
-                                    })}>
-                                        <a style={{ color: 'black' }} href={data.instagram}> {data.instagram} </a>
-                                    </Text>
+                                    <Group mt={10}>
+                                        <Text 
+                                            size='1rem' 
+                                            weight={400} 
+                                            sx={(theme) => ({
+                                                color: "black"
+                                            })}
+                                        >
+                                            
+                                            <a style={{ color: 'black' }} href={data.facebook} target='_blank'><IconBrandFacebook/></a>
+                                        </Text>
+                                        <Text 
+                                            size='1rem' 
+                                            weight={400} 
+                                            sx={(theme) => ({
+                                                color: "black"
+                                            })}
+                                        >
+                                            <a style={{ color: 'black' }} href={data.instagram} target='_blank'><IconBrandInstagram /></a>
+                                        </Text>
+                                    </Group>
                                 </Box>
                                 {
                                     (data?.asian_elements?.name == "Businesses" || data?.asian_elements?.name == "Restaurants") &&
@@ -292,14 +292,17 @@ const Event: FC<Props> = ({
                 >
                 {
                     isLoad ? 
-                    <Box>
-                        <Loader variant='dots' alignmentBaseline='central' />
-                    </Box> 
+                    <Box sx={(theme) => ({ textAlign: 'center' })}>
+                        <Loader size={'lg'}/>
+                    </Box>
                     :
                     <ResponsiveMasonry
                         columnsCountBreakPoints={{ 350: 1, 750: 2, 1000: 3, 1400: 4, 1600: 5 }}
                     >
-                        <Masonry style={{ background: 'transparent' }}>
+                        <Masonry 
+                            style={{ background: 'transparent' }}
+                            gutter='20px'
+                        >
                         {
                             images.videos.map((video: any, key: number) =>
                                 video ?

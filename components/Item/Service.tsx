@@ -203,7 +203,7 @@ const Service: FC<Props> = ({
                                             })}
                                         >
                                             
-                                            <a style={{ color: 'black' }} href={data.facebook}><IconBrandFacebook/></a>
+                                            <a style={{ color: 'black' }} href={data.facebook} target='_blank'><IconBrandFacebook/></a>
                                         </Text>
                                         <Text 
                                             size='1rem' 
@@ -212,7 +212,7 @@ const Service: FC<Props> = ({
                                                 color: "black"
                                             })}
                                         >
-                                            <a style={{ color: 'black' }} href={data.instagram}><IconBrandInstagram /></a>
+                                            <a style={{ color: 'black' }} href={data.instagram} target='_blank'><IconBrandInstagram /></a>
                                         </Text>
                                     </Group>
                                 </Box>
