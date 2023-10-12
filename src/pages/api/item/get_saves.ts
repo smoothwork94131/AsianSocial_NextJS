@@ -11,7 +11,10 @@ export default async function handler(
     const user_id = req.body.user_id;
     const ids: string[] = [];
 
-    const { error, data } = await supabaseAdmin.from('asian_collections').select("*").eq('user_id', user_id);
+    const { error, data } = await supabaseAdmin
+        .from('asian_collections')
+        .select("*")
+        .eq('user_id', user_id);
     
     if(data) { 
         data.map((item:CollectionType) => {
@@ -24,7 +27,11 @@ export default async function handler(
         let result: (ItemType | undefined)[] = [];
         result = await Promise.all(
             ids.map(async(item_id) => {
-                const item_data = await supabaseAdmin.from('asian_items').select("*").eq('id', item_id);
+                const item_data = await supabaseAdmin
+                    .from('asian_items')
+                    .select(`*, asian_elements (id, name), asian_cities (id, name), asian_categories (id, name), asian_page_type (id, name), asian_images (id, url)`)
+                    .eq('id', item_id);
+                    
                 if(!item_data.error){
                     return item_data.data[0]
                 }

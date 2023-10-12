@@ -32,8 +32,6 @@ const Profile = () => {
     const [isCollectionSaves, setIsCollectionSaves] = useState<boolean>(false);
     const [selectedCollection, setSelectedCollection] = useState<CollectionType>(CollectionState);
 
-    const [element, setElement] = useState<ElementType>(ElementState);
-
     const {
         state: { user_profile },
         dispatch: homeDispatch,
@@ -100,7 +98,7 @@ const Profile = () => {
             const data_ = await res.json();
             setSaves(data_);
         }
-        
+
         setIsLoad(false);
     }
 
