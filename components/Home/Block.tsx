@@ -68,6 +68,24 @@ const Block:FC<Props> = ({
                     radius={7}
                 />
             }
+            {
+                <Box mt={10}>
+                    <Text 
+                    weight={500}
+                    size={15}
+                    sx={(theme) =>({
+                        color: theme.colors.gray[9],
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        textAlign: 'center'
+                    })}>
+                        {
+                            data.name
+                        }
+                    </Text>
+                </Box>
+            }
         </Box>
     )
 }
