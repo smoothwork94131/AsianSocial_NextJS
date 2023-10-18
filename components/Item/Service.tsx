@@ -1,6 +1,6 @@
 import { FC, useState, useRef, useEffect } from 'react';
 import { Modal, Button, Group, Box, Grid, Image, Flex, Text, Rating, Loader, Textarea } from '@mantine/core';
-import { Carousel } from '@mantine/carousel';
+import { Carousel, Embla, useAnimationOffsetEffect } from '@mantine/carousel';
 import { notifications } from '@mantine/notifications';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -40,6 +40,11 @@ const Service: FC<Props> = ({
     const [authType, setAuthType] = useState<string>('login');
     const autoplay = useRef(Autoplay({ delay: 2000 }));
 
+    const TRANSITION_DURATION = 200;
+    const [embla, setEmbla] = useState<Embla | null>(null);
+    useAnimationOffsetEffect(embla, TRANSITION_DURATION);
+
+
     const getVideoId = (url: string) => {
         const split = url.split("/");
         const video_id = split[split.length - 1];
@@ -63,70 +68,59 @@ const Service: FC<Props> = ({
                         })}
                     >
                         <Grid.Col lg={8} md={8} sm={12} >
-                            <Box sx={(theme) => ({
-                                margin: '0 auto',
-                            })}>
-                                {
-                                    data.image == null || data?.asian_images?.length == 0 ?
-                                    <Flex
-                                        justify={'center'} align={'center'}
-                                    >
-                                        <Box
-                                            sx={(theme) => ({
-                                                width: isMobile?'100%':'500px',
-                                                // height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
-                                                height: '400px',
-                                                backgroundImage: 'linear-gradient(180deg, gray, white)',
-                                                cursor: 'pointer',
-                                                borderRadius: '10px'
-                                            })}
-                                        ></Box>
-                                    </Flex>
-                                    :
-                                    <Flex 
-                                        justify={'center'} align={'center'}
-                                    >
-                                        <Carousel
-                                            slideSize='100%'
-                                            withIndicators
-                                            onMouseEnter={autoplay.current.stop}
-                                            onMouseLeave={autoplay.current.reset}
-                                            maw={isMobile ? '100%' : '600px'}
-                                        >
-                                            {
-                                                data?.asian_images?.map((image: any, key: number) =>
-                                                <Carousel.Slide key={key}>
-                                                    {
-                                                        image.id == "" ?
-                                                        <Box
-                                                            sx={(theme) => ({
-                                                                width:'100%', 
-                                                                // height: Math.floor(Math.random() * (250 - 0 + 1)) + 250,
-                                                                height: '400px',
-                                                                backgroundImage: 'linear-gradient(180deg, gray, white)',
-                                                                cursor: 'pointer',
-                                                                borderRadius: '10px'
-                                                            })}
-                                                        ></Box> 
-                                                        :
-                                                        <Box>
-                                                            <Image 
-                                                                src={image.url}
-                                                                sx={{
-                                                                    width: '100%', 
-                                                                    height: '400px', 
-                                                                    objectFit: 'cover'
-                                                                }}
-                                                                radius={5} 
-                                                            />
-                                                        </Box>
-                                                    }
-                                                </Carousel.Slide>)
-                                            }
-                                        </Carousel>
-                                    </Flex>
-                                }
-                            </Box>
+                        {
+                            data.image == null || data?.asian_images?.length == 0 ?
+                            <Flex
+                                justify={'center'}
+                            >
+                                <Box
+                                    // w={600}
+                                    h={400}
+                                    sx={(theme) => ({
+                                        backgroundImage: 'linear-gradient(180deg, gray, white)',
+                                        cursor: 'pointer',
+                                        borderRadius: '10px'
+                                    })}
+                                ></Box>
+                            </Flex>
+                            :
+                            <Flex 
+                                justify={'center'}
+                            >
+                                <Carousel
+                                    slideSize='100%'
+                                    withIndicators
+                                    maw={isMobile?'100%':600}
+                                    getEmblaApi={setEmbla} 
+                                >
+                                    {
+                                        data?.asian_images?.map((image: any, key: number) =>
+                                        <Carousel.Slide key={key}>
+                                        {
+                                            image.id == "" ?
+                                            <Box
+                                                // w={600}
+                                                h={400}
+                                                sx={(theme) => ({
+                                                    backgroundImage: 'linear-gradient(180deg, gray, white)',
+                                                    cursor: 'pointer',
+                                                    borderRadius: '10px'
+                                                })}
+                                            ></Box> 
+                                            :
+                                            <Image 
+                                                src={image.url}
+                                                // width={600}
+                                                height={400}
+                                                fit='cover'
+                                                radius={5} 
+                                            />
+                                        }
+                                        </Carousel.Slide>)
+                                    }
+                                </Carousel>
+                            </Flex>
+                        }
                         </Grid.Col>
                         <Grid.Col lg={4} md={4} sm={12}>
                             <Flex
@@ -321,9 +315,9 @@ const Service: FC<Props> = ({
                         </Masonry>
                     </ResponsiveMasonry>
                 }
+                </Box>
             </Box>
             <AuthModal type='login' open={() => { setOpenAuthModal(false) }} opened={openAuthModal} setType={(type) => { setAuthType(type) }} />
-            </Box>
         </>
     )
 }
