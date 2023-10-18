@@ -1,16 +1,12 @@
-import { FC, useState, useRef, useEffect } from 'react';
+import { FC, useState } from 'react';
 import { Modal, Button, Group, Box, Grid, Image, Flex, Text, Rating, Loader, Textarea } from '@mantine/core';
 import { Carousel, Embla, useAnimationOffsetEffect } from '@mantine/carousel';
-import { notifications } from '@mantine/notifications';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import GoogleMapReact from 'google-map-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faReply, faFlag } from '@fortawesome/free-solid-svg-icons'
-import { useUser } from "@supabase/auth-helpers-react";
-import Autoplay from 'embla-carousel-autoplay';
 
 import { ItemType } from '@/types/elements';
 
@@ -38,7 +34,6 @@ const Service: FC<Props> = ({
 }) => {    
     const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
     const [authType, setAuthType] = useState<string>('login');
-    const autoplay = useRef(Autoplay({ delay: 2000 }));
 
     const TRANSITION_DURATION = 200;
     const [embla, setEmbla] = useState<Embla | null>(null);
@@ -50,6 +45,8 @@ const Service: FC<Props> = ({
         const video_id = split[split.length - 1];
         return video_id;
     }
+
+    console.log(data)
     
     return (
         <>
@@ -74,7 +71,7 @@ const Service: FC<Props> = ({
                                 justify={'center'}
                             >
                                 <Box
-                                    // w={600}
+                                    w={isMobile?'100%':600}
                                     h={400}
                                     sx={(theme) => ({
                                         backgroundImage: 'linear-gradient(180deg, gray, white)',
@@ -88,7 +85,7 @@ const Service: FC<Props> = ({
                                 justify={'center'}
                             >
                                 <Carousel
-                                    slideSize='100%'
+                                    // slideSize='100%'
                                     withIndicators
                                     maw={isMobile?'100%':600}
                                     getEmblaApi={setEmbla} 
@@ -99,7 +96,7 @@ const Service: FC<Props> = ({
                                         {
                                             image.id == "" ?
                                             <Box
-                                                // w={600}
+                                                w={isMobile?'100%':600}
                                                 h={400}
                                                 sx={(theme) => ({
                                                     backgroundImage: 'linear-gradient(180deg, gray, white)',
@@ -110,7 +107,7 @@ const Service: FC<Props> = ({
                                             :
                                             <Image 
                                                 src={image.url}
-                                                // width={600}
+                                                w={isMobile?'100%':600}
                                                 height={400}
                                                 fit='cover'
                                                 radius={5} 
