@@ -26,7 +26,7 @@ const Cities: FC<Props> = ({
     return (
         <Box
             style={{
-                width: isMobile?'100%':'200px'
+                width: isMobile?'100%':'500px'
             }}
         >
             <Menu 
@@ -34,7 +34,6 @@ const Cities: FC<Props> = ({
                 // zIndex={1000000}
                 withinPortal={true}
                 // position={isMobile?'bottom':'right'}
-                width='200px'
             >
                 <Menu.Target>
                     <Button
