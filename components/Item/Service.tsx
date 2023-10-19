@@ -38,8 +38,6 @@ const Service: FC<Props> = ({
 
     const regex = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
 
-    console.log(Number(data.map_url.match(regex)?.[1]))
-    console.log(Number(data.map_url.match(regex)?.[2]))
 
     const TRANSITION_DURATION = 200;
     const [embla, setEmbla] = useState<Embla | null>(null);
@@ -215,21 +213,24 @@ const Service: FC<Props> = ({
                                     (data?.asian_elements?.name == "Businesses" || data?.asian_elements?.name == "Restaurants") &&
                                     <Box>
                                         <Text size='1.1rem'>
-                                            Map {GOOGLE_MAP_API_KEY}
+                                            Map
                                         </Text>
                                         <Box
                                             sx={(theme) => ({ height: '300px', width: '100%' })}
                                         >
-                                            <GoogleMapReact
-                                                bootstrapURLKeys={{ key: GOOGLE_MAP_API_KEY || '' }}
-                                                defaultCenter={{
-                                                    lat: Number(data.map_url.match(regex)?.[1]),
-                                                    lng: Number(data.map_url.match(regex)?.[2]),
-                                                }}
-                                                defaultZoom={11}
-                                                yesIWantToUseGoogleMapApiInternals
-                                            >
-                                            </GoogleMapReact>
+                                            {
+                                                
+                                                <GoogleMapReact
+                                                    bootstrapURLKeys={{ key: GOOGLE_MAP_API_KEY || '' }}
+                                                    defaultCenter={{
+                                                        lat: Number(data.map_url.match(regex)?.[1]),
+                                                        lng: Number(data.map_url.match(regex)?.[2]),
+                                                    }}
+                                                    defaultZoom={11}
+                                                    yesIWantToUseGoogleMapApiInternals
+                                                >
+                                                </GoogleMapReact>   
+                                            }
                                             
                                             {/* <iframe 
                                                 width='100%'
