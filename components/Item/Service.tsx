@@ -71,7 +71,7 @@ const Service: FC<Props> = ({
                                 justify={'center'}
                             >
                                 <Box
-                                    w={isMobile?'100%':600}
+                                    // w={isMobile?'100%':600}
                                     h={400}
                                     sx={(theme) => ({
                                         backgroundImage: 'linear-gradient(180deg, gray, white)',
@@ -101,15 +101,16 @@ const Service: FC<Props> = ({
                                                 sx={(theme) => ({
                                                     backgroundImage: 'linear-gradient(180deg, gray, white)',
                                                     cursor: 'pointer',
-                                                    borderRadius: '10px'
+                                                    borderRadius: '10px',
+                                                    border: '1px solid gray'
                                                 })}
                                             ></Box> 
                                             :
                                             <Image 
                                                 src={image.url}
-                                                w={isMobile?'100%':600}
+                                                width={isMobile?'100%':600}
                                                 height={400}
-                                                fit='cover'
+                                                fit='contain'
                                                 radius={5} 
                                             />
                                         }
