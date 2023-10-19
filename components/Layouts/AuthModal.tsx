@@ -170,7 +170,7 @@ const AuthModal: FC<Props> = ({ open, opened, type, setType }) => {
                         color: theme.colors.gray[8]
                     })}>
                         {
-                            `By continuing, you agree to Designspiration's Terms of Service and acknowledge you've read our Privacy Policy`
+                            `By continuing, you agree to Asian Social's Terms of Service and acknowledge you've read our Privacy Policy`
                         }
                     </Text>
                     <Text color="blue" weight={700} align="center" mt={20} sx={(theme) => ({
