@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { Modal, Button, Group, Box, Grid, Image, Flex, Text, Rating, Loader, Textarea } from '@mantine/core';
 import { Carousel, Embla, useAnimationOffsetEffect } from '@mantine/carousel';
 import Link from 'next/link';
@@ -12,6 +12,7 @@ import { ItemType } from '@/types/elements';
 
 import AuthModal from '@/components/Layouts/AuthModal';
 import { IconBrandFacebook, IconBrandInstagram } from '@tabler/icons-react';
+import { GOOGLE_MAP_API_KEY } from '@/utils/app/consts';
 
 interface Props {
     images: any,
@@ -35,10 +36,14 @@ const Service: FC<Props> = ({
     const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
     const [authType, setAuthType] = useState<string>('login');
 
+    const regex = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
+
+    console.log(Number(data.map_url.match(regex)?.[1]))
+    console.log(Number(data.map_url.match(regex)?.[2]))
+
     const TRANSITION_DURATION = 200;
     const [embla, setEmbla] = useState<Embla | null>(null);
     useAnimationOffsetEffect(embla, TRANSITION_DURATION);
-
 
     const getVideoId = (url: string) => {
         const split = url.split("/");
@@ -46,8 +51,6 @@ const Service: FC<Props> = ({
         return video_id;
     }
 
-    console.log(data)
-    
     return (
         <>
             <Box
@@ -212,29 +215,30 @@ const Service: FC<Props> = ({
                                     (data?.asian_elements?.name == "Businesses" || data?.asian_elements?.name == "Restaurants") &&
                                     <Box>
                                         <Text size='1.1rem'>
-                                            Map
+                                            Map {GOOGLE_MAP_API_KEY}
                                         </Text>
                                         <Box
                                             sx={(theme) => ({ height: '300px', width: '100%' })}
                                         >
-                                            {/* <GoogleMapReact
-                                                bootstrapURLKeys={{ key: "AIzaSyB6hZIv8mG7cOvX-AGUbB-vLeR5qZ1-QXI" }}
+                                            <GoogleMapReact
+                                                bootstrapURLKeys={{ key: GOOGLE_MAP_API_KEY || '' }}
                                                 defaultCenter={{
-                                                    lat: 44.900209366013954,
-                                                    lng: -102.56077483176705
+                                                    lat: Number(data.map_url.match(regex)?.[1]),
+                                                    lng: Number(data.map_url.match(regex)?.[2]),
                                                 }}
                                                 defaultZoom={11}
                                                 yesIWantToUseGoogleMapApiInternals
                                             >
-
-                                            </GoogleMapReact> */}
-                                            <iframe 
+                                            </GoogleMapReact>
+                                            
+                                            {/* <iframe 
                                                 width='100%'
-                                                src={data.map_url}
+                                                src={data.map_url + "&output=embed"}
                                                 style={{ border: 0 }} 
                                                 height="300"
+                                                loading='lazy'
                                             >
-                                            </iframe>
+                                            </iframe> */}
                                         </Box>
                                     </Box>
                                 }
@@ -272,7 +276,6 @@ const Service: FC<Props> = ({
                                                 }}></div> : <>No Hours</>
                                         }
                                     </Text>
-
                                 </Box>
                             </Flex>
 

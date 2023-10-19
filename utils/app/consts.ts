@@ -16,3 +16,4 @@ export const ADMIN_MENU =[
 
 export const SUPABSE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 export const SUPABSE_ANNON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+export const GOOGLE_MAP_API_KEY = process.env.NEXT_GOOGLE_MAP_API_KEY;
